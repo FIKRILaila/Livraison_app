@@ -7,14 +7,6 @@ active
 @endsection
 @section('content')
 <div class="container">
-    {{-- @php
-        foreach($colis as $item){
-            echo $item->code_bar;
-        }
-    @endphp --}}
-    {{-- @foreach ($colis as $item) 
-    {{echo $item->code_bar}}
-    @endforeach --}}
     <div class="mt-4 card col-md-12">
         <div class="m-4">
             <table id="myTable" class="display">

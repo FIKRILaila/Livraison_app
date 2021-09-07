@@ -10,6 +10,14 @@ active
     <div class="row justify-content-center">
         <div class="col-md-12">
             <h1 class="text-center m-4">Nouveau Colis</h1>
+            @if (Session::get('success'))
+            <div class="alert alert-success">
+                {{ Session::get('success') }}
+            </div>
+            @endif
+            @if (Session::get('fail'))
+                <div class="alert alert-danger">{{ Session::get('fail') }}</div>
+            @endif
             <div class="card mt-4">
                 <div class="card-body">
                     <form method="POST" action="{{route('storeColis')}}">
@@ -74,11 +82,11 @@ active
                                 <label for="fragile" class="col-md-4 col-form-label">{{ __('Fragile') }}</label>
                                 <div class="col-md-8 row">
                                     <div class="mr-4">
-                                        <input type="radio" id="oui" name="fragile" value="1" checked>
+                                        <input type="radio" id="oui" name="fragile" value="oui" checked>
                                         <label for="oui">oui</label>
                                     </div>
                                     <div>
-                                        <input type="radio" id="non" name="fragile" value="0">
+                                        <input type="radio" id="non" name="fragile" value="non">
                                         <label for="non">non</label>
                                     </div>
                                 </div>

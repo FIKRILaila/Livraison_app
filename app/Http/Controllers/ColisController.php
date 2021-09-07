@@ -38,10 +38,10 @@ class ColisController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
-        $fragile = $request->input('fragile')?1:0;
-        $ouvrir = $request->input('ouvrir')?1:0;
+    {   
         $input = $request->all();
+        $fragile = $request->input('fragile') == "oui"?1:0;
+        $ouvrir = $request->input('ouvrir')== "on"?1:0;
         $input['client_id'] = Auth::id();
         $input['fragile'] = $fragile;
         $input['ouvrir'] = $ouvrir;
@@ -49,7 +49,8 @@ class ColisController extends Controller
         $generator = new Picqer\Barcode\BarcodeGeneratorHTML();
         $barcode = $generator->getBarcode($colis->id, $generator::TYPE_CODE_128);
         $colis = Coli::where('id','=',$colis->id)->update(['code_bar'=>$barcode]);
-        return redirect()->route('colis');
+        return back()->with('success','Votre colis a été ajouté avec succès');
+        // return redirect()->route('colis');
     }
 
     /**
