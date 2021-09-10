@@ -215,7 +215,8 @@
               </li> 
               <li class="nav-item has-treeview menu-open">
                 <a href="{{ route('villes') }}" class="nav-link @yield('villes')">
-                  <i class="nav-icon fas fa-home"></i>
+                  {{-- <i class="nav-icon fas fa-home"></i> --}}
+                  <i class="nav-icon fas fa-city"></i>
                   <p>
                     Régions et Villes
                     {{-- <i class="right fas fa-angle-left"></i> --}}

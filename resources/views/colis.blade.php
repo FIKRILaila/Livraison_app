@@ -24,10 +24,7 @@ active
                     @foreach ($colis as $item) 
                     <tr>
                         <td>
-                            <form action="" method="post">
-                                <input type="hidden" name="colis_id" value="{{$item->id}}">
-                                <input type="checkbox" name="selectionner" id="selectionner">
-                            </form>
+                            <input type="checkbox" name="selectionner" id="selectionner" value="{{$item->id}}">
                         </td>
                         <td>{{$item->destinataire}}</td>
                         <td>{{$item->name}}</td>

@@ -53,10 +53,10 @@ class ColisController extends Controller
 
         $colis = Coli::where('id','=',$colis->id)->update(['code_bar'=>$barcode]);
        
-        $historique =Historique::create([
-            'etat'=>'en_attente',
-            'colis_id'=>$colis->id
-        ]) ;
+        // $historique =Historique::create([
+        //     'etat' => 'en_attente',
+        //     'colis_id' => $colis->id
+        // ]) ;
         return back()->with('success','Votre colis a été ajouté avec succès');
         // return redirect()->route('colis');
     }
