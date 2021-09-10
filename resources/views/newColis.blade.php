@@ -18,18 +18,20 @@ active
             @if (Session::get('fail'))
                 <div class="alert alert-danger">{{ Session::get('fail') }}</div>
             @endif
+            
             <div class="card mt-4">
                 <div class="card-body">
                     <form method="POST" action="{{route('storeColis')}}">
                         @csrf
+                        <input type="hidden" name="ville_id" id="ville_id" value="">
                         <div class="row">
                             <div class="form-group col-md-6 row">
-                                <label for="ville_id" class="col-md-4 col-form-label">{{ __('Ville') }}</label>
+                                <label for="ville" class="col-md-4 col-form-label">{{ __('Ville') }}</label>
                                 <div class="col-md-8">
-                                    <select name="ville_id" id="ville_id" class="form-control @error('ville_id') is-invalid @enderror" value="{{ old('ville_id') }}" required  autofocus autocomplete="on">
+                                    <select onchange="Tarif(value)" name="ville" id="ville" class="form-control @error('ville') is-invalid @enderror" value="{{ old('ville') }}" required  autofocus autocomplete="on">
                                         <option value="">Ville</option>
                                         @foreach ($villes as $villes)
-                                            <option value="{{$villes->id}}">{{$villes->name}}</option>
+                                            <option value="{{$villes->id}}_{{$villes->frais_livraison}}">{{$villes->name}}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -37,7 +39,7 @@ active
                             <div class="form-group col-md-6 row">
                                 <label class="col-md-4 col-form-label">{{ __('Tarif') }}</label>
                                 <div class="col-md-8">
-                                    <span class="form-control">Tarif</span> 
+                                    <span class="form-control" id="tarif">Tarif</span> 
                                 </div>
                             </div>
                         </div>
@@ -120,4 +122,15 @@ active
         </div>
     </div>
 </div>
+@endsection
+@section('script')
+    <script>
+        function Tarif(value){
+            let id = value.split('_')[0];
+            let frais = value.split('_')[1];
+            let tarif = document.querySelector("#tarif")
+            document.querySelector("#ville_id").value = id
+            tarif.innerHTML=`${frais}`;           
+        }
+    </script>
 @endsection

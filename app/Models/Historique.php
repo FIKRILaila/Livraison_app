@@ -5,12 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Ville extends Model
+class Historique extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'name',
-        'frais_livraison',
-        'region_id'
+        'colid_id',
+        'etat'
      ];
 }

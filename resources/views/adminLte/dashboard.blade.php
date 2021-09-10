@@ -155,9 +155,9 @@
   <!-- /.navbar -->
 
   <!-- Main Sidebar Container -->
-  <aside class="main-sidebar sidebar-dark-primary elevation-4">
+  <aside class="main-sidebar sidebar-white-primary elevation-4">
     <!-- Brand Logo -->
-    <a href="index3.html" class="brand-link">
+    <a href="{{ route('home') }}" class="brand-link">
       <img src="dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
            style="opacity: .8">
       <span class="brand-text font-weight-light">MN Express Livraison</span>
@@ -181,7 +181,7 @@
                    with font-awesome or any other icon font library -->
               <li class="nav-item has-treeview menu-open">
                 <a href="{{ route('home') }}" class="nav-link @yield('home')">
-                  <i class="nav-icon fas fa-tachometer-alt"></i>
+                  <i class="nav-icon fas fa-home"></i>
                   <p>
                     Dashboard
                     {{-- <i class="right fas fa-angle-left"></i> --}}
@@ -190,7 +190,8 @@
               </li>
               <li class="nav-item has-treeview menu-open">
                 <a href="#" class="nav-link @yield('colis')">
-                  <i class="nav-icon fas fa-tachometer-alt"></i>
+                  <i class="nav-icon fas fa-box-open"></i>
+                  {{-- <i class="nav-icon fas fa-tachometer-alt"></i> --}}
                   <p>
                   Colis
                     <i class="right fas fa-angle-left"></i>
@@ -199,7 +200,8 @@
                 <ul class="nav nav-treeview">
                   <li class="nav-item">
                     <a href="{{ route('newColis') }}" class="nav-link @yield('nouveauColis')">
-                      <i class="far fa-circle nav-icon"></i>
+                      {{-- <i class="far fa-circle nav-icon"></i> --}}
+                      <i class="fas fa-plus-circle nav-icon"></i>
                       <p>Nouveau colis</p>
                     </a>
                   </li>
@@ -211,6 +213,15 @@
                   </li>
                 </ul>
               </li> 
+              <li class="nav-item has-treeview menu-open">
+                <a href="{{ route('villes') }}" class="nav-link @yield('villes')">
+                  <i class="nav-icon fas fa-home"></i>
+                  <p>
+                    Régions et Villes
+                    {{-- <i class="right fas fa-angle-left"></i> --}}
+                  </p>
+                </a>
+              </li>
           
           {{-- <li class="nav-item has-treeview menu-open">
             <a href="{{ route('newColis') }}" class="nav-link active">
@@ -230,6 +241,12 @@
 
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper bg-white">
+
+        @if (session('status'))
+            <div class="alert alert-success" role="alert">
+                {{ session('status') }}
+            </div>
+        @endif
     <!-- Content Header (Page header) -->
 
     <!-- Main content -->
@@ -289,10 +306,6 @@
 <script src="dist/js/demo.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 <script src="https://cdn.datatables.net/1.11.1/js/jquery.dataTables.min.js"></script>
-<script>
-  $(document).ready( function () {
-    $('#myTable').DataTable();
-  } );
-</script>
+@yield('script')
 </body>
 </html>

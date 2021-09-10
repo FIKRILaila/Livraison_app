@@ -2,6 +2,9 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ColisController;
+use App\Http\Controllers\VillesController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\RegionsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,7 +23,10 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-Route::get('/colis', [App\Http\Controllers\ColisController::class, 'index'])->name('colis');
+Route::get('/home', [HomeController::class, 'index'])->name('home');
+Route::get('/colis', [ColisController::class, 'index'])->name('colis');
+Route::get('/Regions&Villes', [VillesController::class, 'index'])->name('villes');
 Route::get('addColis', [ColisController::class, 'create'])->name('newColis');
-Route::post('/store-colis', [App\Http\Controllers\ColisController::class, 'store'])->name('storeColis');
+Route::post('/addRegion', [RegionsController::class, 'store'])->name('newRegion');
+Route::post('/addVille', [VillesController::class, 'store'])->name('newVille');
+Route::post('/store-colis', [ColisController::class, 'store'])->name('storeColis');

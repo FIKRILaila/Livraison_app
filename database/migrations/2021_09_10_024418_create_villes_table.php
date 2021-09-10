@@ -17,6 +17,10 @@ class CreateVillesTable extends Migration
             $table->id();
             $table->string('name');
             $table->integer('frais_livraison');
+            $table->unsignedBigInteger('region_id');
+            $table->foreign('region_id')->references('id')->on('regions')->ondelete('cascade');
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->useCurrent();
         });
     }
 
