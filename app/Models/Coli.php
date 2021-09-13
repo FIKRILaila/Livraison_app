@@ -17,8 +17,10 @@ class Coli extends Model
        'quartier',
        'ville_id',
        'prix',
+       'etat',
        'ouvrir',
        'fragile',
+       'change',
        'client_id',
        'livreur_id'
     ];

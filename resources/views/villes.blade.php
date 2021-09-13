@@ -12,7 +12,8 @@ active
             Nouvelle ville
         </button>
     </div>
-    <div class="col-md-12 mt-4">
+    <div class="col-md-12 mt-4 card">
+      <div class="m-4">
       <table id="regions" class="display">
         <thead>
             <tr>
@@ -37,6 +38,7 @@ active
             @endforeach
         </tbody>
       </table>
+    </div>
     </div>
 
 

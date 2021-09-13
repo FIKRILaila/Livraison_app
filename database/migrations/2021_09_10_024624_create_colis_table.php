@@ -22,8 +22,9 @@ class CreateColisTable extends Migration
             $table->string('quartier');
             $table->integer('prix');
             $table->boolean('ouvrir'); 
-            $table->boolean('fragile'); 
-            $table->enum('etat',['en_attente','en_cours','refuse','livre','change']);
+            $table->boolean('fragile');
+            $table->boolean('change');
+            $table->string('etat');
             $table->unsignedBigInteger('ville_id');
             $table->foreign('ville_id')->references('id')->on('villes')->ondelete('cascade');
             $table->unsignedBigInteger('client_id');

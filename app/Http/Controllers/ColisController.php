@@ -45,19 +45,20 @@ class ColisController extends Controller
         $input['ouvrir'] =$request->input('ouvrir')== "on"?1:0;
         $input['client_id'] = Auth::id();
         $input['etat'] = 'en_attente';
+        $input['change'] = false;
 
         $colis = Coli::create($input);
 
         $generator = new Picqer\Barcode\BarcodeGeneratorHTML();
         $barcode = $generator->getBarcode($colis->id, $generator::TYPE_CODE_128);
+        
+        $historique =Historique::create([
+            'etat' => 'en_attente',
+            'colis_id' => $colis->id
+            ]) ;
 
         $colis = Coli::where('id','=',$colis->id)->update(['code_bar'=>$barcode]);
-       
-        // $historique =Historique::create([
-        //     'etat' => 'en_attente',
-        //     'colis_id' => $colis->id
-        // ]) ;
-        return back()->with('success','Votre colis a été ajouté avec succès');
+            return back()->with('success','Votre colis a été ajouté avec succès');
         // return redirect()->route('colis');
     }
 

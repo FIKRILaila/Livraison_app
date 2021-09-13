@@ -155,7 +155,7 @@
   <!-- /.navbar -->
 
   <!-- Main Sidebar Container -->
-  <aside class="main-sidebar sidebar-white-primary elevation-4">
+  <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
     <a href="{{ route('home') }}" class="brand-link">
       <img src="dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
@@ -171,7 +171,7 @@
           <img src="dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="#" class="d-block">Fikri Laila</a>
+          <a href="#" class="d-block">{{Auth::user()->nomComplet}}</a>
         </div>
       </div>
           <!-- Sidebar Menu -->
@@ -200,8 +200,8 @@
                 <ul class="nav nav-treeview">
                   <li class="nav-item">
                     <a href="{{ route('newColis') }}" class="nav-link @yield('nouveauColis')">
-                      {{-- <i class="far fa-circle nav-icon"></i> --}}
-                      <i class="fas fa-plus-circle nav-icon"></i>
+                      <i class="far fa-circle nav-icon"></i>
+                      {{-- <i class="fas fa-plus-circle nav-icon"></i> --}}
                       <p>Nouveau colis</p>
                     </a>
                   </li>
@@ -209,6 +209,24 @@
                     <a href="{{ route('colis') }}" class="nav-link  @yield('mesColis')">
                       <i class="far fa-circle nav-icon"></i>
                       <p>Mes Colis</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="{{ route('ramassage') }}" class="nav-link  @yield('ramassage')">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>En attente de rammassage</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="{{ route('retour') }}" class="nav-link  @yield('retour')">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>En Retour</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="{{ route('refuses') }}" class="nav-link  @yield('refuses')">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Refuses</p>
                     </a>
                   </li>
                 </ul>
@@ -220,6 +238,56 @@
                   <p>
                     Régions et Villes
                     {{-- <i class="right fas fa-angle-left"></i> --}}
+                  </p>
+                </a>
+              </li>
+              <li class="nav-item has-treeview menu-open">
+                <a href="#" class="nav-link @yield('stock')">
+                  <i class="nav-icon fas fa-cubes"></i>
+                  {{-- <i class="nav-icon fas fa-tachometer-alt"></i> --}}
+                  <p>
+                    Gestion de Stock
+                    <i class="right fas fa-angle-left"></i>
+                  </p>
+                </a>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="{{ route('nouveauStock') }}" class="nav-link  @yield('nouveauStock')">
+                      {{-- <i class="far fa-circle nav-icon"></i> --}}
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Nouveau Stock</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="{{ route('article') }}" class="nav-link @yield('article')">
+                      {{-- <i class="far fa-circle nav-icon"></i> --}}
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Nouveau Article</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="{{ route('stock') }}" class="nav-link @yield('stock_actu')">
+                      {{-- <i class="far fa-circle nav-icon"></i> --}}
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Stock Actuel</p>
+                    </a>
+                  </li>
+                  
+                </ul>
+              </li> 
+              {{-- <li class="nav-item has-treeview menu-open">
+                <a href="{{ route('stock') }}" class="nav-link @yield('stock')">
+                  <i class="nav-icon fas fa-cubes"></i>
+                  <p>
+                    Gestion de Stock
+                  </p>
+                </a>
+              </li> --}}
+              <li class="nav-item has-treeview menu-open">
+                <a href="{{ route('factures') }}" class="nav-link @yield('factures')">
+                  <i class=" nav-icon fas fa-file-invoice"></i>
+                  <p>
+                   Factures
                   </p>
                 </a>
               </li>
