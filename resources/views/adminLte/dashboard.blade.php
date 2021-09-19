@@ -214,7 +214,7 @@
                   <li class="nav-item">
                     <a href="{{ route('ramassage') }}" class="nav-link  @yield('ramassage')">
                       <i class="far fa-circle nav-icon"></i>
-                      <p>En attente de rammassage</p>
+                      <p>En attente de ramassage</p>
                     </a>
                   </li>
                   <li class="nav-item">
@@ -252,17 +252,17 @@
                 </a>
                 <ul class="nav nav-treeview">
                   <li class="nav-item">
-                    <a href="{{ route('nouveauStock') }}" class="nav-link  @yield('nouveauStock')">
-                      {{-- <i class="far fa-circle nav-icon"></i> --}}
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Nouveau Stock</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
                     <a href="{{ route('article') }}" class="nav-link @yield('article')">
                       {{-- <i class="far fa-circle nav-icon"></i> --}}
                       <i class="far fa-circle nav-icon"></i>
                       <p>Nouveau Article</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="{{ route('nouveauStock') }}" class="nav-link  @yield('nouveauStock')">
+                      {{-- <i class="far fa-circle nav-icon"></i> --}}
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Nouveau Stock</p>
                     </a>
                   </li>
                   <li class="nav-item">

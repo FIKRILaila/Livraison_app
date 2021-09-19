@@ -27,11 +27,23 @@ class HomeController extends Controller
     {
         return view('home');
     }
+    
     public function store(Request $request){
         dd($request->input('bon'));
+        $table = $request->input('bon');
+        foreach ($table as $t){
+            var_dump($t);
+        }
+        // var_dump($table);
     }
+
     public function retour(){
         $colis = Coli::join('villes','villes.id','=','colis.ville_id')->select('villes.*','colis.*')->orderBy('colis.created_at', 'DESC')->get();
         return view('en_retour')->with('colis',$colis);
+    }
+
+    public function refuser(){
+        $colis = Coli::join('villes','villes.id','=','colis.ville_id')->select('villes.*','colis.*')->orderBy('colis.created_at', 'DESC')->get();
+        return view('refuses')->with('colis',$colis);
     }
 }

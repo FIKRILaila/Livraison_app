@@ -8,8 +8,8 @@ active
 @endsection
 @section('content')
 <div class="container">
-    <h1 class="text-center m-4">Gestion de Stock</h1>
-    <div class="col-md-12 card">
+    <h1 class="mt-4">Stock Actuel</h1>
+    <div class="col-md-12 mt-4 card">
         <div class="m-4">
         <table id="stock" class="display">
           <thead>
@@ -20,11 +20,13 @@ active
               </tr>
           </thead>
           <tbody>
+            @foreach ($stock as $s)   
               <tr>
-                <td>Article</td>
-                <td>Type d'Article</td>
-                <td>Quantité</td>
+                <td>{{$s->name}}</td>
+                <td>{{$s->type}}</td>
+                <td>{{$s->quantite}}</td>
               </tr>
+            @endforeach
           </tbody>
         </table>
       </div>

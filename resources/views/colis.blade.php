@@ -9,8 +9,9 @@ active
 <div class="container">
     <div class="mt-4 card col-md-12">
         <div class="m-4" >
-            <form id="bon_livraison" action="{{ route('store')}}" method="POST" class="">
+            <form id="bon_livraison" action="{{ route('store')}}" method="POST" class="d-none">
                 @csrf
+                <input type="text" name="colis" id="colis" value="">
             </form>
             <i class="fas fa-level-down-alt"></i>
             <input type="checkbox" name="selectAll" id="selectAll">
@@ -75,13 +76,17 @@ active
 
     function demande_livraison(){
         var form = document.querySelector("#bon_livraison");
+        var input = document.querySelector("#colis");
+        input.value ="";
         var ele=document.getElementsByName('bon');  
                 for(var i=0; i<ele.length; i++){  
                     if(ele[i].checked === true){
-                        form.appendChild(ele[i]);
-                    }else{
-                        form.removeChild(ele[i]);
+                        // form.appendChild(ele[i]);
+                        input.value += ele[i].value + "_" ;
                     }
+                    // if(ele[i].checked === false){
+                    //     form.removeChild(ele[i]);
+                    // }
                 }  
                 form.submit();
     }

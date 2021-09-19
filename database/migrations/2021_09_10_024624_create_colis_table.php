@@ -17,6 +17,7 @@ class CreateColisTable extends Migration
             $table->id();
             $table->text('code_bar')->unique()->nullable();
             $table->string('destinataire');
+            $table->string('telephone');
             $table->string('adresse');
             $table->string('commentaire')->nullable();
             $table->string('quartier');
