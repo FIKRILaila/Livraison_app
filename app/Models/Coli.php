@@ -10,6 +10,8 @@ class Coli extends Model
     use HasFactory;
     protected $fillable = [
        'code_bar',
+       'code',
+       'paye',
        'destinataire',
        'adresse',
        'telephone',
@@ -17,6 +19,7 @@ class Coli extends Model
        'quartier',
        'ville_id',
        'prix',
+       'valide',
        'etat',
        'ouvrir',
        'fragile',

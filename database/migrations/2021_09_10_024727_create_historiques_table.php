@@ -15,7 +15,9 @@ class CreateHistoriquesTable extends Migration
     {
         Schema::create('historiques', function (Blueprint $table) {
             $table->id();
-            $table->string('etat');
+            $table->string('etat_h');
+            $table->unsignedBigInteger('par');
+            $table->foreign('par')->references('id')->on('users')->ondelete('cascade');
             $table->unsignedBigInteger('colis_id');
             $table->foreign('colis_id')->references('id')->on('colis')->ondelete('cascade');
             $table->timestamp('created_at')->useCurrent();

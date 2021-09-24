@@ -14,9 +14,10 @@ class StockController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
+    {   
+        $articles = Article::where('client_id', '=', Auth::id())->get();
         $stock =Stock::join('articles','articles.id','=','stocks.article_id')->select('articles.*','stocks.*')->orderBy('stocks.created_at', 'DESC')->get(); ;
-        return view('stock')->with('stock',$stock);
+        return view('stock')->with(['stock'=>$stock,'articles'=>$articles]);
     }
 
     /**

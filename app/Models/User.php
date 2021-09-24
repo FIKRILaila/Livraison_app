@@ -26,6 +26,8 @@ class User extends Authenticatable
         'cin',
         'role',
         'RIP',
+        'nomMagasin',
+        'logo',
         'ville'
     ];
 

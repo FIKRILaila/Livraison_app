@@ -36,7 +36,7 @@ class RegionsController extends Controller
     public function store(Request $request)
     {   
         $region = Region::create([
-            'name'=>$request->input('name')
+            'region'=>$request->input('region')
         ]);
         if($region){
         return back()->with('success','Votre Région a été ajouté avec succès');

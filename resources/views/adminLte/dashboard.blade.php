@@ -27,6 +27,7 @@
   <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.datatables.net/1.11.1/css/jquery.dataTables.min.css">
+  @yield('style')
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
@@ -150,6 +151,25 @@
           <i class="fas fa-th-large"></i>
         </a>
       </li>
+
+      <li class="nav-item dropdown">
+        <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+            {{ Auth::user()->nomComplet }}
+        </a>
+
+        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="{{ route('logout') }}"
+               onclick="event.preventDefault();
+                             document.getElementById('logout-form').submit();">
+                {{ __('Déconnexion') }}
+            </a>
+
+            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                @csrf
+            </form>
+        </div>
+    </li>
+      
     </ul>
   </nav>
   <!-- /.navbar -->
@@ -179,19 +199,46 @@
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
               <!-- Add icons to the links using the .nav-icon class
                    with font-awesome or any other icon font library -->
+              @if (Auth::user()->role == 'admin')
+              <li class="nav-item has-treeview menu-open">
+              <a href="{{ route('toutColis') }}" class="nav-link @yield('toutColis')">
+                <i class="nav-icon fas fa-home"></i>
+                <p>
+                  Colis
+                </p>
+              </a>
+              </li>
+              @endif
+              {{-- <li class="nav-item has-treeview menu-open">
+                <a href="{{ route('stock') }}" class="nav-link @yield('stock')">
+                  <i class="nav-icon fas fa-cubes"></i>
+                  <p>
+                    Stock
+                  </p>
+                </a>
+              </li>              --}}
+              @if (Auth::user()->role == 'admin')
+              <li class="nav-item has-treeview menu-open">
+                <a href="{{ route('Reception') }}" class="nav-link @yield('Reception')">
+                  <i class="nav-icon fas fa-cubes"></i>
+                  <p>
+                    Reception Colis
+                  </p>
+                </a>
+              </li>
+              @endif
+              @if (Auth::user()->role == 'client')
               <li class="nav-item has-treeview menu-open">
                 <a href="{{ route('home') }}" class="nav-link @yield('home')">
                   <i class="nav-icon fas fa-home"></i>
                   <p>
                     Dashboard
-                    {{-- <i class="right fas fa-angle-left"></i> --}}
                   </p>
                 </a>
               </li>
               <li class="nav-item has-treeview menu-open">
                 <a href="#" class="nav-link @yield('colis')">
                   <i class="nav-icon fas fa-box-open"></i>
-                  {{-- <i class="nav-icon fas fa-tachometer-alt"></i> --}}
                   <p>
                   Colis
                     <i class="right fas fa-angle-left"></i>
@@ -201,7 +248,6 @@
                   <li class="nav-item">
                     <a href="{{ route('newColis') }}" class="nav-link @yield('nouveauColis')">
                       <i class="far fa-circle nav-icon"></i>
-                      {{-- <i class="fas fa-plus-circle nav-icon"></i> --}}
                       <p>Nouveau colis</p>
                     </a>
                   </li>
@@ -209,12 +255,6 @@
                     <a href="{{ route('colis') }}" class="nav-link  @yield('mesColis')">
                       <i class="far fa-circle nav-icon"></i>
                       <p>Mes Colis</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="{{ route('ramassage') }}" class="nav-link  @yield('ramassage')">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>En attente de ramassage</p>
                     </a>
                   </li>
                   <li class="nav-item">
@@ -231,20 +271,78 @@
                   </li>
                 </ul>
               </li> 
+              @endif
               <li class="nav-item has-treeview menu-open">
-                <a href="{{ route('villes') }}" class="nav-link @yield('villes')">
-                  {{-- <i class="nav-icon fas fa-home"></i> --}}
-                  <i class="nav-icon fas fa-city"></i>
+                <a href="{{ route('bonsLivraion') }}" class="nav-link @yield('livraison')">
+                  <i class="nav-icon fas fa-file-signature"></i>
                   <p>
-                    Régions et Villes
-                    {{-- <i class="right fas fa-angle-left"></i> --}}
+                    Bons de Livraison
                   </p>
                 </a>
               </li>
+              @if (Auth::user()->role == 'client')
               <li class="nav-item has-treeview menu-open">
-                <a href="#" class="nav-link @yield('stock')">
+                <a href="{{ route('stock') }}" class="nav-link @yield('stock')">
                   <i class="nav-icon fas fa-cubes"></i>
-                  {{-- <i class="nav-icon fas fa-tachometer-alt"></i> --}}
+                  <p>
+                    Gestion de Stock
+                  </p>
+                </a>
+              </li>
+              @endif
+              @if (Auth::user()->role == 'admin')
+              <li class="nav-item has-treeview menu-open">
+                <a href="{{ route('stock') }}" class="nav-link @yield('bonenvoie')">
+                  <i class="nav-icon fas fa-cubes"></i>
+                  <p>
+                    Bons d'envoie
+                    <i class="right fas fa-angle-left"></i>
+                  </p>
+                </a>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="{{ route('new_denvoie') }}" class="nav-link @yield('newenvoie')">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Nouveau Bon d'envoie</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="{{ route('bon_envoie') }}" class="nav-link  @yield('bon_envoie')">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Tous les Bons d'envoie</p>
+                    </a>
+                  </li>
+                </ul>
+              </li> 
+
+              <li class="nav-item has-treeview menu-open">
+                <a href="{{ route('stock') }}" class="nav-link">
+                  <i class="nav-icon fas fa-cubes"></i>
+                  <p>
+                    Bons distribution
+                    <i class="right fas fa-angle-left"></i>
+                  </p>
+                </a>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="{{ route('new_denvoie') }}" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Nouveau Bon distribution</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="{{ route('bon_envoie') }}" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Tous les Bons distribution</p>
+                    </a>
+                  </li>
+                </ul>
+              </li> 
+
+
+              {{-- <li class="nav-item has-treeview menu-open">
+                <a href="{{ route('stock') }}" class="nav-link @yield('stock')">
+                  <i class="nav-icon fas fa-cubes"></i>
                   <p>
                     Gestion de Stock
                     <i class="right fas fa-angle-left"></i>
@@ -253,36 +351,27 @@
                 <ul class="nav nav-treeview">
                   <li class="nav-item">
                     <a href="{{ route('article') }}" class="nav-link @yield('article')">
-                      {{-- <i class="far fa-circle nav-icon"></i> --}}
                       <i class="far fa-circle nav-icon"></i>
                       <p>Nouveau Article</p>
                     </a>
                   </li>
                   <li class="nav-item">
                     <a href="{{ route('nouveauStock') }}" class="nav-link  @yield('nouveauStock')">
-                      {{-- <i class="far fa-circle nav-icon"></i> --}}
                       <i class="far fa-circle nav-icon"></i>
                       <p>Nouveau Stock</p>
                     </a>
                   </li>
                   <li class="nav-item">
                     <a href="{{ route('stock') }}" class="nav-link @yield('stock_actu')">
-                      {{-- <i class="far fa-circle nav-icon"></i> --}}
                       <i class="far fa-circle nav-icon"></i>
                       <p>Stock Actuel</p>
                     </a>
                   </li>
                   
                 </ul>
-              </li> 
-              {{-- <li class="nav-item has-treeview menu-open">
-                <a href="{{ route('stock') }}" class="nav-link @yield('stock')">
-                  <i class="nav-icon fas fa-cubes"></i>
-                  <p>
-                    Gestion de Stock
-                  </p>
-                </a>
-              </li> --}}
+              </li>  --}}
+              @endif
+              @if (Auth::user()->role == 'admin')
               <li class="nav-item has-treeview menu-open">
                 <a href="{{ route('factures') }}" class="nav-link @yield('factures')">
                   <i class=" nav-icon fas fa-file-invoice"></i>
@@ -291,16 +380,46 @@
                   </p>
                 </a>
               </li>
-          
-          {{-- <li class="nav-item has-treeview menu-open">
-            <a href="{{ route('newColis') }}" class="nav-link active">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
-              <p>
-                Colis
-                <i class="right fas fa-angle-left"></i>
-              </p>
-            </a>
-          </li> --}}
+              <li class="nav-item has-treeview menu-open">
+                <a href="{{ route('villes') }}" class="nav-link @yield('villes')">
+                  {{-- <i class="nav-icon fas fa-home"></i> --}}
+                  <i class="nav-icon fas fa-city"></i>
+                  <p>
+                    Régions et Villes
+                  </p>
+                </a>
+              </li>
+
+              <li class="nav-item has-treeview menu-open">
+                <a href="#" class="nav-link @yield('users')">
+                  <i class="nav-icon fas fa-cubes"></i>
+                  <p>
+                    Les Utilisateurs
+                    <i class="right fas fa-angle-left"></i>
+                  </p>
+                </a>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="{{ route('clients') }}" class="nav-link @yield('clients')">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Les Client</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="{{ route('livreurs') }}" class="nav-link  @yield('livreurs')">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Les Livreurs</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="{{ route('admins') }}" class="nav-link  @yield('admins')">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Les Admins</p>
+                    </a>
+                  </li>
+                </ul>
+              </li> 
+              @endif
         </ul>
       </nav>
       <!-- /.sidebar-menu -->
@@ -311,11 +430,6 @@
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper bg-white">
 
-        @if (session('status'))
-            <div class="alert alert-success" role="alert">
-                {{ session('status') }}
-            </div>
-        @endif
     <!-- Content Header (Page header) -->
 
     <!-- Main content -->

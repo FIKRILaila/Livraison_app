@@ -25,6 +25,7 @@ active
                 <thead>
                     <tr>
                         <th></th>
+                        <th>Code</th>
                         <th>Destinataire</th>
                         <th>Ville</th>
                         <th>Adresse</th>
@@ -34,18 +35,21 @@ active
                 </thead>
                 <tbody>
                     @foreach ($colis as $item) 
+                    @if ($item->etat == 'en_attente')
                     <tr>
                         <td><input type="checkbox" name="bon" value="{{$item->id}}"></td>
+                        <td>{{$item->code}}</td>
                         <td>{{$item->destinataire}}</td>
-                        <td>{{$item->name}}</td>
+                        <td>{{$item->ville}}</td>
                         <td>{{$item->adresse}}</td>
                         <td>{{$item->prix}}</td>
                         <td>
                             @php
-                                echo $item->code_bar."<span class=\"font-weight-bold\">".$item->id."</span>";
+                                echo $item->code_bar."<span class=\"font-weight-bold\">".$item->code."</span>";
                             @endphp
                         </td>
                     </tr>
+                    @endif
                     @endforeach
                 </tbody>
             </table>

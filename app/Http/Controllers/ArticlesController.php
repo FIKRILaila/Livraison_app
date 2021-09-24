@@ -37,14 +37,28 @@ class ArticlesController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
+    {   
+        $request->validate([
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
+        if ($image = $request->file('image')){
+            $destinationPath = 'image/';
+            $profileImage = date('YmdHis') . "." . $image->getClientOriginalExtension();
+            $image->move($destinationPath, $profileImage);
+            $input['image'] = "$profileImage";
+        }
+        dd($input['image']);
         $article = Article::create([
             'name' => $request->input('name'),
             'type' => $request->input('type'),
-            'client_id'=> Auth::id()
+            'client_id'=> Auth::id(),
+            'image'=> $input['image'],
+            'reference'=>$request->input('reference')
         ]);
         if($article){
             return back()->with('success','Votre Article a été ajouté avec succès');
+        }else{
+            return back()->with('fail','Somthing went wrong');
         }
     }
 

@@ -15,7 +15,7 @@ class CreateVillesTable extends Migration
     {
         Schema::create('villes', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('ville');
             $table->integer('frais_livraison');
             $table->unsignedBigInteger('region_id');
             $table->foreign('region_id')->references('id')->on('regions')->ondelete('cascade');

@@ -15,8 +15,13 @@ class CreateBonsTable extends Migration
     {
         Schema::create('bons', function (Blueprint $table) {
             $table->id();
+            $table->string('ref');
+            $table->string('type');
+            $table->string('etat_r')->nullable();
+            $table->unsignedBigInteger('client_id');
+            $table->foreign('client_id')->references('id')->on('users')->ondelete('cascade');
             $table->timestamp('created_at')->useCurrent();
-            $table->timestamp('updated_at')->useCurrent();
+            $table->timestamp('updated_at')->nullable();
         });
     }
 

@@ -17,6 +17,8 @@ class CreateArticlesTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('type');
+            $table->string('reference');
+            $table->string('image');
             $table->unsignedBigInteger('client_id');
             $table->foreign('client_id')->references('id')->on('users')->ondelete('cascade');
             $table->timestamp('created_at')->useCurrent();

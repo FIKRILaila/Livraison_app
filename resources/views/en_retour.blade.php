@@ -44,7 +44,7 @@ active
                             <td>{{$item->prix}}</td>
                             <td>
                                 @php
-                                    echo $item->code_bar."<span class=\"font-weight-bold\">".$item->id."</span>";
+                                    echo $item->code_bar."<span class=\"font-weight-bold\">".$item->code."</span>";
                                 @endphp
                             </td>
                         </tr>

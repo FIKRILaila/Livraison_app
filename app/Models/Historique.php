@@ -10,6 +10,7 @@ class Historique extends Model
     use HasFactory;
     protected $fillable = [
         'colis_id',
-        'etat'
+        'etat_h',
+        'par'
      ];
 }

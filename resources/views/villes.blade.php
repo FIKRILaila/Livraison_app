@@ -28,11 +28,11 @@ active
               <td>
                 @foreach ($regions as $r)
                 @if ($r->id == $v->region_id)  
-                  {{$r->name}}
+                  {{$r->region}}
                 @endif
                 @endforeach
               </td>
-              <td>{{$v->name}}</td>
+              <td>{{$v->ville}}</td>
               <td>{{$v->frais_livraison}}</td>
             </tr>
             @endforeach
@@ -57,9 +57,9 @@ active
           <form action="{{route('newRegion')}}" method="post" class="col-md-12">
             @csrf
             <div class="form-group">
-                <label for="name" class="mb-2 col-form-label">{{ __('Nom de la Région') }}</label>
+                <label for="region" class="mb-2 col-form-label">{{ __('Nom de la Région') }}</label>
                 <div>
-                    <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="on">
+                    <input id="region" type="text" class="form-control @error('region') is-invalid @enderror" name="region" value="{{ old('region') }}" required autocomplete="on">
                 </div>
             </div>
             <div class="form-group mb-0 d-flex justify-content-end">
@@ -90,9 +90,9 @@ active
             <form action="{{route('newVille')}}" method="post" class="col-md-12">
                 @csrf
                 <div class="form-group">
-                    <label for="name" class="mb-2 col-form-label">{{ __('Nom de la Ville') }}</label>
+                    <label for="ville" class="mb-2 col-form-label">{{ __('Nom de la Ville') }}</label>
                     <div>
-                        <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="on">
+                        <input id="ville" type="text" class="form-control @error('ville') is-invalid @enderror" name="ville" value="{{ old('ville') }}" required autocomplete="on">
                     </div>
                 </div>
                 <div class="form-group">
@@ -107,7 +107,7 @@ active
                         <select name="region_id" id="region_id" class="form-control @error('region_id') is-invalid @enderror" value="{{ old('region_id') }}" required  autofocus autocomplete="on">
                             <option value="">Région</option>
                             @foreach ($regions as $r)
-                                <option value="{{$r->id}}">{{$r->name}}</option>
+                                <option value="{{$r->id}}">{{$r->region}}</option>
                             @endforeach
                         </select>
                     </div>

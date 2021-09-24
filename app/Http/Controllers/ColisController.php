@@ -17,10 +17,22 @@ class ColisController extends Controller
      */
     public function index()
     {   
-        $colis = Coli::join('villes','villes.id','=','colis.ville_id')->select('villes.*','colis.*')->orderBy('colis.created_at', 'DESC')->get();
+        $colis = Coli::where('client_id', '=',Auth::id())
+        ->join('villes','villes.id','=','colis.ville_id')
+        ->select('villes.*','colis.*')
+        ->orderBy('colis.created_at', 'DESC')
+        ->get();
+
         return view('colis')->with('colis',$colis);
     }
-
+    public function toutColis(){
+        $colis = Coli::join('villes','villes.id','=','colis.ville_id')
+        ->join('users','users.id','=','colis.client_id')
+        ->select('villes.*','colis.*','users.nomMagasin')
+        ->orderBy('colis.created_at', 'DESC')->get();
+        $historique = Historique::join('users','users.id','=','historiques.par')->select('users.nomComplet','historiques.*')->get();
+        return view('toutColis')->with(['colis'=>$colis,'historique'=>$historique]);
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -46,6 +58,8 @@ class ColisController extends Controller
         $input['client_id'] = Auth::id();
         $input['etat'] = 'en_attente';
         $input['change'] = false;
+        $input['paye'] = false;
+        $input['valide'] = false;
 
         $colis = Coli::create($input);
 
@@ -53,9 +67,10 @@ class ColisController extends Controller
         $barcode = $generator->getBarcode($colis->id, $generator::TYPE_CODE_128);
         
         $historique =Historique::create([
-            'etat' => 'en_attente',
-            'colis_id' => $colis->id
-            ]) ;
+            'etat_h' => 'en_attente',
+            'colis_id' => $colis->id,
+            'par' =>Auth::id()
+            ]);
 
         $colis = Coli::where('id','=',$colis->id)->update(['code_bar'=>$barcode]);
             return back()->with('success','Votre colis a été ajouté avec succès');
