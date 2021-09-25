@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\auth;
 use App\Models\Historique;
 use PDF;
 
-class BonsController extends Controller
+class LivraisonController extends Controller
 {
     public static $number=0;
     public function index(){
@@ -261,21 +261,5 @@ class BonsController extends Controller
         if($query and $coli and $Historique){
             return back()->with('success','Coli valide');
         }
-    }
-    public function new_denvoie(){
-        $colis = Coli::join('villes','villes.id','=','colis.ville_id')
-        ->join('regions','regions.id','=','villes.region_id')
-        ->join('line_bons','colis.id',"=","line_bons.colis_id")
-        ->select('regions.*','colis.*')
-        ->where('line_bons.valide','=',true)
-        ->orderBy('colis.created_at', 'DESC')
-        ->get();
-        $regions = Region::get();
-        // $colis =Coli::join('line_bons','colis.id',"=","line_bons.colis_id")->select('line_bons.id as bon','line_bons.valide as val','line_bons.bon_id as bon_id','colis.*')->get();
-        return view('new_denvoie')->with(['colis'=>$colis, 'regions'=>$regions]);
-    }
-    public function bon_envoie(){
-        $bons =Bon::where('type', '=','envoie')->get();
-        return view('bons_envoie');
     }
 }

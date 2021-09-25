@@ -202,7 +202,7 @@
               @if (Auth::user()->role == 'admin')
               <li class="nav-item has-treeview menu-open">
               <a href="{{ route('toutColis') }}" class="nav-link @yield('toutColis')">
-                <i class="nav-icon fas fa-home"></i>
+                <i class="nav-icon fas fa-box-open"></i>
                 <p>
                   Colis
                 </p>
@@ -216,11 +216,11 @@
                     Stock
                   </p>
                 </a>
-              </li>              --}}
+              </li>--}}
               @if (Auth::user()->role == 'admin')
               <li class="nav-item has-treeview menu-open">
                 <a href="{{ route('Reception') }}" class="nav-link @yield('Reception')">
-                  <i class="nav-icon fas fa-cubes"></i>
+                  <i class="nav-icon fas fa-inbox"></i>
                   <p>
                     Reception Colis
                   </p>
@@ -272,6 +272,7 @@
                 </ul>
               </li> 
               @endif
+              @if (Auth::user()->role == 'client' or Auth::user()->role == 'admin')
               <li class="nav-item has-treeview menu-open">
                 <a href="{{ route('bonsLivraion') }}" class="nav-link @yield('livraison')">
                   <i class="nav-icon fas fa-file-signature"></i>
@@ -280,6 +281,7 @@
                   </p>
                 </a>
               </li>
+              @endif
               @if (Auth::user()->role == 'client')
               <li class="nav-item has-treeview menu-open">
                 <a href="{{ route('stock') }}" class="nav-link @yield('stock')">
@@ -292,30 +294,14 @@
               @endif
               @if (Auth::user()->role == 'admin')
               <li class="nav-item has-treeview menu-open">
-                <a href="{{ route('stock') }}" class="nav-link @yield('bonenvoie')">
-                  <i class="nav-icon fas fa-cubes"></i>
+                <a href="{{ route('Envoi') }}" class="nav-link @yield('Envoi')">
+                  <i class="nav-icon fas fa-paper-plane"></i>
                   <p>
                     Bons d'envoie
-                    <i class="right fas fa-angle-left"></i>
                   </p>
                 </a>
-                <ul class="nav nav-treeview">
-                  <li class="nav-item">
-                    <a href="{{ route('new_denvoie') }}" class="nav-link @yield('newenvoie')">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Nouveau Bon d'envoie</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="{{ route('bon_envoie') }}" class="nav-link  @yield('bon_envoie')">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Tous les Bons d'envoie</p>
-                    </a>
-                  </li>
-                </ul>
               </li> 
-
-              <li class="nav-item has-treeview menu-open">
+              {{-- <li class="nav-item has-treeview menu-open">
                 <a href="{{ route('stock') }}" class="nav-link">
                   <i class="nav-icon fas fa-cubes"></i>
                   <p>
@@ -337,7 +323,7 @@
                     </a>
                   </li>
                 </ul>
-              </li> 
+              </li>  --}}
 
 
               {{-- <li class="nav-item has-treeview menu-open">
