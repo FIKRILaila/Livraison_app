@@ -52,6 +52,12 @@ class ColisController extends Controller
      */
     public function store(Request $request)
     {   
+        $colis = Coli::where('code','=', $request->input('code'))->get();
+        foreach ($colis as $col){
+            if($col->id){
+                return back()->with('fail','Code deja utiliser');
+            }
+        }
         $input = $request->all();
         $input['fragile'] = $request->input('fragile') == "oui"?1:0;
         $input['ouvrir'] =$request->input('ouvrir')== "on"?1:0;

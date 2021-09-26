@@ -388,7 +388,7 @@
                   <li class="nav-item">
                     <a href="{{ route('clients') }}" class="nav-link @yield('clients')">
                       <i class="far fa-circle nav-icon"></i>
-                      <p>Les Client</p>
+                      <p>Les Clients</p>
                     </a>
                   </li>
                   <li class="nav-item">

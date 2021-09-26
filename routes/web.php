@@ -36,6 +36,7 @@ Route::get('/retour',[HomeController::class, 'retour'])->name('retour');
 Route::get('/bons_livraison', [LivraisonController::class, 'index'])->name('bonsLivraion'); 
 Route::post('/store', [LivraisonController::class, 'store'])->name('store'); 
 Route::post('/imprimer', [LivraisonController::class, 'imprimer'])->name('imprimer'); 
+Route::post('/stickers', [LivraisonController::class, 'stickers'])->name('stickers'); 
 
 Route::get('/BonsDenvoie', [EnvoiController::class, 'index'])->name('Envoi');
 
