@@ -12,5 +12,5 @@ class Stock extends Model
         'article_id',
         'client_id',
         'quantite'
-     ];
+    ];
 }

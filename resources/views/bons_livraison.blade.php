@@ -193,6 +193,11 @@ active
                                     </div>
                                     </div>
                                 </div>
+                                <form action="{{route('stickers')}}" method="post">
+                                    @csrf
+                                    <input type="hidden" name="bon" value="{{ $item->id }}">
+                                    <button type ="submit" class="btn btn-light"><i class="fas fa-ticket-alt"></i></button>
+                                </form>
                             </td>
                         </tr>
                         @endforeach

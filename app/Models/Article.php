@@ -12,5 +12,5 @@ class Article extends Model
         'name',
         'type',
         'client_id'
-     ];
+    ];
 }

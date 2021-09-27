@@ -272,7 +272,7 @@
                 </ul>
               </li> 
               @endif
-              @if (Auth::user()->role == 'client' or Auth::user()->role == 'admin')
+              @if (Auth::user()->role == 'client')
               <li class="nav-item has-treeview menu-open">
                 <a href="{{ route('bonsLivraion') }}" class="nav-link @yield('livraison')">
                   <i class="nav-icon fas fa-file-signature"></i>
@@ -301,29 +301,14 @@
                   </p>
                 </a>
               </li> 
-              {{-- <li class="nav-item has-treeview menu-open">
-                <a href="{{ route('stock') }}" class="nav-link">
+              <li class="nav-item has-treeview menu-open">
+                <a href="{{ route('Distribution') }}" class="nav-link @yield('Distribution')">
                   <i class="nav-icon fas fa-cubes"></i>
                   <p>
                     Bons distribution
-                    <i class="right fas fa-angle-left"></i>
                   </p>
                 </a>
-                <ul class="nav nav-treeview">
-                  <li class="nav-item">
-                    <a href="{{ route('new_denvoie') }}" class="nav-link">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Nouveau Bon distribution</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="{{ route('bon_envoie') }}" class="nav-link">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Tous les Bons distribution</p>
-                    </a>
-                  </li>
-                </ul>
-              </li>  --}}
+              </li> 
 
 
               {{-- <li class="nav-item has-treeview menu-open">

@@ -11,5 +11,5 @@ class Line_bon extends Model
     protected $fillable = [
         'bon_id',
         'colis_id'
-     ];
+    ];
 }

@@ -12,5 +12,5 @@ class Historique extends Model
         'colis_id',
         'etat_h',
         'par'
-     ];
+    ];
 }

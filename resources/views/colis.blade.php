@@ -18,7 +18,6 @@ active
             <span class="mr-4">Tout Cocher</span>
             <span>Avec la Selection :</span> 
             <button class="btn btn-primary" onclick="demande_livraison()">Bon de Livraison</button>
-            {{-- <a class="btn btn-primary" href="#" onclick="demande_livraison(e)"> Bon de Livraison</a> --}}
         </div>
         <div class="m-4">
             <table id="myTable" class="display">
@@ -35,7 +34,7 @@ active
                 </thead>
                 <tbody>
                     @foreach ($colis as $item) 
-                    @if ($item->etat == 'en_attente')
+                    @if ($item->etat == 'Brouillon')
                     <tr>
                         <td><input type="checkbox" name="bon" value="{{$item->id}}"></td>
                         <td>{{$item->code}}</td>

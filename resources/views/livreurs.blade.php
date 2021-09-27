@@ -63,6 +63,17 @@ active
                         </div>
                     </div>
                     <div class="form-group row">
+                        <label for="ville" class="col-md-4 col-form-label text-md-right">{{ __('Ville') }}</label>
+                        <div class="col-md-6">
+                            <select name="ville" id="ville" class="form-control @error('ville') is-invalid @enderror" value="{{ old('ville') }}" required  autofocus autocomplete="on">
+                                <option value="">Ville</option>
+                                @foreach ($villes as $v)     
+                                    <option value="{{$v->ville}}">{{$v->ville}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
                         <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Mot de passe') }}</label>
 
                         <div class="col-md-6">
@@ -103,7 +114,7 @@ active
                         <tr>
                             <th>Nom Complet</th>
                             <th>Téléphone</th>
-                            {{-- <th>Role</th> --}}
+                            <th>Ville</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -112,7 +123,7 @@ active
                         <tr>
                             <td>{{$user->nomComplet}}</td>
                             <td>{{$user->phone}}</td>
-                            {{-- <td>{{$user->role}}</td> --}}
+                            <td>{{$user->ville}}</td>
                             <td><i class="fas fa-user-edit"></i></td>
                         </tr>
                         @endforeach

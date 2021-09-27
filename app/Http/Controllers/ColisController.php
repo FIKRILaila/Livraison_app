@@ -62,7 +62,7 @@ class ColisController extends Controller
         $input['fragile'] = $request->input('fragile') == "oui"?1:0;
         $input['ouvrir'] =$request->input('ouvrir')== "on"?1:0;
         $input['client_id'] = Auth::id();
-        $input['etat'] = 'en_attente';
+        $input['etat'] = 'Brouillon';
         $input['change'] = false;
         $input['paye'] = false;
         $input['valide'] = false;
@@ -73,14 +73,13 @@ class ColisController extends Controller
         $barcode = $generator->getBarcode($colis->id, $generator::TYPE_CODE_128);
         
         $historique =Historique::create([
-            'etat_h' => 'en_attente',
+            'etat_h' => 'Brouillon',
             'colis_id' => $colis->id,
             'par' =>Auth::id()
             ]);
 
         $colis = Coli::where('id','=',$colis->id)->update(['code_bar'=>$barcode]);
             return back()->with('success','Votre colis a été ajouté avec succès');
-        // return redirect()->route('colis');
     }
 
     /**

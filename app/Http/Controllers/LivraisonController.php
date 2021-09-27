@@ -15,20 +15,24 @@ use PDF;
 
 class LivraisonController extends Controller
 {
-    public static $number=0;
     public function index(){
         $bons =Bon::where('type', '=','Livraison')->get();
-        // $bons =Bon::where('client_id', '=', Auth::id())->get();
-        // $bons =Bon::where('client_id', '=', Auth::id())->join('users','users.id','=','bons.client_id')->select('bons.*','users.nomComplet')->get();
-        // $lines =Line_bon::get();
         $colis =Coli::join('line_bons','colis.id',"=","line_bons.colis_id")->select('line_bons.id as bon','line_bons.bon_id as bon_id','colis.*')->get();
         return view('bons_livraison')->with(['bons'=>$bons,'colis'=>$colis]);
     }
     public function store(Request $request){
         $table =explode('_' ,$request->input('colis'));
         $date = date('d-m-Y', time());
-        self::$number++;
-        $num_padded = sprintf("%03d",self::$number);
+        $number=0;
+        $select = Bon::where('type','=','Livraison')->get();
+        foreach($select as $sel){
+            $number = $sel->ref;
+        }
+        if($number != null){
+            $number = explode('-',$number)[4];
+            $number++;
+            $num_padded = sprintf("%04d",$number);
+        }
         $ref ='BL-'.$date."-".$num_padded; 
         $bon = Bon::create([
             'client_id'=>Auth::id(),
@@ -40,7 +44,7 @@ class LivraisonController extends Controller
             $coli = Coli::findOrFail($table[$i]);
                 $total += $coli->prix;
             Historique::create([
-                'etat_h' => 'En Ramassage',
+                'etat_h' => 'En Attente',
                 'colis_id' => $coli->id,
                 'par' =>Auth::id()
             ]);
@@ -49,7 +53,7 @@ class LivraisonController extends Controller
                 'bon_id' => $bon->id
             ]);
             Coli::where('id','=',$coli->id)->update([
-                'etat' => 'En Ramassage'
+                'etat' => 'En Attente'
             ]);
         }
         $bon_info =Line_bon::join('colis', 'colis.id', '=', 'line_bons.colis_id')
@@ -266,12 +270,12 @@ class LivraisonController extends Controller
         .border{
             border: 2px dashed black;
             display : inline-block;
-            width:47%;
-            margin: 2% 4% 2% 0;
+            width:45%;
+            margin: 2%;
         }
         </style>
         </head>
-        <body style="width:96%;margin-left:2%;">';
+        <body>';
         foreach ($bon_info as $info){
             $vendeur = User::findOrFail($info->client_id);
             $ville = Ville::findOrFail($info->ville_id);
@@ -316,18 +320,5 @@ class LivraisonController extends Controller
         $pdf = \App::make('dompdf.wrapper');
         $pdf->loadHTML($html);
         return $pdf->stream();
-    }
-    public function valider(Request $request){
-        $query = Line_bon::where('id','=',$request->input('line_id'))->update([
-            'valide' => true
-        ]);
-
-        $coli = Coli::where('id','=',$request->input('coli_id'))->update(['etat'=>'ramasse']);
-
-        $Historique = Historique::where('colis_id','=',$request->input('coli_id'))->update(['etat'=>'ramasse']);
-
-        if($query and $coli and $Historique){
-            return back()->with('success','Coli valide');
-        }
     }
 }

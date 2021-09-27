@@ -12,5 +12,5 @@ class Ville extends Model
         'ville',
         'frais_livraison',
         'region_id'
-     ];
+    ];
 }

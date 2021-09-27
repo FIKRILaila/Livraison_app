@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Ville;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 
@@ -10,7 +11,8 @@ class UsersController extends Controller
 {
     public function livreurs(){
         $users= User::where('role','=','livreur')->get();
-        return view('livreurs')->with('users',$users);
+        $villes= Ville::get();
+        return view('livreurs')->with(['users'=>$users,'villes'=>$villes]);
     }
 
     public function clients(){
@@ -29,6 +31,7 @@ class UsersController extends Controller
             'email' =>$request->input('email'),
             'password' => Hash::make($request->input('password')),
             'phone'=>$request->input('phone'),
+            'ville'=>$request->input('ville'),
             'role' => 'livreur'
         ]);
         return redirect()->route('livreurs')->with('success','Compte Crée avec succès');

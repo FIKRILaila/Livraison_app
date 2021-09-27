@@ -5,46 +5,16 @@ active
 
 @section('content')
 <div class="container">
-    <div class="card mt-4">
-        <div class="card-header">
-            <h4 class="font-weight-bold m-2">Liste des Colis Reçu</h4>
-        </div>
-        <div class="card-body">
-            <table id="recu" class="display">
-                <thead>
-                    <tr>
-                        <th>Code d'Envoie</th>
-                        <th>Date de creation</th>
-                        <th>Téléphone</th>
-                        <th>Nom du Magasin</th>
-                        <th>Etat</th>
-                        <th>Status</th>
-                        <th>Ville</th>
-                        <th>Prix</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($colis as $item) 
-                    <tr>
-                        <td>{{$item->code}}</td>
-                        <td>{{$item->created_at}}</td>
-                        <td>{{$item->telephone}}</td>
-                        <td>{{$item->nomMagasin}}</td>
-                        <td>
-                            @if ($item->paye == false)
-                                Non Payé
-                            @else
-                                Payé
-                            @endif
-                        </td>
-                        <td>{{$item->etat}}</td>
-                        <td>{{$item->ville}}</td>
-                        <td>{{$item->prix}} DH</td>
-                    </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
+    @if (Session::get('success'))
+    <div class="alert alert-success">
+        {{ Session::get('success') }}
+    </div>
+    @endif
+    @if (Session::get('fail'))
+        <div class="alert alert-danger">{{ Session::get('fail') }}</div>
+    @endif
+    <div class="card mt-4 row">
+    <a href="{{route('newEnvoi')}}" class="btn btn-primary col-md-2">Ajouter</a>
     </div>
 
     <div class="card mt-4">
@@ -69,11 +39,11 @@ active
                         <td>{{ $item->ref }}</td>
                         <td>{{$item->created_at}}</td>
                         <td>
-                            @if ($item->etat_r == 'Enregistré')
+                            @if ($item->etat == 'Enregistré')
                             {{$item->updated_at}}
                             @endif
                         </td>
-                        <td>{{$item->etat_r}}</td>
+                        <td>{{$item->etat}}</td>
                         <td>
                             @php
                             $c = 0;
@@ -86,6 +56,18 @@ active
                             @endphp
                         </td>
                         <td class="row">
+                            @if ($item->etat == 'Nouveau')
+                            <form action="{{route('editEnvoi')}}" method="get">
+                                @csrf
+                                <input type="hidden" name="bon_id" value="{{$item->id}}">
+                                <button type="submit" class="btn btn-light"><i class="fas fa-edit"></i></button>
+                            </form>
+                                <form action="{{route('EnvoiValider')}}" method="post">
+                                    @csrf
+                                    <input type="hidden" name="bon_id" value="{{$item->id}}">
+                                    <button type = "submit" class="btn btn-light"><i class="fas fa-check"></i></button>
+                                </form>
+                            @endif
                         </td>
                     </tr>
                     @endforeach
@@ -100,9 +82,6 @@ active
     <script>
          $(document).ready( function () {
             $('#Envoie').DataTable();
-        });
-        $(document).ready( function () {
-            $('#recu').DataTable();
         });
     </script>
 @endsection

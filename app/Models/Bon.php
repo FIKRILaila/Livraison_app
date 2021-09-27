@@ -10,8 +10,9 @@ class Bon extends Model
     use HasFactory;
     protected $fillable = [
         'client_id',
+        'livreur_id',
         'ref',
         'type',
-        'etat_r'
-     ];
+        'etat'
+    ];
 }
