@@ -18,6 +18,8 @@ class CreateBonsTable extends Migration
             $table->string('ref');
             $table->string('type');
             $table->string('etat')->nullable();
+            $table->unsignedBigInteger('region_id')->nullable();
+            $table->foreign('region_id')->references('id')->on('regions')->ondelete('cascade');
             $table->unsignedBigInteger('client_id');
             $table->foreign('client_id')->references('id')->on('users')->ondelete('cascade');
             $table->unsignedBigInteger('livreur_id')->nullable();

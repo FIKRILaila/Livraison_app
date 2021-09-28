@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateLineBonsTable extends Migration
+class CreateStocksTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,13 @@ class CreateLineBonsTable extends Migration
      */
     public function up()
     {
-        Schema::create('line_bons', function (Blueprint $table) {
+        Schema::create('stocks', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('bon_id');
-            $table->foreign('bon_id')->references('id')->on('bons')->ondelete('cascade');
-            $table->unsignedBigInteger('colis_id');
-            $table->foreign('colis_id')->references('id')->on('colis')->ondelete('cascade');
+            $table->integer('quantite');
+            $table->unsignedBigInteger('article_id');
+            $table->foreign('article_id')->references('id')->on('articles')->ondelete('cascade');
+            $table->unsignedBigInteger('client_id');
+            $table->foreign('client_id')->references('id')->on('users')->ondelete('cascade');
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent();
         });
@@ -31,6 +32,6 @@ class CreateLineBonsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('line_bons');
+        Schema::dropIfExists('stocks');
     }
 }

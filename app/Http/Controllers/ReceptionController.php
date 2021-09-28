@@ -11,7 +11,6 @@ use App\Models\Line_bon;
 
 class ReceptionController extends Controller
 {
-    public static $number=0;
     public function index(){
         $bons =Bon::where('type', '=','Reception')->get();
         $colis =Coli::join('line_bons','colis.id',"=","line_bons.colis_id")->select('line_bons.id as bon','line_bons.bon_id as bon_id','colis.*')->get();
@@ -27,9 +26,8 @@ class ReceptionController extends Controller
         if($number != null){
             $number = explode('-',$number)[4];
             $number++;
-            $num_padded = sprintf("%04d",$number);
         }
-        $num_padded = sprintf("%03d",self::$number);
+        $num_padded = sprintf("%04d",$number);
         $ref ='BR-'.$date."-".$num_padded; 
         $bon = Bon::create([
             'client_id'=>Auth::id(),

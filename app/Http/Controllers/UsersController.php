@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 class UsersController extends Controller
 {
     public function livreurs(){
-        $users= User::where('role','=','livreur')->get();
+        $users= User::where('role','=','livreur')->join('villes','villes.id','=','users.ville_id')->select('users.*','villes.*')->get();
         $villes= Ville::get();
         return view('livreurs')->with(['users'=>$users,'villes'=>$villes]);
     }
@@ -31,7 +31,7 @@ class UsersController extends Controller
             'email' =>$request->input('email'),
             'password' => Hash::make($request->input('password')),
             'phone'=>$request->input('phone'),
-            'ville'=>$request->input('ville'),
+            'ville_id'=>$request->input('ville_id'),
             'role' => 'livreur'
         ]);
         return redirect()->route('livreurs')->with('success','Compte Crée avec succès');

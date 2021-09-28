@@ -2,7 +2,6 @@
 @section('Distribution')
 active
 @endsection
-
 @section('content')
 <div class="container">
     @if (Session::get('success'))
@@ -13,10 +12,9 @@ active
     @if (Session::get('fail'))
         <div class="alert alert-danger">{{ Session::get('fail') }}</div>
     @endif
-    @if ($bon->livreur_id != NULL)
     <div class="card mt-4">
         <div class="card-header">
-            <h4 class="font-weight-bold m-2">Liste des Colis a Distribuer</h4>
+            <h4 class="font-weight-bold m-2">Liste des Colis non valide</h4>
         </div>
         <div class="card-body">
             <table id="recu" class="display">
@@ -33,8 +31,8 @@ active
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($Attente as $item) 
-                        {{-- @if($item->etat == 'Ramasse') --}}
+                    @foreach ($colis as $item) 
+                        @if($item->valide == false)
                             <tr>
                                 <td>{{$item->code}}</td>
                                 <td>{{$item->created_at}}</td>
@@ -51,56 +49,30 @@ active
                                 <td>{{$item->ville}}</td>
                                 <td>{{$item->prix}} DH</td>
                             </tr>
-                        {{-- @endif --}}
+                        @endif
                     @endforeach
                 </tbody>
             </table>
         </div>
     </div>
-    @endif
-    <div class="card mt-4">
-        <p class="m-2"><span class="font-weight-bold">Date de Création :</span> {{$bon->created_at}} </p>
-    </div>
     <div class="card">
         <div class="m-4">
-            @if ($bon->livreur_id == NULL)
-                <form action="{{route('Distributeur')}}" method="post" class="row">
-                    @csrf
-                    <input type="hidden" name="bon_id" value="{{$bon->id}}">
-                    <div class="row col-md-10">
-                        <label for="livreur_id" class="text-right col-md-2 col-form-label">{{ __('Livreur: *') }}</label>
-                        <select name="livreur_id" id="livreur_id" class="col-md-10 form-control @error('livreur_id') is-invalid @enderror" value="{{ old('livreur_id') }}" required  autofocus autocomplete="on">
-                            <option value="region">Livreur</option>
-                            @foreach ($livreurs as $liv)     
-                                <option value="{{$liv->id}}">{{$liv->nomComplet}}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="row justify-content-end col-md-2 ml-2">
-                        <a href="#" class="btn btn-primary mr-2">Annuler</a>
-                        <button type="submit" class="btn btn-primary">Ajouter</button>
-                    </div>
-                </form>
-            @else
-                <form action="{{route('DistributionCode')}}" method="post" class="row">
-                    @csrf
-                    <input type="hidden" name="bon_id" value="{{$bon->id}}">
-                    <div class="row col-md-10">
-                        <label for="code_suivi" class="col-md-2 col-form-label">Code Suivi * :</label>
-                        <input type="text" name="code_suivi" class="form-control col-md-10">
-                    </div>
-                    <div class="row justify-content-end col-md-2 ml-2">
-                        <a href="#" class="btn btn-primary mr-2">Annuler</a>
-                        <button type="submit" class="btn btn-primary">Ajouter</button>
-                    </div>
-                </form>
-            @endif
-
+            <form action="{{route('ValiderCodeDistribution')}}" method="post" class="row">
+                @csrf
+                <input type="hidden" name="bon_id" value="{{$bon->id}}">
+                <div class="row col-md-10">
+                    <label for="code_suivi" class="col-md-2 col-form-label">Code Suivi * :</label>
+                    <input type="text" name="code_suivi" class="form-control col-md-10">
+                </div>
+                <div class="row justify-content-end col-md-2 ml-2">
+                    <button type="submit" class="btn btn-primary ml-4">Valider</button>
+                </div>
+            </form>
         </div>
     </div>
     <div class="card">
         <div class="card-header">
-            <h4 class="font-weight-bold m-2">Liste des Colis Ajouter</h4>
+            <h4 class="font-weight-bold m-2">Liste des Colis Valider</h4>
         </div>
         <div class="m-4">
             <table id="envoi" class="display">
@@ -117,7 +89,7 @@ active
                 </thead>
                 <tbody>
                         @foreach ($colis as $coli)
-                        @if ($coli->bon_id == $bon->id ) 
+                        @if($coli->valide == true)
                             <tr>
                                 <td>{{$coli->code}}</td>
                                 <td>{{$coli->destinataire}}</td>

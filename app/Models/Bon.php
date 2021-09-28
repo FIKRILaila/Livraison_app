@@ -11,6 +11,7 @@ class Bon extends Model
     protected $fillable = [
         'client_id',
         'livreur_id',
+        'region_id',
         'ref',
         'type',
         'etat'

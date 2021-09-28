@@ -10,6 +10,7 @@ class Line_bon extends Model
     use HasFactory;
     protected $fillable = [
         'bon_id',
-        'colis_id'
+        'colis_id',
+        'valide'
     ];
 }

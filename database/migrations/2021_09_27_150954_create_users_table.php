@@ -26,7 +26,7 @@ class CreateUsersTable extends Migration
             $table->string('RIP')->nullable();
             // $table->string('ville')->nullable();
             $table->enum('role',['client','livreur','admin']);
-            $table->unsignedBigInteger('ville_id');
+            $table->unsignedBigInteger('ville_id')->nullable();
             $table->foreign('ville_id')->references('id')->on('villes')->ondelete('cascade');
             $table->timestamp('email_verified_at')->nullable();
             $table->timestamp('created_at')->useCurrent();

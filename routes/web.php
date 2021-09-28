@@ -39,9 +39,10 @@ Route::post('/store', [LivraisonController::class, 'store'])->name('store');
 Route::post('/imprimer', [LivraisonController::class, 'imprimer'])->name('imprimer'); 
 Route::post('/stickers', [LivraisonController::class, 'stickers'])->name('stickers'); 
 
-Route::get('/newEnvoi',[EnvoiController::class, 'newEnvoi'])->name('newEnvoi');
-Route::post('/valider_envoi', [EnvoiController::class, 'valider'])->name('EnvoiValider');
+Route::post('/newEnvoi',[EnvoiController::class, 'newEnvoi'])->name('newEnvoi');
 Route::post('/EnvoiCode',[EnvoiController::class, 'store'])->name('EnvoiCode');
+Route::get('/valider_envoi', [EnvoiController::class, 'valider'])->name('EnvoiValider');
+Route::post('/ValiderCodeEnvoi',[EnvoiController::class, 'ValiderCode'])->name('ValiderCodeEnvoi');
 Route::get('/BonsDenvoie', [EnvoiController::class, 'index'])->name('Envoi');
 Route::get('/editEnvoi',[EnvoiController::class, 'editEnvoi'])->name('editEnvoi');
 
@@ -75,8 +76,11 @@ Route::post('/ReceptionCode',[ReceptionController::class, 'store'])->name('Recep
 Route::get('/editReception',[ReceptionController::class, 'editReception'])->name('editReception');
 
 
-Route::post('/valider_distribution', [DistributionController::class, 'valider'])->name('distributionValider');
+// Route::post('/valider_distribution', [DistributionController::class, 'valider'])->name('distributionValider');
 Route::get('/Distribution',[DistributionController::class, 'index'])->name('Distribution');
+Route::post('/Distributeur',[DistributionController::class, 'Distributeur'])->name('Distributeur');
 Route::post('/newDistribution',[DistributionController::class, 'newDistribution'])->name('newDistribution');
 Route::post('/DistributionCode',[DistributionController::class, 'store'])->name('DistributionCode');
-Route::get('/editDistribution',[DistributionController::class, 'editReception'])->name('editDistribution');
+Route::get('/editDistribution',[DistributionController::class, 'editDistribution'])->name('editDistribution');
+Route::get('/valider_distribution', [DistributionController::class, 'valider'])->name('DistributionValider');
+Route::post('/ValiderCodeDistribution',[DistributionController::class, 'ValiderCode'])->name('ValiderCodeDistribution');

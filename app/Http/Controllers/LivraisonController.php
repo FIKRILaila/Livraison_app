@@ -23,16 +23,16 @@ class LivraisonController extends Controller
     public function store(Request $request){
         $table =explode('_' ,$request->input('colis'));
         $date = date('d-m-Y', time());
-        $number=0;
+        $number=1;
         $select = Bon::where('type','=','Livraison')->get();
         foreach($select as $sel){
             $number = $sel->ref;
         }
-        if($number != null){
+        if($number != 1){
             $number = explode('-',$number)[4];
             $number++;
-            $num_padded = sprintf("%04d",$number);
         }
+        $num_padded = sprintf("%04d",$number);
         $ref ='BL-'.$date."-".$num_padded; 
         $bon = Bon::create([
             'client_id'=>Auth::id(),
@@ -306,7 +306,12 @@ class LivraisonController extends Controller
                             $html .='<p <p style="width:65%; display:inline-block;">Avant d\'ouvrir le colis veuillez contacter le vendeur.</p>';
                         }
                         if($info->fragile){
-                            $html.= '<div style="padding:1%; margin-top:1%; color:rgb(160, 10, 10);width:30%; display:inline-block; border: 2px solid rgb(160, 10, 10);"><h3 style="margin:0 0 1% 2%">FRAGILE</h3></div></div>';
+                            $html.= '<div style="padding:1%; margin-top:1%; color:rgb(160, 10, 10);width:30%; display:inline-block; border: 2px solid rgb(160, 10, 10);">
+                            <h3 style="margin:0 0 1% 2%">FRAGILE</h3>
+                            </div>
+                            </div>';
+                        }else{
+                            $html.='</div>';
                         }
                         $html.='
                         <div style="border: 2px solid black; width:100%;">

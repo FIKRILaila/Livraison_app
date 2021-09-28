@@ -257,7 +257,7 @@
                       <p>Mes Colis</p>
                     </a>
                   </li>
-                  <li class="nav-item">
+                  {{-- <li class="nav-item">
                     <a href="{{ route('retour') }}" class="nav-link  @yield('retour')">
                       <i class="far fa-circle nav-icon"></i>
                       <p>En Retour</p>
@@ -268,7 +268,7 @@
                       <i class="far fa-circle nav-icon"></i>
                       <p>Refuses</p>
                     </a>
-                  </li>
+                  </li> --}}
                 </ul>
               </li> 
               @endif

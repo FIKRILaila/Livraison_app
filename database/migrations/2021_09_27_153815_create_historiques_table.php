@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateArticlesTable extends Migration
+class CreateHistoriquesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,13 @@ class CreateArticlesTable extends Migration
      */
     public function up()
     {
-        Schema::create('articles', function (Blueprint $table) {
+        Schema::create('historiques', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('type');
-            $table->string('reference');
-            $table->string('image');
-            $table->unsignedBigInteger('client_id');
-            $table->foreign('client_id')->references('id')->on('users')->ondelete('cascade');
+            $table->string('etat_h');
+            $table->unsignedBigInteger('par');
+            $table->foreign('par')->references('id')->on('users')->ondelete('cascade');
+            $table->unsignedBigInteger('colis_id');
+            $table->foreign('colis_id')->references('id')->on('colis')->ondelete('cascade');
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent();
         });
@@ -33,6 +32,6 @@ class CreateArticlesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('articles');
+        Schema::dropIfExists('historiques');
     }
 }

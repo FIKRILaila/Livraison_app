@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateHistoriquesTable extends Migration
+class CreateLineBonsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,11 @@ class CreateHistoriquesTable extends Migration
      */
     public function up()
     {
-        Schema::create('historiques', function (Blueprint $table) {
+        Schema::create('line_bons', function (Blueprint $table) {
             $table->id();
-            $table->string('etat_h');
-            $table->unsignedBigInteger('par');
-            $table->foreign('par')->references('id')->on('users')->ondelete('cascade');
+            $table->boolean('valide')->default(false);
+            $table->unsignedBigInteger('bon_id');
+            $table->foreign('bon_id')->references('id')->on('bons')->ondelete('cascade');
             $table->unsignedBigInteger('colis_id');
             $table->foreign('colis_id')->references('id')->on('colis')->ondelete('cascade');
             $table->timestamp('created_at')->useCurrent();
@@ -32,6 +32,6 @@ class CreateHistoriquesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('historiques');
+        Schema::dropIfExists('line_bons');
     }
 }

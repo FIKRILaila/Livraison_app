@@ -63,12 +63,12 @@ active
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="ville" class="col-md-4 col-form-label text-md-right">{{ __('Ville') }}</label>
+                        <label for="ville_id" class="col-md-4 col-form-label text-md-right">{{ __('Ville') }}</label>
                         <div class="col-md-6">
-                            <select name="ville" id="ville" class="form-control @error('ville') is-invalid @enderror" value="{{ old('ville') }}" required  autofocus autocomplete="on">
+                            <select name="ville_id" id="ville_id" class="form-control @error('ville_id') is-invalid @enderror" value="{{ old('ville_id') }}" required  autofocus autocomplete="on">
                                 <option value="">Ville</option>
                                 @foreach ($villes as $v)     
-                                    <option value="{{$v->ville}}">{{$v->ville}}</option>
+                                    <option value="{{$v->id}}">{{$v->ville}}</option>
                                 @endforeach
                             </select>
                         </div>

@@ -28,7 +28,7 @@ class User extends Authenticatable
         'RIP',
         'nomMagasin',
         'logo',
-        'ville'
+        'ville_id'
     ];
 
 
