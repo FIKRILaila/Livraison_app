@@ -1,6 +1,6 @@
 @extends('adminLte.dashboard')
-@section('Distribution')
-active
+@section('DistributionLivreur')
+    active
 @endsection
 @section('content')
 <div class="container">
@@ -12,71 +12,6 @@ active
     @if (Session::get('fail'))
         <div class="alert alert-danger">{{ Session::get('fail') }}</div>
     @endif
-    <div class="card mt-4">
-        <div class="card-header">
-            <h4 class="font-weight-bold m-2">Liste des Colis a Distribuer</h4>
-        </div>
-        <div class="card-body">
-            <table id="distribuer" class="display">
-                <thead>
-                    <tr>
-                        <th>Code d'Envoie</th>
-                        <th>Date de creation</th>
-                        <th>Téléphone</th>
-                        <th>Nom du Magasin</th>
-                        <th>Etat</th>
-                        <th>Status</th>
-                        <th>Région</th>
-                        <th>Ville</th>
-                        <th>Prix</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($Attente as $item) 
-                        {{-- @if($item->etat == 'Ramasse') --}}
-                            <tr>
-                                <td>{{$item->code}}</td>
-                                <td>{{$item->created_at}}</td>
-                                <td>{{$item->telephone}}</td>
-                                <td>{{$item->nomMagasin}}</td>
-                                <td>
-                                    @if ($item->paye == false)
-                                        Non Payé
-                                    @else
-                                        Payé
-                                    @endif
-                                </td>
-                                <td>{{$item->etat}}</td>
-                                <td>{{$item->region}}</td>
-                                <td>{{$item->ville}}</td>
-                                <td>{{$item->prix}} DH</td>
-                            </tr>
-                        {{-- @endif --}}
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
-    </div>
-    <div class="card mt-4">
-        <div class="m-4">
-            <form action="{{route('newDistribution')}}" method="post" class="row">
-                @csrf
-                <div class="row col-md-10">
-                    <label for="region_id" class="text-right col-md-2 col-form-label">{{ __('Region :') }}</label>
-                    <select name="region_id" id="region_id" class="col-md-10 form-control @error('region_id') is-invalid @enderror" value="{{ old('region_id') }}" required  autofocus autocomplete="on">
-                        <option value="region">region</option>
-                        @foreach ($regions as $r)     
-                            <option value="{{$r->id}}">{{$r->region}}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="row justify-content-end col-md-2 ml-2">
-                    <button type="submit" class="btn btn-primary ml-4">Nouveau Bon</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
     <div class="mt-4 card col-md-12">
             <div class="card-header">
                 <p class="font-weight-bold">Liste des bons de distribution</p>
@@ -98,6 +33,7 @@ active
                     </thead>
                     <tbody>
                         @foreach ($bons as $item) 
+                        {{-- @if ($item->livreur_id == Auth::id())     --}}
                         <tr>
                             <td>{{ $item->ref }}</td>
                             <td></td>
@@ -134,18 +70,6 @@ active
                                 @endphp
                             </td>
                             <td class="d-flex">
-                                @if ($item->etat == 'Nouveau')
-                                <form action="{{route('editDistribution')}}" method="get">
-                                    @csrf
-                                    <input type="hidden" name="bon_id" value="{{$item->id}}">
-                                    <button type="submit" class="btn btn-light"><i class="fas fa-edit"></i></button>
-                                </form>
-                                <form action="{{route('DistributionValider')}}" method="get">
-                                    @csrf
-                                    <input type="hidden" name="bon_id" value="{{$item->id}}">
-                                    <button type = "submit" class="btn btn-light"><i class="fas fa-check"></i></button>
-                                </form>
-                                @endif
                                 <button type="button" class="btn btn-light" data-toggle="modal" data-target="{{'#model_'.$item->id}}">
                                     <i class="fas fa-info-circle"></i>
                                 </button>
@@ -191,6 +115,7 @@ active
                                 </div>
                             </td>
                         </tr>
+                        {{-- @endif --}}
                         @endforeach
                     </tbody>
                 </table>
@@ -204,9 +129,6 @@ active
     <script>
         $(document).ready( function () {
             $('#Distribution').DataTable();
-        });
-        $(document).ready( function () {
-            $('#distribuer').DataTable();
         });
     </script>
 @endsection

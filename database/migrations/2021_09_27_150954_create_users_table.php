@@ -23,7 +23,7 @@ class CreateUsersTable extends Migration
             $table->string('phone');
             $table->string('adresse')->nullable();
             $table->string('cin')->nullable();
-            $table->string('RIP')->nullable();
+            $table->string('RIB')->nullable();
             // $table->string('ville')->nullable();
             $table->enum('role',['client','livreur','admin']);
             $table->unsignedBigInteger('ville_id')->nullable();

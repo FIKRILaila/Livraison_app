@@ -23,6 +23,7 @@ class Coli extends Model
         'ouvrir',
         'fragile',
         'change',
-        'client_id'
+        'client_id',
+        'reported_at'
     ];
 }

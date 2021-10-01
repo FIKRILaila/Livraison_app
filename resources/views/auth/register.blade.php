@@ -14,7 +14,7 @@
                             <label for="nomComplet" class="col-md-4 col-form-label text-md-right">{{ __('Nom Complet') }}</label>
 
                             <div class="col-md-6">
-                                <input id="nomComplet" type="text" class="form-control @error('nomComplet') is-invalid @enderror" name="nomComplet" value="{{ old('nomComplet') }}" required autocomplete="nomComplet" autofocus>
+                                <input id="nomComplet" type="text" class="form-control @error('nomComplet') is-invalid @enderror" name="nomComplet" value="{{ old('nomComplet') }}" required autocomplete="on" autofocus>
 
                                 @error('nomComplet')
                                     <span class="invalid-feedback" role="alert">
@@ -38,7 +38,7 @@
                             <label for="phone" class="col-md-4 col-form-label text-md-right">{{ __('Phone') }}</label>
 
                             <div class="col-md-6">
-                                <input id="phone" type="tel" class="form-control @error('phone') is-invalid @enderror" name="phone" value="{{ old('phone') }}" required autocomplete="phone">
+                                <input id="phone" type="tel" class="form-control @error('phone') is-invalid @enderror" name="phone" value="{{ old('phone') }}" required autocomplete="on">
 
                                 @error('phone')
                                     <span class="invalid-feedback" role="alert">

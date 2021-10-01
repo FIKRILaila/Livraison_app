@@ -30,8 +30,8 @@ active
                                 <div class="col-md-8">
                                     <select onchange="Tarif(value)" name="ville" id="ville" class="form-control @error('ville') is-invalid @enderror" value="{{ old('ville') }}" required  autofocus autocomplete="on">
                                         <option value="">Ville</option>
-                                        @foreach ($villes as $villes)
-                                            <option value="{{$villes->id}}_{{$villes->frais_livraison}}">{{$villes->ville}}</option>
+                                        @foreach ($villes as $ville)
+                                            <option value="{{$ville->id}}_{{$ville->frais_livraison}}">{{$ville->ville}}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -75,7 +75,7 @@ active
                             <div class="form-group row col-md-6">
                                 <label for="code" class="col-md-4 col-form-label">{{ __('Code') }}</label>
                                 <div class="col-md-8">
-                                    <input id="code" type="text" class="form-control @error('code') is-invalid @enderror" name="code" value="{{ old('code') }}" required autocomplete="on">
+                                    <input id="code" type="text" class="form-control @error('code') is-invalid @enderror" name="code" value="{{ old('code') }}" autocomplete="on">
                                 </div>
                             </div>
                             <div class="form-group col-md-6 row">

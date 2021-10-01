@@ -49,8 +49,11 @@ Route::get('/editEnvoi',[EnvoiController::class, 'editEnvoi'])->name('editEnvoi'
 
 Route::get('/colis', [ColisController::class, 'index'])->name('colis');
 Route::get('/toutColis', [ColisController::class, 'toutColis'])->name('toutColis');
+Route::get('/ColisLivreur', [ColisController::class, 'ColisLivreur'])->name('ColisLivreur');
 Route::get('addColis', [ColisController::class, 'create'])->name('newColis');
 Route::post('/store-colis', [ColisController::class, 'store'])->name('storeColis');
+Route::post('/edit-colis', [ColisController::class, 'update'])->name('editColis');
+Route::post('/editLivreur', [ColisController::class, 'update_etat'])->name('editLivreur');
 
 Route::post('/addRegion', [RegionsController::class, 'store'])->name('newRegion');
 
@@ -65,9 +68,11 @@ Route::get('/article',[ArticlesController::class, 'create'])->name('article');
 Route::post('/add-article',[ArticlesController::class, 'store'])->name('storeArticle');
 
 Route::get('/clients',[UsersController::class, 'clients'])->name('clients');
+Route::get('/editCompte',[UsersController::class, 'editCompte'])->name('editCompte');
 Route::get('/livreurs',[UsersController::class, 'livreurs'])->name('livreurs');
 Route::get('/admins',[UsersController::class, 'admins'])->name('admins');
 Route::post('/newLivreur',[UsersController::class, 'newLivreur'])->name('newLivreur');
+Route::post('/updateCompte',[UsersController::class, 'updateCompte'])->name('updateCompte');
 
 Route::post('/valider', [ReceptionController::class, 'valider'])->name('receptionValider');
 Route::get('/Reception',[ReceptionController::class, 'index'])->name('Reception');
@@ -78,6 +83,7 @@ Route::get('/editReception',[ReceptionController::class, 'editReception'])->name
 
 // Route::post('/valider_distribution', [DistributionController::class, 'valider'])->name('distributionValider');
 Route::get('/Distribution',[DistributionController::class, 'index'])->name('Distribution');
+Route::get('/DistributionLivreur',[DistributionController::class, 'DistributionLivreur'])->name('DistributionLivreur');
 Route::post('/Distributeur',[DistributionController::class, 'Distributeur'])->name('Distributeur');
 Route::post('/newDistribution',[DistributionController::class, 'newDistribution'])->name('newDistribution');
 Route::post('/DistributionCode',[DistributionController::class, 'store'])->name('DistributionCode');

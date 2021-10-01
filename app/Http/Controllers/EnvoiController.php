@@ -13,11 +13,10 @@ use App\Models\Historique;
 class EnvoiController extends Controller
 {
     public function index(){
-        $colis = Coli::where('etat','=','Ramasse')
-        ->join('villes','villes.id','=','colis.ville_id')
+        $colis = Coli::join('villes','villes.id','=','colis.ville_id')
         ->join('users','users.id','=','colis.client_id')
         ->join('line_bons','colis.id',"=","line_bons.colis_id")
-        ->select('villes.*','colis.*','users.nomMagasin','line_bons.id as bon','line_bons.bon_id as bon_id')
+        ->select('villes.*','colis.*','users.nomMagasin','line_bons.valide as valide','line_bons.id as bon','line_bons.bon_id as bon_id')
         ->orderBy('colis.created_at', 'DESC')->get();
         $bons =Bon::where('type', '=','Envoi')->get();
         $Attente = Coli::join('villes','villes.id','=','colis.ville_id')

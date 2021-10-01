@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use Illuminate\Support\Facades\auth;
 use Illuminate\Http\Request;
 use App\Models\Historique;
@@ -23,18 +22,17 @@ class DistributionController extends Controller
         ->where('colis.etat','=','Ramasse')
         ->select('villes.*','colis.*','users.nomMagasin','regions.region')
         ->orderBy('colis.created_at', 'DESC')->get();
-        $colis =Coli::join('line_bons','colis.id',"=","line_bons.colis_id")->select('line_bons.id as bon','line_bons.bon_id as bon_id','colis.*')->get();
+        $colis =Coli::join('line_bons','colis.id',"=","line_bons.colis_id")->select('line_bons.id as bon','line_bons.valide as valide','line_bons.bon_id as bon_id','colis.*')->get();
         return view('Distribution')->with(['bons'=>$bons,'colis'=>$colis,'regions'=>$regions,'Attente'=>$Attente]);
     }
-
-    public function newDistribution(request $request){
-        $livreurs = User::where('role','=','livreur')
-        ->join('villes','villes.id','=','users.ville_id')
-        ->join('regions','regions.id','=','villes.region_id')
-        ->select('users.*','villes.*','regions.*')
-        ->where('regions.id','=',$request->input('region_id'))
+    public function DistributionLivreur(){
+        $bons =Bon::where('type', '=','Distribution')
+        ->where('livreur_id', '=',Auth::id())
         ->get();
-
+        $colis =Coli::join('line_bons','colis.id',"=","line_bons.colis_id")->select('line_bons.id as bon','line_bons.valide as valide','line_bons.bon_id as bon_id','colis.*')->get();
+        return view('DistributionLivreur')->with(['bons'=>$bons,'colis'=>$colis]);
+    }
+    public function newDistribution(request $request){
         $date = date('d-m-Y', time());
         $number=1;
         $select = Bon::where('type','=','Distribution')->get();
@@ -54,7 +52,12 @@ class DistributionController extends Controller
             'type'=>'Distribution',
             'etat'=>"Nouveau"
         ]);
-
+        $livreurs = User::join('villes','villes.id','=','users.ville_id')
+        ->where('users.role','=','livreur')
+        ->join('regions','regions.id','=','villes.region_id')
+        ->select('users.id','users.nomComplet')
+        ->where('regions.id','=',$bon->region_id)
+        ->get();
         $Attente = Coli::join('villes','villes.id','=','colis.ville_id')
         ->join('users','users.id','=','colis.client_id')
         ->join('regions','regions.id','=','villes.region_id')
@@ -70,7 +73,6 @@ class DistributionController extends Controller
         ->get();
         return view('newDistribution')->with(['bon'=>$bon,'colis'=>$colis,'livreurs'=>$livreurs,'Attente'=>$Attente]);
     }
-
     public function editDistribution(Request $request){
         $bon = Bon::findOrFail($request->input('bon_id'));
         $colis =Coli::join('villes','colis.ville_id',"=","villes.id")
@@ -78,44 +80,51 @@ class DistributionController extends Controller
         ->join('bons','bons.id','=','line_bons.bon_id')
         ->where('line_bons.bon_id','=',$bon->id)
         ->get();
-        $livreurs = User::where('role','=','livreur')
-        ->join('villes','villes.id','=','users.ville_id')
+        $livreurs = User::join('villes','villes.id','=','users.ville_id')
+        ->where('users.role','=','livreur')
         ->join('regions','regions.id','=','villes.region_id')
         ->select('users.*','villes.*','regions.*')
         ->where('regions.id','=',$bon->region_id)
         ->get();
         $Attente = Coli::join('villes','villes.id','=','colis.ville_id')
         ->join('users','users.id','=','colis.client_id')
-        ->where('colis.etat','=','Ramasse')
+        ->join('regions','regions.id','=','villes.region_id')
         ->select('villes.*','colis.*','users.nomMagasin')
+        ->where('colis.etat','=','Ramasse')
+        ->where('regions.id','=',$bon->region_id)
         ->orderBy('colis.created_at', 'DESC')->get();
         return view('newDistribution')->with(['bon'=>$bon,'colis'=>$colis,'livreurs'=>$livreurs,'Attente'=>$Attente]);
     }
-
     public function Distributeur(Request $request){
         $bon = Bon::findOrFail($request->input('bon_id'));
+        $livreur =User::findOrFail($request->input('livreur_id'));
+        // dd($request->input('livreur_id'));
         Bon::where('id','=',$bon->id)->update([
-            'livreur_id'=>$request->input('livreur_id')
+            'livreur_id'=>$livreur->id
         ]);
         $colis =Coli::join('villes','colis.ville_id',"=","villes.id")
         ->join('line_bons','line_bons.colis_id','=','colis.id')
         ->join('bons','bons.id','=','line_bons.bon_id')
         ->where('line_bons.bon_id','=',$bon->id)
         ->get();
-        $livreurs = User::where('role','=','livreur')
-        ->join('villes','villes.id','=','users.ville_id')
+        $livreurs = User::join('villes','villes.id','=','users.ville_id')
+        ->where('users.role','=','livreur')
         ->join('regions','regions.id','=','villes.region_id')
-        ->select('users.*','villes.*','regions.*')
+        ->select('users.id','users.nomComplet')
         ->where('regions.id','=',$bon->region_id)
         ->get();
         $Attente = Coli::join('villes','villes.id','=','colis.ville_id')
         ->join('users','users.id','=','colis.client_id')
-        ->where('colis.etat','=','Ramasse')
+        ->join('regions','regions.id','=','villes.region_id')
         ->select('villes.*','colis.*','users.nomMagasin')
+        ->where('colis.etat','=','Ramasse')
+        ->where('regions.id','=',$bon->region_id)
         ->orderBy('colis.created_at', 'DESC')->get();
+        // return view('newDistribution')->with(['bon'=>$bon,'colis'=>$colis,'livreurs'=>$livreurs,'Attente'=>$Attente]);
+
+        // return redirect()->route('editDistribution')->with(['bon'=>$bon,'colis'=>$colis,'livreurs'=>$livreurs,'Attente'=>$Attente]);
         return view('newDistribution')->with(['bon'=>$bon,'colis'=>$colis,'livreurs'=>$livreurs,'Attente'=>$Attente]);
     }
-
     public function store(Request $request){
         $id = $request->input('bon_id');
         $bon = Bon::findOrFail($id);
@@ -163,12 +172,13 @@ class DistributionController extends Controller
 
         $Attente = Coli::join('villes','villes.id','=','colis.ville_id')
         ->join('users','users.id','=','colis.client_id')
-        ->where('colis.etat','=','Ramasse')
+        ->join('regions','regions.id','=','villes.region_id')
         ->select('villes.*','colis.*','users.nomMagasin')
+        ->where('colis.etat','=','Ramasse')
+        ->where('regions.id','=',$bon->region_id)
         ->orderBy('colis.created_at', 'DESC')->get();
         return view('newDistribution')->with(['bon'=>$bon,'colis'=>$colis,'livreurs'=>$livreurs,'Attente'=>$Attente]);
     }
-
     public function valider(Request $request){
         $colis = Coli::join('line_bons','line_bons.colis_id','=','colis.id')
         ->join('bons','bons.id','=','line_bons.bon_id')
@@ -178,7 +188,6 @@ class DistributionController extends Controller
         $bon = Bon::findOrFail($request->input('bon_id'));
         return view('Distribution_valider')->with(['colis'=>$colis,'bon'=>$bon]);
     }
-
     public function ValiderCode(Request $request){
         $line = Line_bon::join('colis','colis.id','=','line_bons.colis_id')
         ->join('bons','bons.id','=','line_bons.bon_id')

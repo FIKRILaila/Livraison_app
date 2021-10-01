@@ -34,7 +34,7 @@ active
                 </thead>
                 <tbody>
                     @foreach ($Attente as $item) 
-                        {{-- @if($item->etat == 'Ramasse') --}}
+                        @if($item->etat == 'Ramasse')
                             <tr>
                                 <td>{{$item->code}}</td>
                                 <td>{{$item->created_at}}</td>
@@ -51,7 +51,7 @@ active
                                 <td>{{$item->ville}}</td>
                                 <td>{{$item->prix}} DH</td>
                             </tr>
-                        {{-- @endif --}}
+                        @endif
                     @endforeach
                 </tbody>
             </table>
@@ -70,7 +70,7 @@ active
                     <div class="row col-md-10">
                         <label for="livreur_id" class="text-right col-md-2 col-form-label">{{ __('Livreur: *') }}</label>
                         <select name="livreur_id" id="livreur_id" class="col-md-10 form-control @error('livreur_id') is-invalid @enderror" value="{{ old('livreur_id') }}" required  autofocus autocomplete="on">
-                            <option value="region">Livreur</option>
+                            <option value="">Livreur</option>
                             @foreach ($livreurs as $liv)     
                                 <option value="{{$liv->id}}">{{$liv->nomComplet}}</option>
                             @endforeach

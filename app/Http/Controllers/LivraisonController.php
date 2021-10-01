@@ -276,6 +276,7 @@ class LivraisonController extends Controller
         </style>
         </head>
         <body>';
+         // <h2 style="width:30%; margin-top:0%; display:inline-block;">Logo</h2>
         foreach ($bon_info as $info){
             $vendeur = User::findOrFail($info->client_id);
             $ville = Ville::findOrFail($info->ville_id);
@@ -289,7 +290,7 @@ class LivraisonController extends Controller
                             </div>
                             <hr>
                             <p style="width:70%; margin-top:1%; display:inline-block;"><span>Vendeur:</span>'.$vendeur->nomMagasin.' <br> ('.$vendeur->phone.') <br> <span>Date:</span>'.$info->created_at.'</p>
-                            <h2 style="width:30%; margin-top:0%; display:inline-block;">Logo</h2>
+                            <img id="image" src="/image/'.Auth::user()->logo.'" alt="le logo " >
                             <hr>
                         <div>
                             <p>

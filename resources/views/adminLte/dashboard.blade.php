@@ -159,8 +159,8 @@
 
         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
             <a class="dropdown-item" href="{{ route('logout') }}"
-               onclick="event.preventDefault();
-                             document.getElementById('logout-form').submit();">
+              onclick="event.preventDefault();
+                document.getElementById('logout-form').submit();">
                 {{ __('Déconnexion') }}
             </a>
 
@@ -391,6 +391,49 @@
                 </ul>
               </li> 
               @endif
+              @if (Auth::user()->role == 'livreur')
+                <li class="nav-item has-treeview menu-open">
+                  <a href="{{ route('ColisLivreur') }}" class="nav-link @yield('ColisLivreur')">
+                    <i class="nav-icon fas fa-cubes"></i>
+                    <p>
+                      Colis a Distribuer
+                    </p>
+                  </a>
+                </li> 
+                <li class="nav-item has-treeview menu-open">
+                  <a href="{{ route('DistributionLivreur') }}" class="nav-link @yield('DistributionLivreur')">
+                    <i class="nav-icon fas fa-cubes"></i>
+                    <p>
+                      Bons Distribution
+                    </p>
+                  </a>
+                </li> 
+                <li class="nav-item has-treeview menu-open">
+                  <a href="#" class="nav-link">
+                    <i class="nav-icon fas fa-cubes"></i>
+                    <p>
+                      Mes Factures
+                    </p>
+                  </a>
+                </li>
+              @endif
+              <li class="nav-item has-treeview menu-open">
+                <a href="#" class="nav-link @yield('parametres')">
+                  <i class="nav-icon fas fa-cog"></i>
+                  <p>
+                    Paramètres
+                    <i class="right fas fa-angle-left"></i>
+                  </p>
+                </a>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="{{ route('editCompte') }}" class="nav-link @yield('editCompte')">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Modifier Mon Compte</p>
+                    </a>
+                  </li>
+                </ul>
+              </li> 
         </ul>
       </nav>
       <!-- /.sidebar-menu -->

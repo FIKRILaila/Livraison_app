@@ -94,6 +94,7 @@ active
                         <th>Date d'enregistrement</th>
                         <th>Status</th>
                         <th>Colis</th>
+                        <th>Reçu</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -117,6 +118,19 @@ active
                                 }
                             }
                             echo $c;
+                            @endphp
+                        </td>
+                        <td>
+                            @php
+                            $r = 0;
+                            foreach ($colis as $col){
+                                if ($col->bon_id === $item->id){
+                                    if($col->valide == true){
+                                        $r++;
+                                    }
+                                }
+                            }
+                            echo $r;
                             @endphp
                         </td>
                         <td class="d-flex">

@@ -25,7 +25,7 @@ class User extends Authenticatable
         'adresse',
         'cin',
         'role',
-        'RIP',
+        'RIB',
         'nomMagasin',
         'logo',
         'ville_id'
