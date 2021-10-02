@@ -19,7 +19,7 @@ class DistributionController extends Controller
         $Attente = Coli::join('villes','villes.id','=','colis.ville_id')
         ->join('users','users.id','=','colis.client_id')
         ->join('regions','regions.id','=','villes.region_id')
-        ->where('colis.etat','=','Ramasse')
+        ->where('colis.etat','=','Reçu')
         ->select('villes.*','colis.*','users.nomMagasin','regions.region')
         ->orderBy('colis.created_at', 'DESC')->get();
         $colis =Coli::join('line_bons','colis.id',"=","line_bons.colis_id")->select('line_bons.id as bon','line_bons.valide as valide','line_bons.bon_id as bon_id','colis.*')->get();
@@ -90,7 +90,7 @@ class DistributionController extends Controller
         ->join('users','users.id','=','colis.client_id')
         ->join('regions','regions.id','=','villes.region_id')
         ->select('villes.*','colis.*','users.nomMagasin')
-        ->where('colis.etat','=','Ramasse')
+        ->where('colis.etat','=','Reçu')
         ->where('regions.id','=',$bon->region_id)
         ->orderBy('colis.created_at', 'DESC')->get();
         return view('newDistribution')->with(['bon'=>$bon,'colis'=>$colis,'livreurs'=>$livreurs,'Attente'=>$Attente]);
@@ -117,11 +117,9 @@ class DistributionController extends Controller
         ->join('users','users.id','=','colis.client_id')
         ->join('regions','regions.id','=','villes.region_id')
         ->select('villes.*','colis.*','users.nomMagasin')
-        ->where('colis.etat','=','Ramasse')
+        ->where('colis.etat','=','Reçu')
         ->where('regions.id','=',$bon->region_id)
         ->orderBy('colis.created_at', 'DESC')->get();
-        // return view('newDistribution')->with(['bon'=>$bon,'colis'=>$colis,'livreurs'=>$livreurs,'Attente'=>$Attente]);
-
         // return redirect()->route('editDistribution')->with(['bon'=>$bon,'colis'=>$colis,'livreurs'=>$livreurs,'Attente'=>$Attente]);
         return view('newDistribution')->with(['bon'=>$bon,'colis'=>$colis,'livreurs'=>$livreurs,'Attente'=>$Attente]);
     }
@@ -174,7 +172,7 @@ class DistributionController extends Controller
         ->join('users','users.id','=','colis.client_id')
         ->join('regions','regions.id','=','villes.region_id')
         ->select('villes.*','colis.*','users.nomMagasin')
-        ->where('colis.etat','=','Ramasse')
+        ->where('colis.etat','=','Reçu')
         ->where('regions.id','=',$bon->region_id)
         ->orderBy('colis.created_at', 'DESC')->get();
         return view('newDistribution')->with(['bon'=>$bon,'colis'=>$colis,'livreurs'=>$livreurs,'Attente'=>$Attente]);

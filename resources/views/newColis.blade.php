@@ -81,7 +81,7 @@ active
                             <div class="form-group col-md-6 row">
                                 <label for="adresse" class="col-md-4 col-form-label">{{ __('Adresse') }}</label>
                                 <div class="col-md-8">
-                                    <textarea id="adresse" name="adresse" class="form-control @error('adresse') is-invalid @enderror" required autocomplete="on" autofocus>{{ old('adresse') }}</textarea>
+                                    <textarea id="adresse" name="adresse" class="form-control @error('adresse') is-invalid @enderror" autocomplete="on" autofocus>{{ old('adresse') }}</textarea>
                                 </div>
                             </div>
                         </div>

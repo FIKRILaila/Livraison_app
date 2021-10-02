@@ -38,16 +38,12 @@ class ArticlesController extends Controller
      */
     public function store(Request $request)
     {   
-        $request->validate([
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-        ]);
         if ($image = $request->file('image')){
-            $destinationPath = 'image/';
+            $destinationPath = 'images/';
             $profileImage = date('YmdHis') . "." . $image->getClientOriginalExtension();
             $image->move($destinationPath, $profileImage);
             $input['image'] = "$profileImage";
         }
-        dd($input['image']);
         $article = Article::create([
             'name' => $request->input('name'),
             'type' => $request->input('type'),

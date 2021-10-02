@@ -34,7 +34,7 @@ active
                 </thead>
                 <tbody>
                     @foreach ($colis as $item) 
-                    @if ($item->etat == 'Brouillon')
+                    {{-- @if ($item->etat == 'Nouveau Colis') --}}
                     <tr>
                         <td><input type="checkbox" name="bon" value="{{$item->id}}"></td>
                         <td>{{$item->code}}</td>
@@ -48,7 +48,7 @@ active
                             @endphp
                         </td>
                     </tr>
-                    @endif
+                    {{-- @endif --}}
                     @endforeach
                 </tbody>
             </table>

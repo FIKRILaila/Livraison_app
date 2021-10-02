@@ -90,6 +90,7 @@ active
                 <thead>
                     <tr>
                         <th>Réf</th>
+                        <th>Région</th>
                         <th>Date de création</th>
                         <th>Date d'enregistrement</th>
                         <th>Status</th>
@@ -102,6 +103,7 @@ active
                     @foreach ($bons as $item) 
                     <tr>
                         <td>{{ $item->ref }}</td>
+                        <td>{{ $item->region }}</td>
                         <td>{{$item->created_at}}</td>
                         <td>
                             @if ($item->etat == 'Enregistré')

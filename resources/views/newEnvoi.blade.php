@@ -33,7 +33,7 @@ active
                 </thead>
                 <tbody>
                     @foreach ($Attente as $item) 
-                        @if($item->etat == 'En Ramassage')
+                        {{-- @if($item->etat == 'En Ramassage') --}}
                             <tr>
                                 <td>{{$item->code}}</td>
                                 <td>{{$item->created_at}}</td>
@@ -50,7 +50,7 @@ active
                                 <td>{{$item->ville}}</td>
                                 <td>{{$item->prix}} DH</td>
                             </tr>
-                        @endif
+                        {{-- @endif --}}
                     @endforeach
                 </tbody>
             </table>

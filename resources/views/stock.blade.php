@@ -5,7 +5,7 @@ active
 @endsection
 @section('style')
 <style>
-    #Pimage {
+    #article_image {
         border: 2px dashed gray;
         border-radius: 15px;
         background-size: cover;
@@ -22,7 +22,7 @@ active
         left: 50%;
         transform: translate(-50%, -50%);
     }
-    #platImage {
+    #articleImage {
         width: 100%;
         height: 100%;
         object-fit: cover;
@@ -47,36 +47,39 @@ active
           Nouveau Stock <i class="fas fa-angle-down"></i>
         </button>
       </div>
-    
     <div class="collapse mt-4" id="article">
       <div class="card card-body">
         <h4 class=" ml-4">Nouveau Article :</h4>
             <div class="m-4">
-              <form action="{{route('storeArticle')}}" method="post" class="col-md-12">
+              <form action="{{route('storeArticle')}}" method="post" class="col-md-12" enctype="multipart/form-data">
                 @csrf
-                <div class="form-group">
-                    <label for="reference" class="mb-2 col-form-label">{{ __('Réference') }}</label>
-                    <div>
-                        <input id="reference" type="text" class="form-control @error('reference') is-invalid @enderror" name="reference" value="{{ old('reference') }}" required autocomplete="on">
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        <label for="reference" class="mb-2 col-form-label">{{ __('Réference :') }}</label>
+                        <div>
+                            <input id="reference" type="text" class="form-control" name="reference" value="{{ old('reference') }}" required autocomplete="on">
+                        </div>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="name" class="mb-2 col-form-label">{{ __('Article :') }}</label>
+                        <div>
+                            <input id="name" type="text" class="form-control" name="name" value="{{ old('name') }}" required autocomplete="on">
+                        </div>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label for="name" class="mb-2 col-form-label">{{ __('Article') }}</label>
-                    <div>
-                        <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="on">
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        <label for="type" class="col-form-label">{{ __('Type d\'Article :') }}</label>
+                        <div>
+                            <input id="type" type="text" class="form-control @error('type') is-invalid @enderror" name="type" value="{{ old('type') }}" required autocomplete="on">
+                        </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <label for="type" class="mb-2 col-form-label">{{ __('Type d\'Article') }}</label>
-                    <div>
-                        <input id="type" type="text" class="form-control @error('type') is-invalid @enderror" name="type" value="{{ old('type') }}" required autocomplete="on">
-                    </div>
-                </div>
-                <div class="form-group mb-4 col-md-4">
-                    <label for="image" class="col-form-label text-md-right">{{ __('Choose an Image :') }}</label>
-                    <div id="Pimage">
-                        <img id="platImage" src="{{asset('images/noImage.svg')}}" alt="l'image de l'article " >
-                        <input id="image" type="file" class="col-md-12 h-100" onchange="addImage(this)" name="image"  placeholder="type here..." value="{{ old('image') }}" required autocomplete="image" autofocus >
+                    <div class="form-group mb-4 col-md-6 row mt-4">
+                        <label for="image" class="col-form-label mt-2 mr-4">{{ __('Choose an Image :') }}</label>
+                        <div id="article_image" class="col-md-6 mt-4">
+                            <img id="articleImage" src="{{asset('images/noImage.svg')}}" alt="l'image de l'article " >
+                            <input id="image" type="file" class="col-md-12 h-100" onchange="addImage(this)" name="image" value="{{ old('image') }}" required autocomplete="image" autofocus >
+                        </div>
                     </div>
                 </div>
                 <div class="form-group mt-4 mb-0 d-flex justify-content-end">
@@ -134,6 +137,7 @@ active
           <thead>
               <tr>
                   <th>Article</th>
+                  <th>Image</th>
                   <th>Type d'Article</th>
                   <th>Quantité</th>
               </tr>
@@ -141,6 +145,7 @@ active
           <tbody>
             @foreach ($stock as $s)   
               <tr>
+                <td  class="col-md-2"><img src="/images/{{$s->image}}" alt="image"  class="col-md-10"></td>
                 <td>{{$s->name}}</td>
                 <td>{{$s->type}}</td>
                 <td>{{$s->quantite}}</td>
@@ -163,7 +168,7 @@ active
         if(file){
           var reader = new FileReader();
           reader.onload = function(){
-            $('#platImage').attr("src",reader.result);
+            $('#articleImage').attr("src",reader.result);
             $('#image').attr("value",reader.result);
           }
           reader.readAsDataURL(file);

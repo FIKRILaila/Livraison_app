@@ -44,7 +44,7 @@ class LivraisonController extends Controller
             $coli = Coli::findOrFail($table[$i]);
                 $total += $coli->prix;
             Historique::create([
-                'etat_h' => 'En Attente',
+                'etat_h' => 'En Attente de Rammassage',
                 'colis_id' => $coli->id,
                 'par' =>Auth::id()
             ]);
@@ -53,7 +53,7 @@ class LivraisonController extends Controller
                 'bon_id' => $bon->id
             ]);
             Coli::where('id','=',$coli->id)->update([
-                'etat' => 'En Attente'
+                'etat' => 'En Attente de Rammassage'
             ]);
         }
         $bon_info =Line_bon::join('colis', 'colis.id', '=', 'line_bons.colis_id')
@@ -271,7 +271,7 @@ class LivraisonController extends Controller
             border: 2px dashed black;
             display : inline-block;
             width:45%;
-            margin: 2%;
+            margin: 10px;
         }
         </style>
         </head>
@@ -290,16 +290,16 @@ class LivraisonController extends Controller
                             </div>
                             <hr>
                             <p style="width:70%; margin-top:1%; display:inline-block;"><span>Vendeur:</span>'.$vendeur->nomMagasin.' <br> ('.$vendeur->phone.') <br> <span>Date:</span>'.$info->created_at.'</p>
-                            <img id="image" src="/image/'.Auth::user()->logo.'" alt="le logo " >
+                            <img style="width:30%; margin-top:1%; display:inline-block;" id="image" src="/images/'.Auth::user()->logo.'" alt="le logo " >
                             <hr>
-                        <div>
-                            <p>
-                                <span>Destinataire:</span>'.$info->destinataire.'<br>
-                                <span>Téléphone:</span>'.$info->telephone.'<br>
-                                <span>Ville:</span>'.$ville->ville.'<br>
-                                <span>Adresse:</span>'.$info->adresse.'
-                            </p>
-                        </div>
+                            <div>
+                                <p>
+                                    <span>Destinataire:</span>'.$info->destinataire.'<br>
+                                    <span>Téléphone:</span>'.$info->telephone.'<br>
+                                    <span>Ville:</span>'.$ville->ville.'<br>
+                                    <span>Adresse:</span>'.$info->adresse.'
+                                </p>
+                            </div>
                         <div style="margin:1% 0">';
                         if($info->ouvrir){
                             $html .='<p style="width:65%; display:inline-block;">Vous Pouvez ouvrir le colis</p>';

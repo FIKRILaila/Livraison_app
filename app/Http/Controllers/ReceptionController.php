@@ -55,7 +55,8 @@ class ReceptionController extends Controller
     public function store(Request $request){
         $id = $request->input('bon_id');
         $bon = Bon::findOrFail($id);
-        $colis = Coli::where('code','=', $request->input('code_suivi'))->get();
+        $colis = Coli::where('code','=', $request->input('code_suivi'))
+        ->join('villes','villes.id','=','colis.ville_id')->select('villes.ville','colis.*')->get();
         $exist = false;
         $existed = Line_bon::join('bons','bons.id','=','line_bons.bon_id')
         ->where('bons.type','=','Reception')
@@ -68,18 +69,33 @@ class ReceptionController extends Controller
             }
             if($exist == false){
                     foreach($colis as $coli){
-                        Historique::create([
-                            'etat_h' => 'En Ramassage',
-                            'colis_id' => $col->id,
-                            'par'=>Auth::id()
-                        ]);
-                        Line_bon::create([
-                            'colis_id' => $col->id,
-                            'bon_id' => $bon->id
-                        ]);
-                        Coli::where('id','=',$col->id)->update([
-                            'etat' => 'En Ramassage'
-                        ]);
+                        if($coli->ville == "Casablanca"){
+                            Historique::create([
+                                'etat_h' => 'Reçu',
+                                'colis_id' => $col->id,
+                                'par'=>Auth::id()
+                            ]);
+                            Line_bon::create([
+                                'colis_id' => $col->id,
+                                'bon_id' => $bon->id
+                            ]);
+                            Coli::where('id','=',$col->id)->update([
+                                'etat' => 'Reçu'
+                            ]);
+                        }else{
+                            Historique::create([
+                                'etat_h' => 'Ramasse',
+                                'colis_id' => $col->id,
+                                'par'=>Auth::id()
+                            ]);
+                            Line_bon::create([
+                                'colis_id' => $col->id,
+                                'bon_id' => $bon->id
+                            ]);
+                            Coli::where('id','=',$col->id)->update([
+                                'etat' => 'Ramasse'
+                            ]);
+                        }
                     }
             }
         }

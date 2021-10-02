@@ -18,6 +18,7 @@ class ColisController extends Controller
     public function index(){ 
         $colis = Coli::where('client_id', '=',Auth::id())
         ->join('villes','villes.id','=','colis.ville_id')
+        ->where('colis.etat','=','Nouveau Colis')
         ->select('villes.*','colis.*')
         ->orderBy('colis.created_at', 'DESC')
         ->get();
@@ -63,17 +64,16 @@ class ColisController extends Controller
      */
     public function store(Request $request)
     {   
-        $colis = Coli::where('code','=', $request->input('code'))->get();
-        foreach ($colis as $col){
-            if($col->id){
-                return back()->with('fail','Code deja utiliser');
-            }
-        }
         $input = $request->all();
+        if($request->input('code')){
+            $input['code'] = $request->input('code');
+        }else{
+            $input['code'] = uniqid();
+        }
         $input['fragile'] = $request->input('fragile') == "oui"?1:0;
         $input['ouvrir'] =$request->input('ouvrir')== "on"?1:0;
         $input['client_id'] = Auth::id();
-        $input['etat'] = 'Brouillon';
+        $input['etat'] = 'Nouveau Colis';
         $input['change'] = false;
         $input['paye'] = false;
         $input['valide'] = false;
@@ -82,9 +82,9 @@ class ColisController extends Controller
 
         $generator = new Picqer\Barcode\BarcodeGeneratorHTML();
         $barcode = $generator->getBarcode($colis->id, $generator::TYPE_CODE_128);
-        
+
         $historique =Historique::create([
-            'etat_h' => 'Brouillon',
+            'etat_h' => 'Nouveau Colis',
             'colis_id' => $colis->id,
             'par' =>Auth::id()
             ]);
@@ -136,7 +136,6 @@ class ColisController extends Controller
         if($colis){
             return back()->with('success','etat modifié avec succès');
         }
-        
     }
     public function update(Request $request)
     {
@@ -149,7 +148,6 @@ class ColisController extends Controller
         $input = $request->all();
         $input['fragile'] = $request->input('fragile') == "oui"?1:0;
         $input['ouvrir'] =$request->input('ouvrir')== "on"?1:0;
-        // $input['etat'] = $request->input('etat');
         $colis = Coli::findOrFail($request->input('colis_id'))->update($input);     
         $colis = Coli::findOrFail($request->input('colis_id'));
         $historique =Historique::create([

@@ -11,6 +11,8 @@ class Article extends Model
     protected $fillable = [
         'name',
         'type',
-        'client_id'
+        'client_id',
+        'image',
+        'reference'
     ];
 }

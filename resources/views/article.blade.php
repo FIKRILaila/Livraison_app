@@ -45,7 +45,7 @@ active
             @endif
     <div class="card">
         <div class="m-4">
-            <form action="{{route('storeArticle')}}" method="post" class="col-md-12">
+            <form action="{{route('storeArticle')}}" method="post" class="col-md-12" enctype="multipart/form-data">
                 @csrf
                 <div class="form-group">
                     <label for="reference" class="mb-2 col-form-label">{{ __('Réference') }}</label>
