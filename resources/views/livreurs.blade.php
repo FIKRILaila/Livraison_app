@@ -6,7 +6,7 @@ active
 active
 @endsection
 @section('content')
-<div class="container">
+<div class="m-4">
         @if (Session::get('success'))
         <div class="alert alert-success">
             {{ Session::get('success') }}

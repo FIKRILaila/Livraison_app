@@ -4,7 +4,7 @@
 active
 @endsection
 @section('content')
-<div class="container">
+<div class="m-4">
     <div class="card m-4">
         <h2 class="text-center">Espace Client</h2>
     </div>

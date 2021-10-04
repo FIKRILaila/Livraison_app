@@ -1,8 +1,7 @@
 @extends('adminLte.dashboard')
-@section('Envoi')
+@section('Retour')
 active
 @endsection
-
 @section('content')
 <div class="m-4">
     @if (Session::get('success'))
@@ -14,8 +13,53 @@ active
         <div class="alert alert-danger">{{ Session::get('fail') }}</div>
     @endif
     <div class="card mt-4">
+        <div class="card-header">
+            <h4 class="font-weight-bold m-2">Liste des Colis a Distribuer</h4>
+        </div>
+        <div class="card-body">
+            <table id="attente" class="display">
+                <thead>
+                    <tr>
+                        <th>Code d'Envoie</th>
+                        <th>Date de creation</th>
+                        <th>Téléphone</th>
+                        <th>Nom du Magasin</th>
+                        <th>Etat</th>
+                        <th>Status</th>
+                        <th>Région</th>
+                        <th>Ville</th>
+                        <th>Prix</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($Attente as $item) 
+                        {{-- @if($item->etat == 'Ramasse') --}}
+                            <tr>
+                                <td>{{$item->code}}</td>
+                                <td>{{$item->created_at}}</td>
+                                <td>{{$item->telephone}}</td>
+                                <td>{{$item->nomMagasin}}</td>
+                                <td>
+                                    @if ($item->paye == false)
+                                        Non Payé
+                                    @else
+                                        Payé
+                                    @endif
+                                </td>
+                                <td>{{$item->etat}}</td>
+                                <td>{{$item->region}}</td>
+                                <td>{{$item->ville}}</td>
+                                <td>{{$item->prix}} DH</td>
+                            </tr>
+                        {{-- @endif --}}
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="card mt-4">
         <div class="m-4">
-            <form action="{{route('newEnvoi')}}" method="post" class="row">
+            <form action="{{route('newRetour')}}" method="post" class="row">
                 @csrf
                 <div class="row col-md-10">
                     <label for="region_id" class="text-right col-md-2 col-form-label">{{ __('Region :') }}</label>
@@ -38,7 +82,7 @@ active
             <h4 class="font-weight-bold m-2">Liste des Bons d'Envoie</h4>
         </div>
         <div class="card-body">
-            <table id="Envoie" class="display">
+            <table id="Retour" class="display">
                 <thead>
                     <tr>
                         <th>Réf</th>
@@ -95,12 +139,12 @@ active
                         </td>
                         <td class="d-flex">
                             @if ($item->etat == 'Nouveau')
-                            <form action="{{route('editEnvoi')}}" method="get">
+                            <form action="{{route('editRetour')}}" method="get">
                                 @csrf
                                 <input type="hidden" name="bon_id" value="{{$item->id}}">
                                 <button type="submit" class="btn btn-light"><i class="fas fa-edit"></i></button>
                             </form>
-                                <form action="{{route('EnvoiValider')}}" method="get">
+                                <form action="{{route('RetourValider')}}" method="get">
                                     @csrf
                                     <input type="hidden" name="bon_id" value="{{$item->id}}">
                                     <button type = "submit" class="btn btn-light"><i class="fas fa-check"></i></button>
@@ -162,10 +206,10 @@ active
 @section('script')
     <script>
         $(document).ready( function () {
-            $('#Envoie').DataTable();
+            $('#Retour').DataTable();
         });
         $(document).ready( function () {
-            $('#envoyer').DataTable();
+            $('#attente').DataTable();
         });
     </script>
 @endsection

@@ -6,7 +6,7 @@ active
 active
 @endsection
 @section('content')
-<div class="container">
+<div class="m-4">
     <div class="mt-4 card col-md-12">
         <div class="m-4" >
             <form id="bon_livraison" action="{{ route('store')}}" method="POST" class="d-none">
@@ -17,7 +17,7 @@ active
             <input type="checkbox" name="selectAll" id="selectAll">
             <span class="mr-4">Tout Cocher</span>
             <span>Avec la Selection :</span> 
-            <button class="btn btn-primary" onclick="demande_livraison()">Bon de Livraison</button>
+            <button class="btn btn-info" onclick="demande_livraison()">Bon de Livraison</button>
         </div>
         <div class="m-4">
             <table id="myTable" class="display">

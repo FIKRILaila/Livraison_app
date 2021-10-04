@@ -4,7 +4,7 @@ active
 @endsection
 
 @section('content')
-<div class="container">
+<div class="m-4">
     @if (Session::get('success'))
     <div class="alert alert-success">
         {{ Session::get('success') }}
@@ -34,7 +34,7 @@ active
                 </thead>
                 <tbody>
                     @foreach ($Attente as $item) 
-                        @if($item->etat == 'Ramasse')
+                        {{-- @if($item->etat == 'Ramasse') --}}
                             <tr>
                                 <td>{{$item->code}}</td>
                                 <td>{{$item->created_at}}</td>
@@ -51,7 +51,7 @@ active
                                 <td>{{$item->ville}}</td>
                                 <td>{{$item->prix}} DH</td>
                             </tr>
-                        @endif
+                        {{-- @endif --}}
                     @endforeach
                 </tbody>
             </table>

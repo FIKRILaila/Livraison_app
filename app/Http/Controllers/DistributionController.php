@@ -14,7 +14,7 @@ use App\Models\Line_bon;
 class DistributionController extends Controller
 {
     public function index(){
-        $bons =Bon::where('type', '=','Distribution')->get();
+        $bons =Bon::where('type', '=','Distribution')->orderBy('created_at', 'DESC')->get();
         $regions = Region::get();
         $Attente = Coli::join('villes','villes.id','=','colis.ville_id')
         ->join('users','users.id','=','colis.client_id')
@@ -178,44 +178,10 @@ class DistributionController extends Controller
         return view('newDistribution')->with(['bon'=>$bon,'colis'=>$colis,'livreurs'=>$livreurs,'Attente'=>$Attente]);
     }
     public function valider(Request $request){
-        $colis = Coli::join('line_bons','line_bons.colis_id','=','colis.id')
-        ->join('bons','bons.id','=','line_bons.bon_id')
-        ->where('bons.id','=',$request->input('bon_id'))
-        ->select('line_bons.valide','colis.*')
-        ->get();
-        $bon = Bon::findOrFail($request->input('bon_id'));
-        return view('Distribution_valider')->with(['colis'=>$colis,'bon'=>$bon]);
-    }
-    public function ValiderCode(Request $request){
-        $line = Line_bon::join('colis','colis.id','=','line_bons.colis_id')
-        ->join('bons','bons.id','=','line_bons.bon_id')
-        ->where('colis.code','=',$request->input('code_suivi'))
-        ->where('bons.id','=',$request->input('bon_id'))
-        ->update(['valide'=>true]);
-
-        $toutLines = Line_bon::join('bons','bons.id','=','line_bons.bon_id')
-        ->where('bons.id','=',$request->input('bon_id'))
-        ->select('line_bons.valide')
-        ->get();
-        $valider = true;
-        foreach($toutLines as $lin){
-            if($lin->valide == false){
-                $valider = false;
-            }
-        }
-        if($valider == true){
-            $bon = Bon::where('id',"=",$request->input('bon_id'))->update([
-                        'etat'=>'Enregistré',
-                        'updated_at'=> date('Y-m-d H:i:s', time())
-                    ]);
+        $bon = Bon::where('id',"=",$request->input('bon_id'))->update([
+            'etat'=>'Enregistré',
+            'updated_at'=> date('Y-m-d H:i:s', time())
+        ]);
             return redirect()->route('Distribution');
-        }
-        $colis = Coli::join('line_bons','line_bons.colis_id','=','colis.id')
-        ->join('bons','bons.id','=','line_bons.bon_id')
-        ->where('bons.id','=',$request->input('bon_id'))
-        ->select('line_bons.valide','colis.*')
-        ->get();
-        $bon = Bon::findOrFail($request->input('bon_id'));
-        return view('Distribution_valider')->with(['colis'=>$colis,'bon'=>$bon]);
     }
 }

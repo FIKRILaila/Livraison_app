@@ -113,7 +113,7 @@ active
 @endif
 
 @if (Auth::user()->role == 'admin')
-<div class="container">
+<div class="m-4">
     <div class="mt-4 card col-md-12">
             <div class="m-4">
                 <table id="livraison" class="display">

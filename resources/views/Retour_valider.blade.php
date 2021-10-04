@@ -1,5 +1,5 @@
 @extends('adminLte.dashboard')
-@section('Envoi')
+@section('Retour')
 active
 @endsection
 @section('content')
@@ -17,7 +17,7 @@ active
             <h4 class="font-weight-bold m-2">Liste des Colis non valide</h4>
         </div>
         <div class="card-body">
-            <table id="recu" class="display">
+            <table id="attente" class="display">
                 <thead>
                     <tr>
                         <th>Code d'Envoie</th>
@@ -57,7 +57,7 @@ active
     </div>
     <div class="card">
         <div class="m-4">
-            <form action="{{route('ValiderCodeEnvoi')}}" method="post" class="row">
+            <form action="{{route('ValiderCodeRetour')}}" method="post" class="row">
                 @csrf
                 <input type="hidden" name="bon_id" value="{{$bon->id}}">
                 <div class="row col-md-10">
@@ -75,7 +75,7 @@ active
             <h4 class="font-weight-bold m-2">Liste des Colis Valider</h4>
         </div>
         <div class="m-4">
-            <table id="envoi" class="display">
+            <table id="valider" class="display">
                 <thead>
                     <tr>
                         <th>Code Suivi</th>
@@ -111,10 +111,10 @@ active
 @section('script')
     <script>
         $(document).ready( function () {
-            $('#recu').DataTable();
+            $('#attente').DataTable();
         });
         $(document).ready( function () {
-            $('#envoi').DataTable();
+            $('#valider').DataTable();
         });
     </script>
 @endsection

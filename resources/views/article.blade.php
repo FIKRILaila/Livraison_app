@@ -33,7 +33,7 @@ active
 </style>
 @endsection
 @section('content')
-<div class="container">
+<div class="m-4">
     <h1 class=" m-4">Nouveau Article</h1>
     @if (Session::get('success'))
             <div class="alert alert-success">

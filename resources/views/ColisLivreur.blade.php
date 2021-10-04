@@ -3,7 +3,7 @@
     active
 @endsection
 @section('content')
-<div class="container">
+<div class="m-4">
     <div class="mt-4 card col-md-12">
         <div class="m-4">
             <table id="tousColis" class="display">
@@ -48,7 +48,7 @@
                                                             <select name="etat" id="etat" class="form-control" value="{{ old('etat') }}" required  autofocus autocomplete="on">
                                                                 <option value="{{$item->etat}}">{{$item->etat}}</option>
                                                                 <option value="Livré">Livré</option>
-                                                                <option value="En Retour">En Retour</option>
+                                                                <option value="annulé">annulé</option>
                                                                 <option value="Refusé">Refusé</option>
                                                                 <option value="Reporté">Reporté</option> {{-- a une date --}}
                                                                 <option value="Pas de Réponse 1">Pas de Réponse 1</option>

@@ -4,7 +4,7 @@
 active
 @endsection
 @section('content')
-<div class="container">
+<div class="m-4">
     <h1 class="text-center m-4">Mes Factures</h1>
 </div>
 @endsection

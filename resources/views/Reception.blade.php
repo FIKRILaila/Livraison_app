@@ -3,7 +3,7 @@
 active
 @endsection
 @section('content')
-<div class="container">
+<div class="m-4">
     @if (Session::get('success'))
             <div class="alert alert-success">
                 {{ Session::get('success') }}
@@ -13,7 +13,7 @@ active
                 <div class="alert alert-danger">{{ Session::get('fail') }}</div>
             @endif
     <div class="card mt-4 row">
-        <a href="{{route('newReception')}}" class="btn btn-primary col-md-2">Ajouter</a>
+        <a href="{{route('newReception')}}" class="btn btn-info col-md-2">Ajouter</a>
     </div>
     <div class="mt-4 card col-md-12">
             <div class="card-header">
@@ -24,12 +24,12 @@ active
                     <thead>
                         <tr>
                             <th>Réf</th>
-                            <th>Agence</th>
-                            <th>Pour</th>
+                            {{-- <th>Agence</th>
+                            <th>Pour</th> --}}
                             <th>Date de création</th>
                             <th>Date d'enregistrement</th>
                             <th>Status</th>
-                            <th>Colis</th>
+                            <th class="text-center">Colis</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -37,16 +37,22 @@ active
                         @foreach ($bons as $item) 
                         <tr>
                             <td>{{ $item->ref }}</td>
-                            <td></td>
-                            <td></td>
+                            {{-- <td></td>
+                            <td></td> --}}
                             <td>{{$item->created_at}}</td>
                             <td>
                                 @if ($item->etat == 'Enregistré')
                                 {{$item->updated_at}}
                                 @endif
                             </td>
-                            <td>{{$item->etat}}</td>
                             <td>
+                                @if ($item->etat == 'Enregistré')
+                                <p class="text-center border border-info">{{$item->etat}}</p>
+                                @else
+                                <p class="text-center border border-warning">{{$item->etat}}</p>
+                                @endif
+                            </td>
+                            <td class="text-center">
                                 @php
                                 $c = 0;
                                 foreach ($colis as $col){

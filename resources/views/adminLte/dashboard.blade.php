@@ -175,7 +175,7 @@
   <!-- /.navbar -->
 
   <!-- Main Sidebar Container -->
-  <aside class="main-sidebar sidebar-dark-primary elevation-4">
+  <aside class="main-sidebar sidebar-dark-info elevation-4">
     <!-- Brand Logo -->
     <a href="{{ route('home') }}" class="brand-link">
       <img src="dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
@@ -208,16 +208,6 @@
                 </p>
               </a>
               </li>
-              @endif
-              {{-- <li class="nav-item has-treeview menu-open">
-                <a href="{{ route('stock') }}" class="nav-link @yield('stock')">
-                  <i class="nav-icon fas fa-cubes"></i>
-                  <p>
-                    Stock
-                  </p>
-                </a>
-              </li>--}}
-              @if (Auth::user()->role == 'admin')
               <li class="nav-item has-treeview menu-open">
                 <a href="{{ route('Reception') }}" class="nav-link @yield('Reception')">
                   <i class="nav-icon fas fa-inbox"></i>
@@ -257,22 +247,8 @@
                       <p>Mes Colis</p>
                     </a>
                   </li>
-                  {{-- <li class="nav-item">
-                    <a href="{{ route('retour') }}" class="nav-link  @yield('retour')">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>En Retour</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="{{ route('refuses') }}" class="nav-link  @yield('refuses')">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Refuses</p>
-                    </a>
-                  </li> --}}
                 </ul>
               </li> 
-              @endif
-              @if (Auth::user()->role == 'client')
               <li class="nav-item has-treeview menu-open">
                 <a href="{{ route('bonsLivraion') }}" class="nav-link @yield('livraison')">
                   <i class="nav-icon fas fa-file-signature"></i>
@@ -281,8 +257,6 @@
                   </p>
                 </a>
               </li>
-              @endif
-              @if (Auth::user()->role == 'client')
               <li class="nav-item has-treeview menu-open">
                 <a href="{{ route('stock') }}" class="nav-link @yield('stock')">
                   <i class="nav-icon fas fa-cubes"></i>
@@ -306,6 +280,14 @@
                   <i class="nav-icon fas fa-cubes"></i>
                   <p>
                     Bons distribution
+                  </p>
+                </a>
+              </li> 
+              <li class="nav-item has-treeview menu-open">
+                <a href="{{ route('Retour') }}" class="nav-link @yield('Retour')">
+                  <i class="nav-icon fas fa-cubes"></i>
+                  <p>
+                    Bons de Retour
                   </p>
                 </a>
               </li> 
@@ -342,6 +324,38 @@
                 </ul>
               </li>  --}}
               @endif
+              @if (Auth::user()->role == 'admin' or Auth::user()->role == 'client')
+              <li class="nav-item has-treeview menu-open">
+                <a href="#" class="nav-link @yield('demandes')">
+                  <i class="nav-icon fas fa-cog"></i>
+                  <p>
+                    @if (Auth::user()->role == 'admin') Les Demandes @endif
+                    @if (Auth::user()->role == 'client') Mes Demandes @endif
+                    <i class="right fas fa-angle-left"></i>
+                  </p>
+                </a>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="{{ route('demandesRetour') }}" class="nav-link @yield('demandesRetour')">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Demandes de Retour</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="{{ route('Reclamations') }}" class="nav-link @yield('Reclamations')">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Reclamations</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="{{ route('ChangementRIB') }}" class="nav-link @yield('RIB')">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Changement de RIB</p>
+                    </a>
+                  </li>
+                </ul>
+              </li> 
+              @endif
               @if (Auth::user()->role == 'admin')
               <li class="nav-item has-treeview menu-open">
                 <a href="{{ route('factures') }}" class="nav-link @yield('factures')">
@@ -353,7 +367,6 @@
               </li>
               <li class="nav-item has-treeview menu-open">
                 <a href="{{ route('villes') }}" class="nav-link @yield('villes')">
-                  {{-- <i class="nav-icon fas fa-home"></i> --}}
                   <i class="nav-icon fas fa-city"></i>
                   <p>
                     Régions et Villes

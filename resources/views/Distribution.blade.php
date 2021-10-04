@@ -3,7 +3,7 @@
 active
 @endsection
 @section('content')
-<div class="container">
+<div class="m-4">
     @if (Session::get('success'))
     <div class="alert alert-success">
         {{ Session::get('success') }}
@@ -71,7 +71,7 @@ active
                     </select>
                 </div>
                 <div class="row justify-content-end col-md-2 ml-2">
-                    <button type="submit" class="btn btn-primary ml-4">Nouveau Bon</button>
+                    <button type="submit" class="btn btn-info ml-4">Nouveau Bon</button>
                 </div>
             </form>
         </div>
@@ -86,13 +86,13 @@ active
                     <thead>
                         <tr>
                             <th>Réf</th>
-                            <th>Agence</th>
-                            <th>Pour</th>
+                            {{-- <th>Agence</th>
+                            <th>Pour</th> --}}
                             <th>Date de création</th>
                             <th>Date d'enregistrement</th>
                             <th>Status</th>
-                            <th>Colis</th>
-                            <th>Reçu</th>
+                            {{-- <th>Colis</th>
+                            <th>Reçu</th> --}}
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -100,16 +100,22 @@ active
                         @foreach ($bons as $item) 
                         <tr>
                             <td>{{ $item->ref }}</td>
-                            <td></td>
-                            <td></td>
+                            {{-- <td></td>
+                            <td></td> --}}
                             <td>{{$item->created_at}}</td>
                             <td>
                                 @if ($item->etat == 'Enregistré')
                                 {{$item->updated_at}}
                                 @endif
                             </td>
-                            <td>{{$item->etat}}</td>
                             <td>
+                                @if ($item->etat == 'Enregistré')
+                                <p class="text-center border border-info">{{$item->etat}}</p>
+                                @else
+                                <p class="text-center border border-warning">{{$item->etat}}</p>
+                                @endif
+                            </td>
+                            {{-- <td>
                                 @php
                                 $c = 0;
                                 foreach ($colis as $col){
@@ -119,8 +125,8 @@ active
                                 }
                                 echo $c;
                                 @endphp
-                            </td>
-                            <td>
+                            </td> --}}
+                            {{-- <td>
                                 @php
                                 $r = 0;
                                 foreach ($colis as $col){
@@ -132,7 +138,7 @@ active
                                 }
                                 echo $r;
                                 @endphp
-                            </td>
+                            </td> --}}
                             <td class="d-flex">
                                 @if ($item->etat == 'Nouveau')
                                 <form action="{{route('editDistribution')}}" method="get">

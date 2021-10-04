@@ -3,7 +3,7 @@
 active
 @endsection
 @section('content')
-<div class="container">
+<div class="m-4">
     <div class="col-md-12 d-flex justify-content-end mt-4 mb-4">
         <button type="button" class="btn btn-primary mr-2" data-toggle="modal" data-target="#region">
             Nouvelle région

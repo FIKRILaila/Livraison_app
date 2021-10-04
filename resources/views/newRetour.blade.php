@@ -1,9 +1,9 @@
 @extends('adminLte.dashboard')
-@section('Distribution')
+@section('Retour')
 active
 @endsection
 @section('content')
-<div class="container">
+<div class="m-4">
     @if (Session::get('success'))
     <div class="alert alert-success">
         {{ Session::get('success') }}
@@ -14,10 +14,10 @@ active
     @endif
     <div class="card mt-4">
         <div class="card-header">
-            <h4 class="font-weight-bold m-2">Liste des Colis non valide</h4>
+            <h4 class="font-weight-bold m-2">Liste des Colis Annuler ou Refuser</h4>
         </div>
         <div class="card-body">
-            <table id="recu" class="display">
+            <table id="attente" class="display">
                 <thead>
                     <tr>
                         <th>Code d'Envoie</th>
@@ -31,8 +31,8 @@ active
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($colis as $item) 
-                        @if($item->valide == false)
+                    @foreach ($Attente as $item) 
+                        {{-- @if($item->etat == 'En Ramassage') --}}
                             <tr>
                                 <td>{{$item->code}}</td>
                                 <td>{{$item->created_at}}</td>
@@ -49,15 +49,18 @@ active
                                 <td>{{$item->ville}}</td>
                                 <td>{{$item->prix}} DH</td>
                             </tr>
-                        @endif
+                        {{-- @endif --}}
                     @endforeach
                 </tbody>
             </table>
         </div>
     </div>
+    <div class="card mt-4">
+        <p class="m-2"><span class="font-weight-bold">Date de Création :</span> {{$bon->created_at}} </p>
+    </div>
     <div class="card">
         <div class="m-4">
-            <form action="{{route('ValiderCodeDistribution')}}" method="post" class="row">
+            <form action="{{route('EnvoiCode')}}" method="post" class="row">
                 @csrf
                 <input type="hidden" name="bon_id" value="{{$bon->id}}">
                 <div class="row col-md-10">
@@ -65,17 +68,18 @@ active
                     <input type="text" name="code_suivi" class="form-control col-md-10">
                 </div>
                 <div class="row justify-content-end col-md-2 ml-2">
-                    <button type="submit" class="btn btn-primary ml-4">Valider</button>
+                    <a href="#" class="btn btn-primary mr-2">Annuler</a>
+                    <button type="submit" class="btn btn-primary">Ajouter</button>
                 </div>
             </form>
         </div>
     </div>
     <div class="card">
         <div class="card-header">
-            <h4 class="font-weight-bold m-2">Liste des Colis Valider</h4>
+            <h4 class="font-weight-bold m-2">Liste des Colis Ajouter</h4>
         </div>
         <div class="m-4">
-            <table id="envoi" class="display">
+            <table id="retour" class="display">
                 <thead>
                     <tr>
                         <th>Code Suivi</th>
@@ -89,7 +93,7 @@ active
                 </thead>
                 <tbody>
                         @foreach ($colis as $coli)
-                        @if($coli->valide == true)
+                        {{-- @if ($coli->bon_id == $bon->id )  --}}
                             <tr>
                                 <td>{{$coli->code}}</td>
                                 <td>{{$coli->destinataire}}</td>
@@ -99,7 +103,7 @@ active
                                 <td>{{$coli->etat}}</td>
                                 <th><input type="checkbox"></th>
                             </tr>
-                        @endif
+                        {{-- @endif --}}
                         @endforeach
                 </tbody>
             </table>
@@ -111,10 +115,10 @@ active
 @section('script')
     <script>
         $(document).ready( function () {
-            $('#recu').DataTable();
+            $('#attente').DataTable();
         });
         $(document).ready( function () {
-            $('#envoi').DataTable();
+            $('#retour').DataTable();
         });
     </script>
 @endsection

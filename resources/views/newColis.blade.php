@@ -6,7 +6,7 @@ active
 active
 @endsection
 @section('content')
-<div class="container">
+<div class="m-4">
     <div class="row justify-content-center">
         <div class="col-md-12">
             <h1 class="text-center m-4">Nouveau Colis</h1>

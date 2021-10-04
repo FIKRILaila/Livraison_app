@@ -12,6 +12,8 @@ use App\Http\Controllers\ReceptionController;
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\DistributionController;
 use App\Http\Controllers\EnvoiController;
+use App\Http\Controllers\RetourController;
+use App\Http\Controllers\DemandesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,8 +33,6 @@ Route::get('/ramassage', function () {return view('ramassage');})->name('ramassa
 Auth::routes();
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
-Route::get('/refuses',[HomeController::class, 'refuser'])->name('refuses');
-Route::get('/retour',[HomeController::class, 'retour'])->name('retour');
 
 Route::get('/bons_livraison', [LivraisonController::class, 'index'])->name('bonsLivraion'); 
 Route::post('/store', [LivraisonController::class, 'store'])->name('store'); 
@@ -45,6 +45,14 @@ Route::get('/valider_envoi', [EnvoiController::class, 'valider'])->name('EnvoiVa
 Route::post('/ValiderCodeEnvoi',[EnvoiController::class, 'ValiderCode'])->name('ValiderCodeEnvoi');
 Route::get('/BonsDenvoie', [EnvoiController::class, 'index'])->name('Envoi');
 Route::get('/editEnvoi',[EnvoiController::class, 'editEnvoi'])->name('editEnvoi');
+
+
+Route::get('/editRetour',[RetourController::class, 'editRetour'])->name('editRetour');
+Route::get('/valider_retour', [RetourController::class, 'valider'])->name('RetourValider');
+Route::post('/RetourCode',[RetourController::class, 'store'])->name('RetourCode');
+Route::post('/ValiderCodeRetour',[RetourController::class, 'ValiderCode'])->name('ValiderCodeRetour');
+Route::post('/newRetour',[RetourController::class, 'newRetour'])->name('newRetour');
+Route::get('/BonsRetour', [RetourController::class, 'index'])->name('Retour');
 
 
 Route::get('/colis', [ColisController::class, 'index'])->name('colis');
@@ -90,3 +98,9 @@ Route::post('/DistributionCode',[DistributionController::class, 'store'])->name(
 Route::get('/editDistribution',[DistributionController::class, 'editDistribution'])->name('editDistribution');
 Route::get('/valider_distribution', [DistributionController::class, 'valider'])->name('DistributionValider');
 Route::post('/ValiderCodeDistribution',[DistributionController::class, 'ValiderCode'])->name('ValiderCodeDistribution');
+
+Route::get('/Reclamations',[DemandesController::class, 'Reclamations'])->name('Reclamations');
+Route::get('/ChangementRIB',[DemandesController::class, 'ChangementRIB'])->name('ChangementRIB');
+Route::get('/demandesRetour',[DemandesController::class, 'demandesRetour'])->name('demandesRetour');
+Route::post('/newDemande',[DemandesController::class, 'store'])->name('newDemande');
+Route::post('/TraiterDemande',[DemandesController::class, 'traiter'])->name('TraiterDemande');

@@ -4,7 +4,7 @@
 active
 @endsection
 @section('content')
-<div class="container">
+<div class="m-4">
     @if (Session::get('success'))
     <div class="alert alert-success">
         {{ Session::get('success') }}
@@ -106,7 +106,7 @@ active
                                                             <option value="Ramasse">Ramasse</option>
                                                             <option value="En Distribution">En Distribution</option>
                                                             <option value="Livré">Livré</option>
-                                                            <option value="En Retour">En Retour</option>
+                                                            <option value="annulé">annulé</option>
                                                             <option value="Refusé">Refusé</option>
                                                             <option value="Reporté">Reporté</option>
                                                             <option value="Pas de réponse">Pas de réponse</option>

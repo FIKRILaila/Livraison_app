@@ -21,6 +21,7 @@ class CreateColisTable extends Migration
             $table->string('telephone');
             $table->string('adresse');
             $table->string('commentaire')->nullable();
+            $table->boolean('envoyer')->default(false);
             $table->string('quartier');
             $table->integer('prix');
             $table->boolean('ouvrir');

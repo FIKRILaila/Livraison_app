@@ -261,22 +261,29 @@ class LivraisonController extends Controller
         ->select('colis.*', 'line_bons.*', 'bons.*')
         ->get();
         $html = '<!DOCTYPE html>
-        <html>
+        <html lang="en">
         <head>
-        <style>
-        span{
-            font-weight: bold;
-        }
-        .border{
-            border: 2px dashed black;
-            display : inline-block;
-            width:45%;
-            margin: 10px;
-        }
-        </style>
+            <meta charset="UTF-8">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            
+            <title>Stickers</title>
+            <style>
+                body{
+                    font-family: arial, sans-serif;
+                }
+                span{
+                    font-weight: bold;
+                }
+                .border{
+                    border: 2px dashed black;
+                    display : inline-block;
+                    width:35%;
+                    margin: 1%;
+                }
+                </style>
         </head>
         <body>';
-         // <h2 style="width:30%; margin-top:0%; display:inline-block;">Logo</h2>
         foreach ($bon_info as $info){
             $vendeur = User::findOrFail($info->client_id);
             $ville = Ville::findOrFail($info->ville_id);
@@ -290,34 +297,33 @@ class LivraisonController extends Controller
                             </div>
                             <hr>
                             <p style="width:70%; margin-top:1%; display:inline-block;"><span>Vendeur:</span>'.$vendeur->nomMagasin.' <br> ('.$vendeur->phone.') <br> <span>Date:</span>'.$info->created_at.'</p>
-                            <img style="width:30%; margin-top:1%; display:inline-block;" id="image" src="/images/'.Auth::user()->logo.'" alt="le logo " >
+                            <h2 style="width:30%; margin-top:0%; display:inline-block;">Logo</h2>
                             <hr>
                             <div>
                                 <p>
                                     <span>Destinataire:</span>'.$info->destinataire.'<br>
                                     <span>Téléphone:</span>'.$info->telephone.'<br>
-                                    <span>Ville:</span>'.$ville->ville.'<br>
+                                    <span>Ville: '.$ville->ville.'</span><br>
                                     <span>Adresse:</span>'.$info->adresse.'
                                 </p>
                             </div>
-                        <div style="margin:1% 0">';
-                        if($info->ouvrir){
-                            $html .='<p style="width:65%; display:inline-block;">Vous Pouvez ouvrir le colis</p>';
-                        }else{
-                            $html .='<p <p style="width:65%; display:inline-block;">Avant d\'ouvrir le colis veuillez contacter le vendeur.</p>';
-                        }
-                        if($info->fragile){
-                            $html.= '<div style="padding:1%; margin-top:1%; color:rgb(160, 10, 10);width:30%; display:inline-block; border: 2px solid rgb(160, 10, 10);">
-                            <h3 style="margin:0 0 1% 2%">FRAGILE</h3>
+                            <div style="margin:1% 0">';
+                            if($info->ouvrir){
+                                $html .='<p style="width:65%; display:inline-block;">Vous Pouvez ouvrir le colis</p>';
+                            }else{
+                                $html .='<p style="width:65%; display:inline-block;">Avant d\'ouvrir le colis veuillez contacter le vendeur.</p>';
+                            }
+                            if($info->fragile){
+                                $html.= '<div style="padding:1%; margin-top:1%; color:rgb(160, 10, 10);width:30%; display:inline-block; border: 2px solid rgb(160, 10, 10);">
+                                <h3 style="margin:0 0 1% 2%">FRAGILE</h3></div>
+                                </div>';
+                            }else{
+                                $html.='</div>';
+                            }
+                            $html.='
+                            <div style="border: 2px solid black; width:100%;">
+                                <h3 style="margin:1% 0 1% 60%;">Crbt:'.$info->prix.' DH</h3>
                             </div>
-                            </div>';
-                        }else{
-                            $html.='</div>';
-                        }
-                        $html.='
-                        <div style="border: 2px solid black; width:100%;">
-                            <h3 style="margin:1% 0 1% 60%;">Crbt:'.$info->prix.' DH</h3>
-                        </div>
                         </div>
                     </div>';
         }
