@@ -12,6 +12,7 @@ class Bon extends Model
         'client_id',
         'livreur_id',
         'region_id',
+        'magasin_retour',
         'ref',
         'type',
         'etat'

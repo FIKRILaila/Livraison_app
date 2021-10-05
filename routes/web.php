@@ -14,6 +14,7 @@ use App\Http\Controllers\DistributionController;
 use App\Http\Controllers\EnvoiController;
 use App\Http\Controllers\RetourController;
 use App\Http\Controllers\DemandesController;
+use App\Http\Controllers\RetourClientController;
 
 /*
 |--------------------------------------------------------------------------
@@ -45,6 +46,12 @@ Route::get('/valider_envoi', [EnvoiController::class, 'valider'])->name('EnvoiVa
 Route::post('/ValiderCodeEnvoi',[EnvoiController::class, 'ValiderCode'])->name('ValiderCodeEnvoi');
 Route::get('/BonsDenvoie', [EnvoiController::class, 'index'])->name('Envoi');
 Route::get('/editEnvoi',[EnvoiController::class, 'editEnvoi'])->name('editEnvoi');
+
+Route::post('/newRetourClient',[RetourClientController::class, 'newRetourClient'])->name('newRetourClient');
+Route::post('/RetourClientCode',[RetourClientController::class, 'store'])->name('RetourClientCode');
+Route::post('/valider_retour_client', [RetourClientController::class, 'valider'])->name('RetourClientValider');
+Route::get('/BonsRetourClient', [RetourClientController::class, 'index'])->name('RetourClient');
+Route::post('/editRetourClient',[RetourClientController::class, 'editRetourClient'])->name('editRetourClient');
 
 
 Route::get('/editRetour',[RetourController::class, 'editRetour'])->name('editRetour');

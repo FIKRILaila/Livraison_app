@@ -49,16 +49,17 @@ active
                 <thead>
                     <tr>
                         @if (Auth::user()->role == 'admin')
-                        <th>Message</th>
+                        <th>type</th>
                         <th>Par</th>
                         <th>Date</th>
                         <th>Actions</th>
                         @endif
 
                         @if (Auth::user()->role == 'client')
-                        <th>Message</th>
+                        <th>type</th>
                         <th>Date</th>
                         <th>Etat</th>
+                        <th>Actions</th>
                         @endif
                     </tr>
                 </thead>
@@ -66,29 +67,49 @@ active
                     @foreach ($demandes as $demande) 
                     <tr>
                         @if (Auth::user()->role == 'admin')
-                        <td>{{ $demande->message }}</td>
+                        <td>Demande de Retour</td>
                         <td>{{ $demande->nomComplet }}</td>
                         <td>{{$demande->created_at}}</td>
-                        <td>
-                            <form action="{{route('TraiterDemande')}}" method="post">
-                                @csrf
-                                <input type="hidden" name="demande_id" value="{{$demande->id}}">
-                                <button type="submit" class="btn btn-success">traiter</button>
-                            </form>
-                        </td>
                         @endif
-
+                        
                         @if (Auth::user()->role == 'client')
-                        <td>{{ $demande->message }}</td>
+                        <td>Demande de Retour</td>
                         <td>{{$demande->created_at}}</td>
                         <td>
                             @if ($demande->traiter)
-                                <p class="text-success">Déja Traiter</p>
+                            <p class="text-success font-weight-bold">Déja Traiter</p>
                             @else
-                                <p class="text-danger">En cours de traitement</p>
+                            <p class="text-danger font-weight-bold">En cours de traitement</p>
                             @endif
                         </td>
                         @endif
+                        <td class="d-flex">
+                            @if (Auth::user()->role == 'admin')
+                            <form action="{{route('TraiterDemande')}}" method="post">
+                                @csrf
+                                <input type="hidden" name="demande_id" value="{{$demande->id}}">
+                                <button type="submit" class="btn btn-success"><i class="fas fa-check"></i></button>
+                            </form>
+                            @endif
+                            <button type="button" class="btn btn-light" data-toggle="modal" data-target="{{'#model_'.$demande->id}}">
+                                <i class="fas fa-info-circle"></i>
+                            </button>
+                            <div class="modal fade" id="{{'model_'.$demande->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLongTitle ">Demande de Retour  @if (Auth::user()->role == 'admin') par : {{ $demande->nomComplet }} @endif</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p><span class="font-weight-bold">Message :</span><br>{{$demande->message}}</p>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                        </td>
                     </tr>
                     @endforeach
                 </tbody>

@@ -41,10 +41,12 @@ class ColisController extends Controller
         ->join('bons','bons.id','=','line_bons.bon_id')
         ->where('bons.type','=','Distribution')
         ->where('colis.etat','=','En Distribution')
+        ->orWhere('colis.etat','=','Reporté')
         ->where('bons.livreur_id','=',Auth::id())
         ->select('villes.*','colis.*','users.nomMagasin')
         ->orderBy('colis.created_at', 'DESC')->get();
-        return view('ColisLivreur')->with('colis',$colis);
+        $historique = Historique::join('users','users.id','=','historiques.par')->select('users.nomComplet','historiques.*')->get();
+        return view('ColisLivreur')->with(['colis'=>$colis,'historique'=>$historique]);
     }
     /**
      * Show the form for creating a new resource.
@@ -133,6 +135,11 @@ class ColisController extends Controller
                 'etat' => $request->input('etat')
             ]);
         }
+        $historique =Historique::create([
+            'etat_h' => $request->input('etat'),
+            'colis_id' => $colis->id,
+            'par' =>Auth::id()
+            ]);
         if($colis){
             return back()->with('success','etat modifié avec succès');
         }

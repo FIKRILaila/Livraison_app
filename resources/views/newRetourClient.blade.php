@@ -1,5 +1,5 @@
 @extends('adminLte.dashboard')
-@section('Retour')
+@section('RetourClient')
 active
 @endsection
 @section('content')
@@ -14,10 +14,10 @@ active
     @endif
     <div class="card mt-4">
         <div class="card-header">
-            <h4 class="font-weight-bold m-2">Liste des Colis Annuler ou Refuser</h4>
+            <h4 class="font-weight-bold m-2">Liste des Colis Retourner</h4>
         </div>
         <div class="card-body">
-            <table id="attente" class="display">
+            <table id="retourner" class="display">
                 <thead>
                     <tr>
                         <th>Code d'Envoie</th>
@@ -60,7 +60,7 @@ active
     </div>
     <div class="card">
         <div class="m-4">
-            <form action="{{route('RetourCode')}}" method="post" class="row">
+            <form action="{{route('RetourClientCode')}}" method="post" class="row">
                 @csrf
                 <input type="hidden" name="bon_id" value="{{$bon->id}}">
                 <div class="row col-md-10">
@@ -79,7 +79,7 @@ active
             <h4 class="font-weight-bold m-2">Liste des Colis Ajouter</h4>
         </div>
         <div class="m-4">
-            <table id="retour" class="display">
+            <table id="bons" class="display">
                 <thead>
                     <tr>
                         <th>Code Suivi</th>
@@ -115,10 +115,10 @@ active
 @section('script')
     <script>
         $(document).ready( function () {
-            $('#attente').DataTable();
+            $('#retourner').DataTable();
         });
         $(document).ready( function () {
-            $('#retour').DataTable();
+            $('#bons').DataTable();
         });
     </script>
 @endsection

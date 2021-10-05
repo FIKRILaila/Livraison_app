@@ -291,6 +291,14 @@
                   </p>
                 </a>
               </li> 
+              <li class="nav-item has-treeview menu-open">
+                <a href="{{ route('RetourClient') }}" class="nav-link @yield('RetourClient')">
+                  <i class="nav-icon fas fa-cubes"></i>
+                  <p>
+                    Bons de Retour Client
+                  </p>
+                </a>
+              </li>
 
 
               {{-- <li class="nav-item has-treeview menu-open">

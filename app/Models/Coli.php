@@ -21,6 +21,8 @@ class Coli extends Model
         'prix',
         'etat',
         'ouvrir',
+        'retourner',
+        'envoyer',
         'fragile',
         'change',
         'client_id',

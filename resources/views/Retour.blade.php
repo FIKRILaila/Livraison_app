@@ -14,7 +14,7 @@ active
     @endif
     <div class="card mt-4">
         <div class="card-header">
-            <h4 class="font-weight-bold m-2">Liste des Colis a Distribuer</h4>
+            <h4 class="font-weight-bold m-2">Liste des Colis a retourner</h4>
         </div>
         <div class="card-body">
             <table id="attente" class="display">
@@ -79,7 +79,7 @@ active
 
     <div class="card mt-4">
         <div class="card-header">
-            <h4 class="font-weight-bold m-2">Liste des Bons d'Envoie</h4>
+            <h4 class="font-weight-bold m-2">Liste des Bons de retour</h4>
         </div>
         <div class="card-body">
             <table id="Retour" class="display">

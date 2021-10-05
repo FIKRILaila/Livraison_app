@@ -45,7 +45,8 @@ class HomeController extends Controller
             ->where('bons.livreur_id','=',Auth::id())
             ->select('villes.*','colis.*','users.nomMagasin')
             ->orderBy('colis.created_at', 'DESC')->get();
-            return view('ColisLivreur')->with('colis',$colis);
+            $historique = Historique::join('users','users.id','=','historiques.par')->select('users.nomComplet','historiques.*')->get();
+            return view('ColisLivreur')->with(['colis'=>$colis,'historique'=>$historique]);
         }else{
             return view('home');
         }

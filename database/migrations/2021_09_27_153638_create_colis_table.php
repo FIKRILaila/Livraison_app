@@ -22,6 +22,7 @@ class CreateColisTable extends Migration
             $table->string('adresse');
             $table->string('commentaire')->nullable();
             $table->boolean('envoyer')->default(false);
+            $table->boolean('retourner')->default(false);
             $table->string('quartier');
             $table->integer('prix');
             $table->boolean('ouvrir');
@@ -29,7 +30,7 @@ class CreateColisTable extends Migration
             $table->boolean('change');
             $table->boolean('paye');
             $table->string('etat');
-            $table->timestamp('reported_at')->nullable();
+            $table->date('reported_at')->nullable();
             $table->unsignedBigInteger('ville_id');
             $table->foreign('ville_id')->references('id')->on('villes')->ondelete('cascade');
             $table->unsignedBigInteger('client_id');

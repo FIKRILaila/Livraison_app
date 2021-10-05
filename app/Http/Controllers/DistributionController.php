@@ -20,6 +20,7 @@ class DistributionController extends Controller
         ->join('users','users.id','=','colis.client_id')
         ->join('regions','regions.id','=','villes.region_id')
         ->where('colis.etat','=','Reçu')
+        ->orWhere('colis.reported_at','=',date('Y-m-d',time()))
         ->select('villes.*','colis.*','users.nomMagasin','regions.region')
         ->orderBy('colis.created_at', 'DESC')->get();
         $colis =Coli::join('line_bons','colis.id',"=","line_bons.colis_id")->select('line_bons.id as bon','line_bons.valide as valide','line_bons.bon_id as bon_id','colis.*')->get();
@@ -29,7 +30,9 @@ class DistributionController extends Controller
         $bons =Bon::where('type', '=','Distribution')
         ->where('livreur_id', '=',Auth::id())
         ->get();
-        $colis =Coli::join('line_bons','colis.id',"=","line_bons.colis_id")->select('line_bons.id as bon','line_bons.valide as valide','line_bons.bon_id as bon_id','colis.*')->get();
+        $colis =Coli::join('line_bons','colis.id',"=","line_bons.colis_id")
+        ->select('line_bons.id as bon','line_bons.valide as valide','line_bons.bon_id as bon_id','colis.*')
+        ->get();
         return view('DistributionLivreur')->with(['bons'=>$bons,'colis'=>$colis]);
     }
     public function newDistribution(request $request){
@@ -63,6 +66,7 @@ class DistributionController extends Controller
         ->join('regions','regions.id','=','villes.region_id')
         ->select('villes.*','colis.*','users.nomMagasin')
         ->where('colis.etat','=','Ramasse')
+        ->orWhere('colis.reported_at','=',date('Y-m-d',time()))
         ->where('regions.id','=',$bon->region_id)
         ->orderBy('colis.created_at', 'DESC')->get();
 
@@ -91,6 +95,7 @@ class DistributionController extends Controller
         ->join('regions','regions.id','=','villes.region_id')
         ->select('villes.*','colis.*','users.nomMagasin')
         ->where('colis.etat','=','Reçu')
+        ->orWhere('colis.reported_at','=',date('Y-m-d',time()))
         ->where('regions.id','=',$bon->region_id)
         ->orderBy('colis.created_at', 'DESC')->get();
         return view('newDistribution')->with(['bon'=>$bon,'colis'=>$colis,'livreurs'=>$livreurs,'Attente'=>$Attente]);
@@ -118,6 +123,7 @@ class DistributionController extends Controller
         ->join('regions','regions.id','=','villes.region_id')
         ->select('villes.*','colis.*','users.nomMagasin')
         ->where('colis.etat','=','Reçu')
+        ->orWhere('colis.reported_at','=',date('Y-m-d',time()))
         ->where('regions.id','=',$bon->region_id)
         ->orderBy('colis.created_at', 'DESC')->get();
         // return redirect()->route('editDistribution')->with(['bon'=>$bon,'colis'=>$colis,'livreurs'=>$livreurs,'Attente'=>$Attente]);
@@ -138,23 +144,22 @@ class DistributionController extends Controller
                 }
             }
             if($exist == false){
-                    foreach($colis as $coli){
-                        Historique::create([
-                            'etat_h' => 'En Distribution',
-                            'colis_id' => $col->id,
-                            'par'=>Auth::id()
-                        ]);
-                        Line_bon::create([
-                            'colis_id' => $col->id,
-                            'bon_id' => $bon->id
-                        ]);
-                        Coli::where('id','=',$col->id)->update([
-                            'etat' => 'En Distribution'
-                        ]);
-                    }
+                foreach($colis as $coli){
+                    Historique::create([
+                        'etat_h' => 'En Distribution',
+                        'colis_id' => $col->id,
+                        'par'=>Auth::id()
+                    ]);
+                    Line_bon::create([
+                        'colis_id' => $col->id,
+                        'bon_id' => $bon->id
+                    ]);
+                    Coli::where('id','=',$col->id)->update([
+                        'etat' => 'En Distribution'
+                    ]);
+                }
             }
         }
-
         $colis =Coli::join('villes','colis.ville_id',"=","villes.id")
         ->join('line_bons','line_bons.colis_id','=','colis.id')
         ->join('bons','bons.id','=','line_bons.bon_id')
@@ -173,15 +178,19 @@ class DistributionController extends Controller
         ->join('regions','regions.id','=','villes.region_id')
         ->select('villes.*','colis.*','users.nomMagasin')
         ->where('colis.etat','=','Reçu')
+        ->orWhere('colis.reported_at','=',date('Y-m-d',time()))
         ->where('regions.id','=',$bon->region_id)
         ->orderBy('colis.created_at', 'DESC')->get();
         return view('newDistribution')->with(['bon'=>$bon,'colis'=>$colis,'livreurs'=>$livreurs,'Attente'=>$Attente]);
     }
     public function valider(Request $request){
+        
         $bon = Bon::where('id',"=",$request->input('bon_id'))->update([
             'etat'=>'Enregistré',
             'updated_at'=> date('Y-m-d H:i:s', time())
         ]);
-            return redirect()->route('Distribution');
+            // return redirect()->route('Distribution');
+            return back()->with('success', 'Votre bon est valide avec Succès');
+
     }
 }

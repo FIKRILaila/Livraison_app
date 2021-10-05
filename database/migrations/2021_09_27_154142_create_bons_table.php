@@ -22,6 +22,8 @@ class CreateBonsTable extends Migration
             $table->foreign('region_id')->references('id')->on('regions')->ondelete('cascade');
             $table->unsignedBigInteger('client_id');
             $table->foreign('client_id')->references('id')->on('users')->ondelete('cascade');
+            $table->unsignedBigInteger('magasin_retour')->nullable();
+            $table->foreign('magasin_retour')->references('id')->on('users')->ondelete('cascade');
             $table->unsignedBigInteger('livreur_id')->nullable();
             $table->foreign('livreur_id')->references('id')->on('users')->ondelete('cascade');
             $table->timestamp('created_at')->useCurrent();
