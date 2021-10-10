@@ -40,6 +40,7 @@ class ReceptionController extends Controller
         ->join('line_bons','line_bons.colis_id','=','colis.id')
         ->join('bons','bons.id','=','line_bons.bon_id')
         ->where('line_bons.bon_id','=',$bon->id)
+        ->select('colis.*','villes.ville')
         ->get();
         return view('newReception')->with(['bon'=>$bon,'colis'=>$colis]);
     }
@@ -49,6 +50,7 @@ class ReceptionController extends Controller
         ->join('line_bons','line_bons.colis_id','=','colis.id')
         ->join('bons','bons.id','=','line_bons.bon_id')
         ->where('line_bons.bon_id','=',$bon->id)
+        ->select('colis.*','villes.ville')
         ->get();
         return view('newReception')->with(['bon'=>$bon,'colis'=>$colis]);
     }
@@ -103,6 +105,7 @@ class ReceptionController extends Controller
         ->join('line_bons','line_bons.colis_id','=','colis.id')
         ->join('bons','bons.id','=','line_bons.bon_id')
         ->where('line_bons.bon_id','=',$bon->id)
+        ->select('colis.*','villes.ville')
         ->get();
         return view('newReception')->with(['bon'=>$bon,'colis'=>$colis]);
     }

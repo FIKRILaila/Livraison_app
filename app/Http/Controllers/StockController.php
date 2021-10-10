@@ -16,7 +16,9 @@ class StockController extends Controller
     public function index()
     {   
         $articles = Article::where('client_id', '=', Auth::id())->get();
-        $stock =Stock::join('articles','articles.id','=','stocks.article_id')->select('articles.*','stocks.*')->orderBy('stocks.created_at', 'DESC')->get(); ;
+        $stock =Stock::join('articles','articles.id','=','stocks.article_id')
+        ->where('articles.client_id', '=', Auth::id())
+        ->select('articles.*','stocks.*')->orderBy('stocks.created_at', 'DESC')->get(); ;
         return view('stock')->with(['stock'=>$stock,'articles'=>$articles]);
     }
 
@@ -27,8 +29,7 @@ class StockController extends Controller
      */
     public function create()
     {
-        $articles = Article::where('client_id', '=', Auth::id())->get();
-        return view('nouveauStock')->with('articles',$articles);
+        
     }
 
     /**

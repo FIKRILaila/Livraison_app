@@ -67,6 +67,7 @@ Route::get('/toutColis', [ColisController::class, 'toutColis'])->name('toutColis
 Route::get('/ColisLivreur', [ColisController::class, 'ColisLivreur'])->name('ColisLivreur');
 Route::get('addColis', [ColisController::class, 'create'])->name('newColis');
 Route::post('/store-colis', [ColisController::class, 'store'])->name('storeColis');
+Route::post('/changer-colis', [ColisController::class, 'ChangerColis'])->name('ChangerColis');
 Route::post('/edit-colis', [ColisController::class, 'update'])->name('editColis');
 Route::post('/editLivreur', [ColisController::class, 'update_etat'])->name('editLivreur');
 
@@ -76,10 +77,8 @@ Route::get('/Regions&Villes', [VillesController::class, 'index'])->name('villes'
 Route::post('/addVille', [VillesController::class, 'store'])->name('newVille');
 
 Route::get('/stock',[StockController::class, 'index'])->name('stock');
-Route::get('/nouveauStock',[StockController::class, 'create'])->name('nouveauStock');
 Route::post('/storeStock',[StockController::class, 'store'])->name('storeStock');
 
-Route::get('/article',[ArticlesController::class, 'create'])->name('article');
 Route::post('/add-article',[ArticlesController::class, 'store'])->name('storeArticle');
 
 Route::get('/clients',[UsersController::class, 'clients'])->name('clients');
@@ -108,6 +107,7 @@ Route::post('/ValiderCodeDistribution',[DistributionController::class, 'ValiderC
 
 Route::get('/Reclamations',[DemandesController::class, 'Reclamations'])->name('Reclamations');
 Route::get('/ChangementRIB',[DemandesController::class, 'ChangementRIB'])->name('ChangementRIB');
+Route::get('/ChangementColis',[DemandesController::class, 'ChangementColis'])->name('ChangementColis');
 Route::get('/demandesRetour',[DemandesController::class, 'demandesRetour'])->name('demandesRetour');
 Route::post('/newDemande',[DemandesController::class, 'store'])->name('newDemande');
 Route::post('/TraiterDemande',[DemandesController::class, 'traiter'])->name('TraiterDemande');

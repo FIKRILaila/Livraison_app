@@ -84,11 +84,15 @@ active
                         @endif
                         <td class="d-flex">
                             @if (Auth::user()->role == 'admin')
+                            @if ($demande->traiter)
+                            <p class="text-info font-weight-bold">Déja Traiter</p>
+                            @else
                             <form action="{{route('TraiterDemande')}}" method="post">
                                 @csrf
                                 <input type="hidden" name="demande_id" value="{{$demande->id}}">
                                 <button type="submit" class="btn btn-success"><i class="fas fa-check"></i></button>
                             </form>
+                            @endif
                             @endif
                             <button type="button" class="btn btn-light" data-toggle="modal" data-target="{{'#model_'.$demande->id}}">
                                 <i class="fas fa-info-circle"></i>

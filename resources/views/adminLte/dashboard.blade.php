@@ -299,38 +299,6 @@
                   </p>
                 </a>
               </li>
-
-
-              {{-- <li class="nav-item has-treeview menu-open">
-                <a href="{{ route('stock') }}" class="nav-link @yield('stock')">
-                  <i class="nav-icon fas fa-cubes"></i>
-                  <p>
-                    Gestion de Stock
-                    <i class="right fas fa-angle-left"></i>
-                  </p>
-                </a>
-                <ul class="nav nav-treeview">
-                  <li class="nav-item">
-                    <a href="{{ route('article') }}" class="nav-link @yield('article')">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Nouveau Article</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="{{ route('nouveauStock') }}" class="nav-link  @yield('nouveauStock')">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Nouveau Stock</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="{{ route('stock') }}" class="nav-link @yield('stock_actu')">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Stock Actuel</p>
-                    </a>
-                  </li>
-                  
-                </ul>
-              </li>  --}}
               @endif
               @if (Auth::user()->role == 'admin' or Auth::user()->role == 'client')
               <li class="nav-item has-treeview menu-open">
@@ -359,6 +327,12 @@
                     <a href="{{ route('ChangementRIB') }}" class="nav-link @yield('RIB')">
                       <i class="far fa-circle nav-icon"></i>
                       <p>Changement de RIB</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="{{ route('ChangementColis') }}" class="nav-link @yield('ChangementColis')">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Changement de Colis</p>
                     </a>
                   </li>
                 </ul>

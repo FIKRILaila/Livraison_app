@@ -24,7 +24,7 @@ class Coli extends Model
         'retourner',
         'envoyer',
         'fragile',
-        'change',
+        'remplacer',
         'client_id',
         'reported_at'
     ];

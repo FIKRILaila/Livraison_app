@@ -5,7 +5,7 @@ active
 @section('content')
 
 @if (Auth::user()->role == 'client')
-<div class="container">
+<div class="m-4">
     <div class="mt-4 card col-md-12">
             <div class="m-4">
                 <table id="livraison" class="display">
@@ -59,11 +59,11 @@ active
                                             <table class="table">
                                                 <thead>
                                                 <tr>
-                                                    <th scope="col">#</th>
+                                                    {{-- <th scope="col">#</th> --}}
                                                     <th scope="col">Destinataire</th>
                                                     <th scope="col">Téléphone</th>
-                                                    <th scope="col">Code Barre</th>
                                                     <th scope="col">Etat</th>
+                                                    <th scope="col">Code Barre</th>
                                                 </tr>
                                                 </thead>
                                                 <tbody>
@@ -71,21 +71,21 @@ active
                                                     @if ($ele->client_id === Auth::user()->id)
                                                     @if ($ele->bon_id === $item->id)
                                                         <tr>
-                                                            <th scope="row">{{ $ele->bon }}</th>
+                                                            {{-- <th scope="row">{{ $ele->bon }}</th> --}}
                                                             <td>{{$ele->destinataire }}</td>
                                                             <td>{{$ele->telephone }}</td>
+                                                            <td>{{$ele->etat}}</td>
                                                             <td>
                                                                 @php
                                                                     echo $ele->code_bar."<span class=\"font-weight-bold\">".$ele->code."</span>";
                                                                 @endphp
                                                             </td>
-                                                            <td>{{$ele->etat}}</td>
                                                                 {{-- @if ($ele->val == false)
                                                                     <button class="btn-success btn">Valider</button>
                                                                 @else
                                                                     echo "Déjà valider"
                                                                 @endif --}}
-                                                            </td>
+                                                            {{-- </td> --}}
                                                         </tr>
                                                     @endif
                                                     @endif

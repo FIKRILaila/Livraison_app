@@ -84,7 +84,7 @@ active
                 </div>
                 <div class="form-group mt-4 mb-0 d-flex justify-content-end">
                     <div class="mr-2">
-                        <a href="{{route('article')}}" class="btn btn-secondary">{{ __('Annuler') }}</a>
+                        <a href="{{route('stock')}}" class="btn btn-secondary">{{ __('Annuler') }}</a>
                     </div>
                     <div>
                         <button type="submit" class="btn btn-primary">{{ __('Enregistrer') }}</button>
@@ -119,7 +119,7 @@ active
                     </div>
                     <div class="form-group mt-4 mb-0 d-flex justify-content-end">
                         <div class="mr-2">
-                            <a href="{{route('nouveauStock')}}" class="btn btn-secondary">{{ __('Annuler') }}</a>
+                            <a href="{{route('stock')}}" class="btn btn-secondary">{{ __('Annuler') }}</a>
                         </div>
                         <div>
                             <button type="submit" class="btn btn-primary">{{ __('Enregistrer') }}</button>
@@ -145,7 +145,7 @@ active
           <tbody>
             @foreach ($stock as $s)   
               <tr>
-                <td  class="col-md-2"><img src="/images/{{$s->image}}" alt="image"  class="col-md-10"></td>
+                <td  class="col-md-2"><img src="/images/{{$s->image}}" alt="image"  class="col-md-6"></td>
                 <td>{{$s->name}}</td>
                 <td>{{$s->type}}</td>
                 <td>{{$s->quantite}}</td>

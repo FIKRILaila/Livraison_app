@@ -94,26 +94,26 @@
                                             <form method="POST" action="{{ route('editLivreur') }}">
                                                 @csrf
                                                 <input type="hidden" name="colis_id" value="{{$item->id}}">
-                                                    <div class="form-group col-md-12 row">
-                                                        <label for="etat" class="col-md-2 col-form-label">{{ __('Status') }}</label>
-                                                        <div class="col-md-10">
-                                                            <select name="etat" id="etat" class="form-control" value="{{ old('etat') }}" required  autofocus autocomplete="on">
-                                                                <option value="{{$item->etat}}">{{$item->etat}}</option>
-                                                                <option value="annulé">annulé</option>
-                                                                <option value="Refusé">Refusé</option>
-                                                                <option value="Reporté">Reporté</option>
-                                                                <option value="Pas de Réponse 1">Pas de Réponse 1</option>
-                                                                <option value="Pas de Réponse 2">Pas de Réponse 2</option>
-                                                                <option value="Pas de Réponse 3">Pas de Réponse 3</option>
-                                                            </select>
-                                                        </div>
+                                                <div class="form-group col-md-12 row">
+                                                    <label for="etat" class="col-md-2 col-form-label">{{ __('Status') }}</label>
+                                                    <div class="col-md-10">
+                                                        <select name="etat" id="etat" class="form-control" value="{{ old('etat') }}" required  autofocus autocomplete="on">
+                                                            <option value="{{$item->etat}}">{{$item->etat}}</option>
+                                                            <option value="Annulé">Annulé</option>
+                                                            <option value="Refusé">Refusé</option>
+                                                            <option value="Reporté">Reporté</option>
+                                                            <option value="Pas de Réponse 1">Pas de Réponse 1</option>
+                                                            <option value="Pas de Réponse 2">Pas de Réponse 2</option>
+                                                            <option value="Pas de Réponse 3">Pas de Réponse 3</option>
+                                                        </select>
                                                     </div>
-                                                    <div class="form-group col-md-12 " id="reporte" style="display:none;">
-                                                        <label for="reported_at" class="col-md-2 col-form-label">{{ __('Reporté à : ') }}</label>
-                                                        <div class="col-md-10">
-                                                            <input type="date" name="reported_at" id="reported_at" class="form-control" value="{{ old('reported_at') }}" autofocus autocomplete="on">
-                                                        </div>
+                                                </div>
+                                                <div class="form-group col-md-12 " id="reporte" style="display:none;">
+                                                    <label for="reported_at" class="col-md-2 col-form-label">{{ __('Reporté à : ') }}</label>
+                                                    <div class="col-md-10">
+                                                        <input type="date" name="reported_at" id="reported_at" class="form-control" value="{{ old('reported_at') }}" autofocus autocomplete="on">
                                                     </div>
+                                                </div>
                                                 <div class="form-group row mb-0 offset-md-8">
                                                     <div class="mr-2">
                                                         <a href="{{route('ColisLivreur')}}" class="btn btn-danger">{{ __('Annuler') }}</a>

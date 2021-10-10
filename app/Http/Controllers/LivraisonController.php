@@ -266,11 +266,11 @@ class LivraisonController extends Controller
             <meta charset="UTF-8">
             <meta http-equiv="X-UA-Compatible" content="IE=edge">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            
             <title>Stickers</title>
             <style>
                 body{
                     font-family: arial, sans-serif;
+                    font-size: 10px;
                 }
                 span{
                     font-weight: bold;
@@ -278,8 +278,9 @@ class LivraisonController extends Controller
                 .border{
                     border: 2px dashed black;
                     display : inline-block;
-                    width:35%;
-                    margin: 1%;
+                    width:338px;
+                    height:310px;
+                    margin : 5px
                 }
                 </style>
         </head>

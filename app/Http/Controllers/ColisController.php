@@ -19,7 +19,7 @@ class ColisController extends Controller
         $colis = Coli::where('client_id', '=',Auth::id())
         ->join('villes','villes.id','=','colis.ville_id')
         ->where('colis.etat','=','Nouveau Colis')
-        ->select('villes.*','colis.*')
+        ->select('villes.ville','colis.*')
         ->orderBy('colis.created_at', 'DESC')
         ->get();
         
@@ -39,14 +39,73 @@ class ColisController extends Controller
         ->join('users','users.id','=','colis.client_id')
         ->join('line_bons','line_bons.colis_id','=','colis.id')
         ->join('bons','bons.id','=','line_bons.bon_id')
-        ->where('bons.type','=','Distribution')
+        ->where([
+            ['bons.livreur_id','=',Auth::id()],
+            ['bons.type','=','Distribution']
+        ])
         ->where('colis.etat','=','En Distribution')
-        ->orWhere('colis.etat','=','Reporté')
-        ->where('bons.livreur_id','=',Auth::id())
-        ->select('villes.*','colis.*','users.nomMagasin')
+        ->orWhere('colis.etat','=','Pas de Réponse 1')
+        ->orWhere('colis.etat','=','Pas de Réponse 2')
+        ->select('villes.ville','colis.*','users.nomMagasin')
         ->orderBy('colis.created_at', 'DESC')->get();
+
         $historique = Historique::join('users','users.id','=','historiques.par')->select('users.nomComplet','historiques.*')->get();
         return view('ColisLivreur')->with(['colis'=>$colis,'historique'=>$historique]);
+    }
+    public function ChangerColis(Request $request){
+        $colis = Coli::where('code','=', $request->input('code'))->get();
+        foreach ($colis as $col){
+            if($col->id){
+                return back()->with('fail','Code deja utiliser');
+            }
+        }
+        Coli::where('id','=', $request->input('colis_id'))->update(['etat' => 'Changement de Client']);
+        Historique::create([
+            'etat_h' => 'Changement de Client',
+            'colis_id' => $request->input('colis_id'),
+            'par' =>Auth::id()
+            ]);
+        $input = $request->all();
+        if($request->input('code')){
+            $input['code'] = $request->input('code');
+        }else{
+            $input['code'] = uniqid();
+        }
+        $input['fragile'] = $request->input('fragile') == "oui"?1:0;
+        $input['remplacer'] = $request->input('remplacer') == "oui"?1:0;
+        $input['ouvrir'] =$request->input('ouvrir') == "oui"?1:0;
+        $input['client_id'] = Auth::id();
+        $ville = Ville::where('id','=',$request->input('ville_id'))->get();
+        foreach ($ville as $v){
+            if($v->ville == "Casablanca"){
+                $input['etat'] = 'Reçu';
+            }else{
+                $input['etat'] = 'Ramasse';
+            }
+        }
+        $colis = Coli::create($input);
+
+        $generator = new Picqer\Barcode\BarcodeGeneratorHTML();
+        $barcode = $generator->getBarcode($colis->id, $generator::TYPE_CODE_128);
+        foreach($ville as $v){
+            if($v->ville == "Casablanca"){
+                $input['etat'] = 'Reçu';
+                Historique::create([
+                    'etat_h' => 'Reçu',
+                    'colis_id' => $colis->id,
+                    'par' =>Auth::id()
+                    ]);
+            }else{
+                $input['etat'] = 'Ramasse';
+                Historique::create([
+                    'etat_h' => 'Ramasse',
+                    'colis_id' => $colis->id,
+                    'par' =>Auth::id()
+                    ]);
+            }
+        }
+        $colis = Coli::where('id','=',$colis->id)->update(['code_bar'=>$barcode]);
+            return back()->with('success','Votre colis a été chzngé avec succès');
     }
     /**
      * Show the form for creating a new resource.
@@ -66,6 +125,12 @@ class ColisController extends Controller
      */
     public function store(Request $request)
     {   
+        $colis = Coli::where('code','=', $request->input('code'))->get();
+        foreach ($colis as $col){
+            if($col->id){
+                return back()->with('fail','Code deja utiliser');
+            }
+        }
         $input = $request->all();
         if($request->input('code')){
             $input['code'] = $request->input('code');
@@ -73,12 +138,12 @@ class ColisController extends Controller
             $input['code'] = uniqid();
         }
         $input['fragile'] = $request->input('fragile') == "oui"?1:0;
-        $input['ouvrir'] =$request->input('ouvrir')== "on"?1:0;
+        $input['remplacer'] = $request->input('remplacer') == "oui"?1:0;
+        $input['ouvrir'] =$request->input('ouvrir') == "oui"?1:0;
         $input['client_id'] = Auth::id();
         $input['etat'] = 'Nouveau Colis';
-        $input['change'] = false;
-        $input['paye'] = false;
-        $input['valide'] = false;
+        // $input['paye'] = false;
+        // $input['valide'] = false;
 
         $colis = Coli::create($input);
 
@@ -127,7 +192,7 @@ class ColisController extends Controller
     public function update_etat(Request $request){
         if($request->input('etat') == 'Reporté'){
             $colis = Coli::where('id','=', $request->input('colis_id'))->update([
-                'reported_at'=>date('Y-m-d H:i:s',time()),
+                'reported_at'=>$request->input('reported_at'),
                 'etat' => $request->input('etat')
             ]);
         }else{
@@ -137,7 +202,7 @@ class ColisController extends Controller
         }
         $historique =Historique::create([
             'etat_h' => $request->input('etat'),
-            'colis_id' => $colis->id,
+            'colis_id' =>$request->input('colis_id'),
             'par' =>Auth::id()
             ]);
         if($colis){
@@ -146,15 +211,10 @@ class ColisController extends Controller
     }
     public function update(Request $request)
     {
-        // $colis = Coli::where('code','=', $request->input('code'))->get();
-        // foreach ($colis as $col){
-        //     if($col->id){
-        //         return back()->with('fail','Code deja utiliser');
-        //     }
-        // }
         $input = $request->all();
         $input['fragile'] = $request->input('fragile') == "oui"?1:0;
-        $input['ouvrir'] =$request->input('ouvrir')== "on"?1:0;
+        $input['remplacer'] = $request->input('remplacer') == "oui"?1:0;
+        $input['ouvrir'] =$request->input('ouvrir')== "oui"?1:0;
         $colis = Coli::findOrFail($request->input('colis_id'))->update($input);     
         $colis = Coli::findOrFail($request->input('colis_id'));
         $historique =Historique::create([

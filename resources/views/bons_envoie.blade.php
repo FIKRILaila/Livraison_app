@@ -14,6 +14,51 @@ active
         <div class="alert alert-danger">{{ Session::get('fail') }}</div>
     @endif
     <div class="card mt-4">
+        <div class="card-header">
+            <p class="font-weight-bold m-2">Liste des Colis a envoyer</p>
+        </div>
+        <div class="card-body">
+            <table id="envoyer" class="display">
+                <thead>
+                    <tr>
+                        <th>Code d'Envoie</th>
+                        <th>Date de creation</th>
+                        <th>Téléphone</th>
+                        <th>Nom du Magasin</th>
+                        <th>Etat</th>
+                        <th>Status</th>
+                        <th>Région</th>
+                        <th>Ville</th>
+                        <th>Prix</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($Attente as $item) 
+                        {{-- @if($item->etat == 'Ramasse') --}}
+                            <tr>
+                                <td>{{$item->code}}</td>
+                                <td>{{$item->created_at}}</td>
+                                <td>{{$item->telephone}}</td>
+                                <td>{{$item->nomMagasin}}</td>
+                                <td>
+                                    @if ($item->paye == false)
+                                        Non Payé
+                                    @else
+                                        Payé
+                                    @endif
+                                </td>
+                                <td>{{$item->etat}}</td>
+                                <td>{{$item->region}}</td>
+                                <td>{{$item->ville}}</td>
+                                <td>{{$item->prix}} DH</td>
+                            </tr>
+                        {{-- @endif --}}
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="card mt-4">
         <div class="m-4">
             <form action="{{route('newEnvoi')}}" method="post" class="row">
                 @csrf
@@ -21,12 +66,14 @@ active
                     <label for="region_id" class="text-right col-md-2 col-form-label">{{ __('Region :') }}</label>
                     <select name="region_id" id="region_id" class="col-md-10 form-control" value="{{ old('region_id') }}" required  autofocus autocomplete="on">
                         <option value="region">region</option>
-                        @foreach ($regions as $r)     
+                        @foreach ($regions as $r)
+                            @if ($r->region != "Grand Casablanca")
                             <option value="{{$r->id}}">{{$r->region}}</option>
+                            @endif
                         @endforeach
                     </select>
                 </div>
-                <div class="row justify-content-end col-md-2 ml-2">
+                <div class="row col-md-2 ml-2">
                     <button type="submit" class="btn btn-info ml-4">Nouveau Bon</button>
                 </div>
             </form>
@@ -35,7 +82,7 @@ active
 
     <div class="card mt-4">
         <div class="card-header">
-            <h4 class="font-weight-bold m-2">Liste des Bons d'Envoie</h4>
+            <p class="font-weight-bold m-2">Liste des Bons d'Envoie</p>
         </div>
         <div class="card-body">
             <table id="Envoie" class="display">
@@ -125,6 +172,7 @@ active
                                                 <th scope="col">#</th>
                                                 <th scope="col">Destinataire</th>
                                                 <th scope="col">Téléphone</th>
+                                                <th scope="col">Etat</th>
                                                 <th scope="col">Code Barre</th>
                                             </tr>
                                             </thead>
@@ -135,6 +183,7 @@ active
                                                         <th scope="row">{{ $ele->bon }}</th>
                                                         <td>{{$ele->destinataire }}</td>
                                                         <td>{{$ele->telephone }}</td>
+                                                        <td>{{$ele->etat }}</td>
                                                         <td>
                                                             @php
                                                                 echo $ele->code_bar."<span class=\"font-weight-bold\">".$ele->code."</span>";

@@ -100,18 +100,29 @@ active
                                                     <div class="col-md-10">
                                                         <select name="etat" id="etat" class="form-control" value="{{ old('etat') }}" required  autofocus autocomplete="on">
                                                             <option value="{{$item->etat}}">{{$item->etat}}</option>
-                                                            <option value="Brouillon">Brouillon</option>
-                                                            <option value="En Attente">En Attente</option>
-                                                            <option value="En Ramassage">En Ramassage</option>
+                                                            <option value="Nouveau Colis">Nouveau Colis</option>
+                                                            <option value="En Attente de Rammassage">En Attente de Rammassage </option>
                                                             <option value="Ramasse">Ramasse</option>
+                                                            <option value="Expedié">Expedié</option>
+                                                            <option value="Reçu">Reçu</option>
                                                             <option value="En Distribution">En Distribution</option>
                                                             <option value="Livré">Livré</option>
                                                             <option value="annulé">annulé</option>
                                                             <option value="Refusé">Refusé</option>
                                                             <option value="Reporté">Reporté</option>
-                                                            <option value="Pas de réponse">Pas de réponse</option>
+                                                            <option value="Retourné">Retourné</option>
+                                                            <option value="Reçu Par Client">Reçu Par Client</option>
+                                                            <option value="Pas de Réponse 1">Pas de Réponse 1</option>
+                                                            <option value="Pas de Réponse 2">Pas de Réponse 2</option>
+                                                            <option value="Pas de Réponse 3">Pas de Réponse 3</option>
                                                         </select>
                                                     </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-md-12 " id="date" style="display:none;">
+                                                <label for="reported_at" class="col-md-2 col-form-label">{{ __('Reporté à : ') }}</label>
+                                                <div class="col-md-10">
+                                                    <input type="date" name="reported_at" id="reported_at" class="form-control" value="{{ old('reported_at') }}" autofocus autocomplete="on">
                                                 </div>
                                             </div>
                                             <div class="row">
@@ -241,5 +252,13 @@ active
             document.querySelector("#ville_id").value = id
             tarif.innerHTML=`${frais}`;           
         }
+        var etat = document.querySelector("#etat")
+        etat.addEventListener('change', function () {
+            if(etat.value == "Reporté") {
+                document.querySelector("#date").style.display = "block";
+            }else{
+                document.querySelector("#date").style.display = "none";
+            }
+        })
     </script>
 @endsection

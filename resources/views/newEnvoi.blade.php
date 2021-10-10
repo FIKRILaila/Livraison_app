@@ -65,12 +65,11 @@ active
                 @csrf
                 <input type="hidden" name="bon_id" value="{{$bon->id}}">
                 <div class="row col-md-10">
-                    <label for="code_suivi" class="col-md-2 col-form-label">Code Suivi * :</label>
+                    <label for="code_suivi" class="text-right col-md-2 col-form-label">Code Suivi * :</label>
                     <input type="text" name="code_suivi" class="form-control col-md-10">
                 </div>
-                <div class="row justify-content-end col-md-2 ml-2">
-                    <a href="#" class="btn btn-primary mr-2">Annuler</a>
-                    <button type="submit" class="btn btn-primary">Ajouter</button>
+                <div class="row col-md-2 ml-2">
+                    <button type="submit" class="btn btn-info">Ajouter</button>
                 </div>
             </form>
         </div>

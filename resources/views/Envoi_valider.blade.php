@@ -14,13 +14,14 @@ active
     @endif
     <div class="card mt-4">
         <div class="card-header">
-            <h4 class="font-weight-bold m-2">Liste des Colis non valide</h4>
+            <p class="font-weight-bold m-2">Liste des Colis non valide</p>
         </div>
         <div class="card-body">
             <table id="recu" class="display">
                 <thead>
                     <tr>
-                        <th>Code d'Envoie</th>
+                        <th>Code Suivi</th>
+                        <th>Destinataire</th>
                         <th>Date de creation</th>
                         <th>Téléphone</th>
                         <th>Nom du Magasin</th>
@@ -35,6 +36,7 @@ active
                         @if($item->valide == false)
                             <tr>
                                 <td>{{$item->code}}</td>
+                                <td>{{$item->destinataire}}</td>
                                 <td>{{$item->created_at}}</td>
                                 <td>{{$item->telephone}}</td>
                                 <td>{{$item->nomMagasin}}</td>
@@ -61,18 +63,18 @@ active
                 @csrf
                 <input type="hidden" name="bon_id" value="{{$bon->id}}">
                 <div class="row col-md-10">
-                    <label for="code_suivi" class="col-md-2 col-form-label">Code Suivi * :</label>
+                    <label for="code_suivi" class="col-md-2 text-right col-form-label">Code Suivi * :</label>
                     <input type="text" name="code_suivi" class="form-control col-md-10">
                 </div>
-                <div class="row justify-content-end col-md-2 ml-2">
-                    <button type="submit" class="btn btn-info ml-4">Valider</button>
+                <div class="row col-md-2 ml-2">
+                    <button type="submit" class="btn btn-info">Valider</button>
                 </div>
             </form>
         </div>
     </div>
     <div class="card">
         <div class="card-header">
-            <h4 class="font-weight-bold m-2">Liste des Colis Valider</h4>
+            <p class="font-weight-bold m-2">Liste des Colis Valider</p>
         </div>
         <div class="m-4">
             <table id="envoi" class="display">
@@ -80,10 +82,13 @@ active
                     <tr>
                         <th>Code Suivi</th>
                         <th>Destinataire</th>
-                        <th>Date de Création</th>
-                        <th>Prix</th>
-                        <th>Ville</th>
+                        <th>Date de creation</th>
+                        <th>Téléphone</th>
+                        <th>Nom du Magasin</th>
+                        <th>Etat</th>
                         <th>Status</th>
+                        <th>Ville</th>
+                        <th>Prix</th>
                         <th><input type="checkbox"></th>
                     </tr>
                 </thead>
@@ -94,9 +99,18 @@ active
                                 <td>{{$coli->code}}</td>
                                 <td>{{$coli->destinataire}}</td>
                                 <td>{{$coli->created_at}}</td>
-                                <td>{{$coli->prix}}</td>
-                                <td>{{$coli->ville}}</td>
+                                <td>{{$coli->telephone}}</td>
+                                <td>{{$coli->nomMagasin}}</td>
+                                <td>
+                                    @if ($item->paye == false)
+                                        Non Payé
+                                    @else
+                                        Payé
+                                    @endif
+                                </td>
                                 <td>{{$coli->etat}}</td>
+                                <td>{{$coli->ville}}</td>
+                                <td>{{$coli->prix}}</td>
                                 <th><input type="checkbox"></th>
                             </tr>
                         @endif

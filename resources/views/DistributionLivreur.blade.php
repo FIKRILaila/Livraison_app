@@ -26,8 +26,8 @@
                             <th>Date de création</th>
                             <th>Date d'enregistrement</th>
                             <th>Status</th>
-                            <th>Colis</th>
-                            <th>Reçu</th>
+                            {{-- <th>Colis</th>
+                            <th>Reçu</th> --}}
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -45,7 +45,7 @@
                                 @endif
                             </td>
                             <td>{{$item->etat}}</td>
-                            <td>
+                            {{-- <td>
                                 @php
                                 $c = 0;
                                 foreach ($colis as $col){
@@ -68,7 +68,7 @@
                                 }
                                 echo $r;
                                 @endphp
-                            </td>
+                            </td> --}}
                             <td class="d-flex">
                                 <button type="button" class="btn btn-light" data-toggle="modal" data-target="{{'#model_'.$item->id}}">
                                     <i class="fas fa-info-circle"></i>
@@ -89,6 +89,7 @@
                                                     <th scope="col">#</th>
                                                     <th scope="col">Destinataire</th>
                                                     <th scope="col">Téléphone</th>
+                                                    <th scope="col">Etat</th>
                                                     <th scope="col">Code Barre</th>
                                                 </tr>
                                                 </thead>
@@ -99,6 +100,7 @@
                                                             <th scope="row">{{ $ele->bon }}</th>
                                                             <td>{{$ele->destinataire }}</td>
                                                             <td>{{$ele->telephone }}</td>
+                                                            <td>{{$ele->etat }}</td>
                                                             <td>
                                                                 @php
                                                                     echo $ele->code_bar."<span class=\"font-weight-bold\">".$ele->code."</span>";

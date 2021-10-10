@@ -14,7 +14,7 @@ active
     @endif
     <div class="card mt-4">
         <div class="card-header">
-            <h4 class="font-weight-bold m-2">Liste des Colis a Distribuer</h4>
+            <p class="font-weight-bold m-2">Liste des Colis a Distribuer</p>
         </div>
         <div class="card-body">
             <table id="distribuer" class="display">
@@ -62,16 +62,16 @@ active
             <form action="{{route('newDistribution')}}" method="post" class="row">
                 @csrf
                 <div class="row col-md-10">
-                    <label for="region_id" class="text-right col-md-2 col-form-label">{{ __('Region :') }}</label>
+                    <label for="region_id" class="text-right col-md-2 col-form-label">{{ __('Région :') }}</label>
                     <select name="region_id" id="region_id" class="col-md-10 form-control @error('region_id') is-invalid @enderror" value="{{ old('region_id') }}" required  autofocus autocomplete="on">
-                        <option value="region">region</option>
+                        <option value="region">Region</option>
                         @foreach ($regions as $r)     
                             <option value="{{$r->id}}">{{$r->region}}</option>
                         @endforeach
                     </select>
                 </div>
-                <div class="row justify-content-end col-md-2 ml-2">
-                    <button type="submit" class="btn btn-info ml-4">Nouveau Bon</button>
+                <div class="row col-md-2 ml-2">
+                    <button type="submit" class="btn btn-info ">Nouveau Bon</button>
                 </div>
             </form>
         </div>
@@ -86,13 +86,14 @@ active
                     <thead>
                         <tr>
                             <th>Réf</th>
+                            <th>Région</th>
                             {{-- <th>Agence</th>
                             <th>Pour</th> --}}
                             <th>Date de création</th>
                             <th>Date d'enregistrement</th>
                             <th>Status</th>
-                            {{-- <th>Colis</th>
-                            <th>Reçu</th> --}}
+                            <th>Colis</th>
+                            {{-- <th>Reçu</th> --}}
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -100,6 +101,7 @@ active
                         @foreach ($bons as $item) 
                         <tr>
                             <td>{{ $item->ref }}</td>
+                            <td>{{ $item->region }}</td>
                             {{-- <td></td>
                             <td></td> --}}
                             <td>{{$item->created_at}}</td>
@@ -115,7 +117,7 @@ active
                                 <p class="text-center border border-warning">{{$item->etat}}</p>
                                 @endif
                             </td>
-                            {{-- <td>
+                            <td class="text-center">
                                 @php
                                 $c = 0;
                                 foreach ($colis as $col){
@@ -125,7 +127,7 @@ active
                                 }
                                 echo $c;
                                 @endphp
-                            </td> --}}
+                            </td>
                             {{-- <td>
                                 @php
                                 $r = 0;
@@ -168,9 +170,10 @@ active
                                             <table class="table">
                                                 <thead>
                                                 <tr>
-                                                    <th scope="col">#</th>
+                                                    {{-- <th scope="col">#</th> --}}
                                                     <th scope="col">Destinataire</th>
                                                     <th scope="col">Téléphone</th>
+                                                    <th scope="col">Etat</th>
                                                     <th scope="col">Code Barre</th>
                                                 </tr>
                                                 </thead>
@@ -178,9 +181,10 @@ active
                                                     @foreach ($colis as $ele)
                                                     @if ($ele->bon_id === $item->id)
                                                         <tr>
-                                                            <th scope="row">{{ $ele->bon }}</th>
+                                                            {{-- <th scope="row">{{ $ele->bon }}</th> --}}
                                                             <td>{{$ele->destinataire }}</td>
                                                             <td>{{$ele->telephone }}</td>
+                                                            <td>{{$ele->etat }}</td>
                                                             <td>
                                                                 @php
                                                                     echo $ele->code_bar."<span class=\"font-weight-bold\">".$ele->code."</span>";

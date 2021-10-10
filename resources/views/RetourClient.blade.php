@@ -12,11 +12,11 @@ active
     @if (Session::get('fail'))
         <div class="alert alert-danger">{{ Session::get('fail') }}</div>
     @endif
-    <div class="card mt-4">
+    <div class="card mt-4 col-md-12">
         <div class="card-header">
-            <h4 class="font-weight-bold m-2">Liste des Colis a Retourner</h4>
+            <p class="font-weight-bold m-2">Liste des Colis a Retourner</p>
         </div>
-        <div class="card-body">
+        <div class="m-4 card-body">
             <table id="Retourner" class="display">
                 <thead>
                     <tr>
@@ -26,7 +26,7 @@ active
                         <th>Nom du Magasin</th>
                         <th>Etat</th>
                         <th>Status</th>
-                        <th>Région</th>
+                        {{-- <th>Région</th> --}}
                         <th>Ville</th>
                         <th>Prix</th>
                     </tr>
@@ -46,7 +46,7 @@ active
                                     @endif
                                 </td>
                                 <td>{{$item->etat}}</td>
-                                <td>{{$item->region}}</td>
+                                {{-- <td>{{$item->region}}</td> --}}
                                 <td>{{$item->ville}}</td>
                                 <td>{{$item->prix}} DH</td>
                             </tr>
@@ -84,13 +84,14 @@ active
                     <thead>
                         <tr>
                             <th>Réf</th>
+                            <th>Nom de Magasin</th>
                             {{-- <th>Agence</th>
                             <th>Pour</th> --}}
                             <th>Date de création</th>
                             <th>Date d'enregistrement</th>
                             <th>Status</th>
-                            {{-- <th>Colis</th>
-                            <th>Reçu</th> --}}
+                            <th>Colis</th>
+                            {{-- <th>Reçu</th> --}}
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -98,6 +99,7 @@ active
                         @foreach ($bons as $item) 
                         <tr>
                             <td>{{ $item->ref }}</td>
+                            <td>{{ $item->nomMagasin }}</td>
                             {{-- <td></td>
                             <td></td> --}}
                             <td>{{$item->created_at}}</td>
@@ -112,6 +114,17 @@ active
                                 @else
                                 <p class="text-center border border-warning">{{$item->etat}}</p>
                                 @endif
+                            </td>
+                            <td class="text-center">
+                                @php
+                                $c = 0;
+                                foreach ($colis as $col){
+                                    if ($col->bon_id === $item->id){
+                                        $c++;
+                                    }
+                                }
+                                echo $c;
+                                @endphp
                             </td>
                             <td class="d-flex">
                                 @if ($item->etat == 'Nouveau')
@@ -142,9 +155,9 @@ active
                                             <table class="table">
                                                 <thead>
                                                 <tr>
-                                                    <th scope="col">#</th>
                                                     <th scope="col">Destinataire</th>
                                                     <th scope="col">Téléphone</th>
+                                                    <th scope="col">Etat</th>
                                                     <th scope="col">Code Barre</th>
                                                 </tr>
                                                 </thead>
@@ -152,9 +165,9 @@ active
                                                     @foreach ($colis as $ele)
                                                     @if ($ele->bon_id === $item->id)
                                                         <tr>
-                                                            <th scope="row">{{ $ele->bon }}</th>
                                                             <td>{{$ele->destinataire }}</td>
                                                             <td>{{$ele->telephone }}</td>
+                                                            <td>{{$ele->etat }}</td>
                                                             <td>
                                                                 @php
                                                                     echo $ele->code_bar."<span class=\"font-weight-bold\">".$ele->code."</span>";

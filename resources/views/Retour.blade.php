@@ -70,8 +70,8 @@ active
                         @endforeach
                     </select>
                 </div>
-                <div class="row justify-content-end col-md-2 ml-2">
-                    <button type="submit" class="btn btn-info ml-4">Nouveau Bon</button>
+                <div class="row col-md-2 ml-2">
+                    <button type="submit" class="btn btn-info ">Nouveau Bon</button>
                 </div>
             </form>
         </div>
@@ -166,9 +166,9 @@ active
                                         <table class="table">
                                             <thead>
                                             <tr>
-                                                <th scope="col">#</th>
                                                 <th scope="col">Destinataire</th>
                                                 <th scope="col">Téléphone</th>
+                                                <th scope="col">etat</th>
                                                 <th scope="col">Code Barre</th>
                                             </tr>
                                             </thead>
@@ -176,9 +176,9 @@ active
                                                 @foreach ($colis as $ele)
                                                 @if ($ele->bon_id === $item->id)
                                                     <tr>
-                                                        <th scope="row">{{ $ele->bon }}</th>
                                                         <td>{{$ele->destinataire }}</td>
                                                         <td>{{$ele->telephone }}</td>
+                                                        <td>{{$ele->etat }}</td>
                                                         <td>
                                                             @php
                                                                 echo $ele->code_bar."<span class=\"font-weight-bold\">".$ele->code."</span>";
