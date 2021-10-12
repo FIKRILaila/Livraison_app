@@ -26,6 +26,7 @@ class Coli extends Model
         'fragile',
         'remplacer',
         'client_id',
+        'article_id',
         'reported_at'
     ];
 }

@@ -63,7 +63,7 @@ active
             <form action="{{route('newEnvoi')}}" method="post" class="row">
                 @csrf
                 <div class="row col-md-10">
-                    <label for="region_id" class="text-right col-md-2 col-form-label">{{ __('Region :') }}</label>
+                    <label for="region_id" class="text-right col-md-2 col-form-label obligatoire">{{ __('Region :') }}</label>
                     <select name="region_id" id="region_id" class="col-md-10 form-control" value="{{ old('region_id') }}" required  autofocus autocomplete="on">
                         <option value="region">region</option>
                         @foreach ($regions as $r)

@@ -30,7 +30,7 @@
                     @csrf
                     <input type="hidden" name="type" value="ChangementColis">
                     <div class="row col-md-10">
-                        <label for="message" class="text-right col-md-2 control-label"> Code de Colis a changer : </label>
+                        <label for="message" class="text-right col-md-2 control-label obligatoire"> Code de Colis a changer : </label>
                         <input type="text" name="message" id="message" class="form-control col-md-10">
                     </div>
                     <div class="row col-md-2 ml-2">
@@ -92,7 +92,7 @@
                                                     <div class="form-group row col-md-6">
                                                         <label for="code" class="col-md-4 col-form-label">{{ __('Nouveau Code') }}</label>
                                                         <div class="col-md-8">
-                                                            <input id="code" type="text" class="form-control" name="code" value="" required autocomplete="on">
+                                                            <input id="code" type="text" class="form-control" name="code" value="" autocomplete="on">
                                                         </div>
                                                     </div>
                                                     <div class="form-group col-md-6 row">
@@ -247,7 +247,7 @@
                         <td>{{$demande->created_at}}</td>
                         <td class="d-flex">
                             @if ($demande->traiter)
-                                <p class="text-info font-weight-bold">Déja Traiter</p>
+                                <p class="text-info font-weight-bold">Traité</p>
                             @else
                                 <form action="{{route('TraiterDemande')}}" method="post">
                                     @csrf
@@ -263,7 +263,7 @@
                         <td>{{$demande->created_at}}</td>
                         <td>
                             @if ($demande->traiter)
-                                <p class="text-success font-weight-bold">Déja Traiter</p>
+                                <p class="text-success font-weight-bold">Traité</p>
                             @else
                                 <p class="text-danger font-weight-bold">En cours de traitement</p>
                             @endif

@@ -33,6 +33,8 @@ class CreateColisTable extends Migration
             $table->date('reported_at')->nullable();
             $table->unsignedBigInteger('ville_id');
             $table->foreign('ville_id')->references('id')->on('villes')->ondelete('cascade');
+            $table->unsignedBigInteger('article_id')->nullable();
+            $table->foreign('article_id')->references('id')->on('articles')->ondelete('cascade');
             $table->unsignedBigInteger('client_id');
             $table->foreign('client_id')->references('id')->on('users')->ondelete('cascade');
             $table->timestamp('created_at')->useCurrent();

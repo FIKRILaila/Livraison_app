@@ -37,6 +37,7 @@ class ArticlesController extends Controller
      */
     public function store(Request $request)
     {   
+        // $input = $request->all();
         if ($image = $request->file('image')){
             $destinationPath = 'images/';
             $profileImage = date('YmdHis') . "." . $image->getClientOriginalExtension();
@@ -48,8 +49,17 @@ class ArticlesController extends Controller
             'type' => $request->input('type'),
             'client_id'=> Auth::id(),
             'image'=> $input['image'],
-            'reference'=>$request->input('reference')
+            'reference'=>$request->input('reference'),
+            'variante1'=>$request->input('variante1'),
+            'valeur1'=>$request->input('valeur1'),
+            'variante2'=>$request->input('variante2'),
+            'valeur2'=>$request->input('valeur2'),
+            'variante3'=>$request->input('variante3'),
+            'valeur3'=>$request->input('valeur3'),
+            'variante4'=>$request->input('variante4'),
+            'valeur4'=>$request->input('valeur4')
         ]);
+        // $article = Article::create([$input]);
         if($article){
             return back()->with('success','Votre Article a été ajouté avec succès');
         }else{

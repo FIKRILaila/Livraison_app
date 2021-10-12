@@ -27,6 +27,23 @@ class DemandesController extends Controller
         }
         return view('demandesRetour')->with('demandes',$demandes);
     }
+    public function demandesRamassage(){
+        if(Auth::user()->role == 'client'){
+            $demandes = Demande::join('users','users.id','=','demandes.client_id')
+            ->where('demandes.type','=','Ramassage')
+            ->where('demandes.client_id','=',Auth::id())
+            ->select('demandes.*','users.nomComplet')
+            ->get();
+        }
+        if(Auth::user()->role == 'admin'){
+            $demandes = Demande::join('users','users.id','=','demandes.client_id')
+            ->where('demandes.type','=','Ramassage')
+            // ->where('demandes.traiter','=',false)
+            ->select('demandes.*','users.nomComplet')
+            ->get();
+        }
+        return view('demandesRamassage')->with('demandes',$demandes);
+    }
 
     public function ChangementRIB(){
         if(Auth::user()->role == 'client'){

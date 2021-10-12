@@ -28,6 +28,12 @@
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.datatables.net/1.11.1/css/jquery.dataTables.min.css">
   @yield('style')
+  <style>
+    .obligatoire:after {
+    content: "*";
+    color: red;
+    }
+  </style>
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
@@ -315,6 +321,12 @@
                     <a href="{{ route('demandesRetour') }}" class="nav-link @yield('demandesRetour')">
                       <i class="far fa-circle nav-icon"></i>
                       <p>Demandes de Retour</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="{{ route('demandesRamassage') }}" class="nav-link @yield('demandesRamassage')">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Demandes de Ramassage</p>
                     </a>
                   </li>
                   <li class="nav-item">

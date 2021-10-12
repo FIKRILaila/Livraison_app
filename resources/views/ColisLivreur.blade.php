@@ -102,9 +102,9 @@
                                                             <option value="Annulé">Annulé</option>
                                                             <option value="Refusé">Refusé</option>
                                                             <option value="Reporté">Reporté</option>
-                                                            <option value="Pas de Réponse 1">Pas de Réponse 1</option>
-                                                            <option value="Pas de Réponse 2">Pas de Réponse 2</option>
-                                                            <option value="Pas de Réponse 3">Pas de Réponse 3</option>
+                                                            <option value="Pas de Réponse">Pas de Réponse</option>
+                                                            <option value="Erreur Numéro">Erreur Numéro</option>
+                                                            <option value="Numéro Injoignable">Numéro Injoignable</option>
                                                         </select>
                                                     </div>
                                                 </div>

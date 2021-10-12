@@ -19,6 +19,16 @@ class CreateArticlesTable extends Migration
             $table->string('type');
             $table->string('reference');
             $table->string('image');
+
+            $table->string('variante1')->nullable();
+            $table->string('valeur1')->nullable();
+            $table->string('variante2')->nullable();
+            $table->string('valeur2')->nullable();
+            $table->string('variante3')->nullable();
+            $table->string('valeur3')->nullable();
+            $table->string('variante4')->nullable();
+            $table->string('valeur4')->nullable();
+
             $table->unsignedBigInteger('client_id');
             $table->foreign('client_id')->references('id')->on('users')->ondelete('cascade');
             $table->timestamp('created_at')->useCurrent();

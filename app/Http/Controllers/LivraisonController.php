@@ -238,7 +238,7 @@ class LivraisonController extends Controller
                     $html .= ' <tr>
                     <td>'.$p->destinataire.'</td>
                     <td>'.$p->telephone.'</td>
-                    <td>'.$ville->name.'</td>
+                    <td>'.$ville->ville.'</td>
                     <td>'.$p->prix.'</td>
                 </tr>';
                 }
@@ -261,9 +261,9 @@ class LivraisonController extends Controller
         ->select('colis.*', 'line_bons.*', 'bons.*')
         ->get();
         $html = '<!DOCTYPE html>
-        <html lang="en">
+        <html lang="fr">
         <head>
-            <meta charset="UTF-8">
+            <meta charset="utf-8"/>
             <meta http-equiv="X-UA-Compatible" content="IE=edge">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <title>Stickers</title>
@@ -278,9 +278,8 @@ class LivraisonController extends Controller
                 .border{
                     border: 2px dashed black;
                     display : inline-block;
-                    width:338px;
-                    height:310px;
-                    margin : 5px
+                    width:45%;
+                    margin : 2%;
                 }
                 </style>
         </head>
@@ -300,7 +299,7 @@ class LivraisonController extends Controller
                             <p style="width:70%; margin-top:1%; display:inline-block;"><span>Vendeur:</span>'.$vendeur->nomMagasin.' <br> ('.$vendeur->phone.') <br> <span>Date:</span>'.$info->created_at.'</p>
                             <h2 style="width:30%; margin-top:0%; display:inline-block;">Logo</h2>
                             <hr>
-                            <div>
+                            <div style="width:50%;">
                                 <p>
                                     <span>Destinataire:</span>'.$info->destinataire.'<br>
                                     <span>Téléphone:</span>'.$info->telephone.'<br>
@@ -308,19 +307,25 @@ class LivraisonController extends Controller
                                     <span>Adresse:</span>'.$info->adresse.'
                                 </p>
                             </div>
-                            <div style="margin:1% 0">';
+
+                            <div style="margin:1% 0;">';
                             if($info->ouvrir){
-                                $html .='<p style="width:65%; display:inline-block;">Vous Pouvez ouvrir le colis</p>';
-                            }else{
-                                $html .='<p style="width:65%; display:inline-block;">Avant d\'ouvrir le colis veuillez contacter le vendeur.</p>';
-                            }
-                            if($info->fragile){
-                                $html.= '<div style="padding:1%; margin-top:1%; color:rgb(160, 10, 10);width:30%; display:inline-block; border: 2px solid rgb(160, 10, 10);">
-                                <h3 style="margin:0 0 1% 2%">FRAGILE</h3></div>
+                                $html .='<h3 style="width:65%; display:inline-block; font-weight:bold;">يسمح بفتح هذه الطلبية</h3>
                                 </div>';
                             }else{
-                                $html.='</div>';
+                                $html .='<h3 style="width:65%; display:inline-block; font-weight:bold;">لا يسمح بفتح هذه الطلبية إلا بإذن البائع</h3>
+                                </div>';
                             }
+                            $html.='<div style="margin:1% 0;">';
+                            if($info->fragile){
+                                $html.= '<div style="padding:1%; margin-top:1%; margin-right:3%; color:rgb(160, 10, 10); width:20%; display:inline-block; border: 2px solid rgb(160, 10, 10);">
+                                <h3 style="margin:0 0 1% 2%";>FRAGILE</h3></div>';
+                            }
+                            if($info->remplacer){
+                                $html.= '<div style="padding:1%; margin-top:0%; color:rgb(160, 10, 10); width:30%; display:inline-block; border: 2px solid rgb(160, 10, 10);">
+                                <h3 style="margin:0 0 1% 2%";>A Remplacer</h3></div>';
+                            }
+                            $html.='</div>';
                             $html.='
                             <div style="border: 2px solid black; width:100%;">
                                 <h3 style="margin:1% 0 1% 60%;">Crbt:'.$info->prix.' DH</h3>

@@ -141,7 +141,7 @@ class EnvoiController extends Controller
         ->select('line_bons.valide','colis.*','users.nomMagasin','villes.ville')
         ->get();
         
-        $bon = Bon::findOrFail($request->input('bon_id'));
+        $bon = Bon::join('regions','regions.id','=','bons.region_id')->findOrFail($request->input('bon_id'));
         return view('Envoi_valider')->with(['colis'=>$colis,'bon'=>$bon]);
     }
     public function ValiderCode(Request $request){

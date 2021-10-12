@@ -13,6 +13,14 @@ class Article extends Model
         'type',
         'client_id',
         'image',
-        'reference'
+        'reference',
+        'variante1',
+        'variante2',
+        'variante3',
+        'variante4',
+        'valeur1',
+        'valeur2',
+        'valeur3',
+        'valeur4'
     ];
 }

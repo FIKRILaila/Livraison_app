@@ -1,5 +1,5 @@
 @extends('adminLte.dashboard')
-@section('Reclamations')
+@section('demandesRamassage')
 active
 @endsection
 @section('demandes')
@@ -20,14 +20,14 @@ active
     <div>
         <p class="row justify-content-end">
         <button class="btn btn-info mt-4 mr-2" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-            Nouvelle Réclamation
+            Nouvelle Demande
         </button>
         </p>
         <div class="collapse" id="collapseExample">
         <div class="card card-body">
             <form action="{{route('newDemande')}}" method="post">
                 @csrf
-                <input type="hidden" name="type" value="Reclamation">
+                <input type="hidden" name="type" value="Ramassage">
                 <div class="form-group">
                     <label for="message"> Message : </label>
                     <textarea name="message" id="message" class="form-control" cols="30" rows="5"></textarea>
@@ -35,14 +35,14 @@ active
                 <div class="row justify-content-end">
                     <button type="submit" class="btn btn-info">Envoyer</button>
                 </div>
-            </form>         
+            </form>           
         </div>
         </div>
     </div>
     @endif
     <div class="card mt-4">
         <div class="card-header">
-            <h4 class="font-weight-bold m-2">Liste des Réclamations</h4>
+            <h4 class="font-weight-bold m-2">Liste des demandes de ramassage</h4>
         </div>
         <div class="card-body">
             <table id="demandes" class="display">
@@ -67,31 +67,32 @@ active
                     @foreach ($demandes as $demande) 
                     <tr>
                         @if (Auth::user()->role == 'admin')
-                        <td>Reclamation</td>
+                        <td>Demande de Ramassage</td>
                         <td>{{ $demande->nomComplet }}</td>
                         <td>{{$demande->created_at}}</td>
                         @endif
+                        
                         @if (Auth::user()->role == 'client')
-                        <td>Reclamation</td>
+                        <td>Demande de Ramassage</td>
                         <td>{{$demande->created_at}}</td>
                         <td>
                             @if ($demande->traiter)
-                                <p class="text-success font-weight-bold">Traité</p>
+                            <p class="text-success font-weight-bold">Traité</p>
                             @else
-                                <p class="text-danger font-weight-bold">En cours de traitement</p>
+                            <p class="text-danger font-weight-bold">En cours de traitement</p>
                             @endif
                         </td>
                         @endif
                         <td class="d-flex">
                             @if (Auth::user()->role == 'admin')
                             @if ($demande->traiter)
-                            <p class="text-info font-weight-bold">Traité</p>
+                                <p class="text-info font-weight-bold">Traité</p>
                             @else
-                            <form action="{{route('TraiterDemande')}}" method="post">
-                                @csrf
-                                <input type="hidden" name="demande_id" value="{{$demande->id}}">
-                                <button type="submit" class="btn btn-success"><i class="fas fa-check"></i></button>
-                            </form>
+                                <form action="{{route('TraiterDemande')}}" method="post">
+                                    @csrf
+                                    <input type="hidden" name="demande_id" value="{{$demande->id}}">
+                                    <button type="submit" class="btn btn-success"><i class="fas fa-check"></i></button>
+                                </form>
                             @endif
                             @endif
                             <button type="button" class="btn btn-light" data-toggle="modal" data-target="{{'#model_'.$demande->id}}">
@@ -101,7 +102,7 @@ active
                                 <div class="modal-dialog modal-dialog-centered" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLongTitle ">Reclamation @if (Auth::user()->role == 'admin') par : {{ $demande->nomComplet }} @endif</h5>
+                                    <h5 class="modal-title" id="exampleModalLongTitle ">Demande de Retour  @if (Auth::user()->role == 'admin') par : {{ $demande->nomComplet }} @endif</h5>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>

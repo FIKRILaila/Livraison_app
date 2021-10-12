@@ -77,7 +77,7 @@ active
                         <td>{{$demande->created_at}}</td>
                         <td>
                             @if ($demande->traiter)
-                                <p class="text-success font-weight-bold">Déja Traiter</p>
+                                <p class="text-success font-weight-bold">Traité</p>
                             @else
                                 <p class="text-danger font-weight-bold">En cours de traitement</p>
                             @endif
@@ -86,7 +86,7 @@ active
                         <td class="d-flex">
                             @if (Auth::user()->role == 'admin')
                             @if ($demande->traiter)
-                                <p class="text-info font-weight-bold">Déja Traiter</p>
+                                <p class="text-info font-weight-bold">Traité</p>
                             @else
                                 <form action="{{route('TraiterDemande')}}" method="post">
                                     @csrf

@@ -162,9 +162,9 @@ class RetourController extends Controller
         $colis = Coli::where('code','=', $request->input('code_suivi'))
         ->join('villes','villes.id','=','colis.ville_id')->select('villes.ville','colis.*')->get();
         foreach($colis as $col){
-               Coli::where('code','=', $request->input('code_suivi'))->update(['etat'=>"Retourné"]);
+               Coli::where('code','=', $request->input('code_suivi'))->update(['etat'=>"Reçu Par Agence"]);
                Historique::create([
-                'etat_h' => 'Retourné',
+                'etat_h' => 'Reçu Par Agence',
                 'colis_id' => $col->id,
                 'par'=>Auth::id()
             ]);

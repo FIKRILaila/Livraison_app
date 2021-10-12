@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\Models\Article;
 use App\Models\Stock;
+use App\Models\Ville;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\auth;
 
@@ -18,8 +19,9 @@ class StockController extends Controller
         $articles = Article::where('client_id', '=', Auth::id())->get();
         $stock =Stock::join('articles','articles.id','=','stocks.article_id')
         ->where('articles.client_id', '=', Auth::id())
-        ->select('articles.*','stocks.*')->orderBy('stocks.created_at', 'DESC')->get(); ;
-        return view('stock')->with(['stock'=>$stock,'articles'=>$articles]);
+        ->select('articles.*','stocks.*')->orderBy('stocks.created_at', 'DESC')->get();
+        $villes = Ville::get();
+        return view('stock')->with(['stock'=>$stock,'articles'=>$articles,'villes'=>$villes]);
     }
 
     /**

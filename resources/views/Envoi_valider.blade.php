@@ -13,6 +13,9 @@ active
         <div class="alert alert-danger">{{ Session::get('fail') }}</div>
     @endif
     <div class="card mt-4">
+        <h3 class="text-center text-info font-weight-bold"> Bon : {{$bon->ref}} /Région : {{$bon->region}}</h3>
+    </div>
+    <div class="card mt-4">
         <div class="card-header">
             <p class="font-weight-bold m-2">Liste des Colis non valide</p>
         </div>

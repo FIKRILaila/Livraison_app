@@ -21,12 +21,11 @@ class RetourClientController extends Controller
         $bons =Bon::join('users','users.id','=','bons.magasin_retour')
         ->where('bons.type', '=','RetourClient')
         ->select('bons.*','users.nomMagasin')->get();
-        // dd($bons);
         $Attente = Coli::join('villes','villes.id','=','colis.ville_id')
         ->join('users','users.id','=','colis.client_id')
         // ->join('regions','regions.id','=','villes.region_id')
         ->where('colis.retourner','=',false)
-        ->where('colis.etat','=','Retourné')
+        ->where('colis.etat','=','Reçu Par Agence')
         ->select('villes.ville','colis.*','users.nomMagasin')
         ->orderBy('colis.created_at', 'DESC')->get();
         $clients = User::where('role','=','Client')->get();
@@ -56,7 +55,7 @@ class RetourClientController extends Controller
         ->join('users','users.id','=','colis.client_id')
         ->where('colis.client_id','=',$bon->magasin_retour)
         ->where('colis.retourner','=',false)
-        ->where('colis.etat','=','Retourné')
+        ->where('colis.etat','=','Reçu Par Agence')
         ->select('villes.ville','colis.*','users.nomMagasin')
         ->orderBy('colis.created_at', 'DESC')->get(); 
 
@@ -75,7 +74,7 @@ class RetourClientController extends Controller
         ->join('users','users.id','=','colis.client_id')
         ->where('colis.client_id','=',$bon->magasin_retour)
         ->where('colis.retourner','=',false)
-        ->where('colis.etat','=','Retourné')
+        ->where('colis.etat','=','Reçu Par Agence')
         ->select('villes.ville','colis.*','users.nomMagasin')
         ->orderBy('colis.created_at', 'DESC')->get(); 
 
@@ -120,7 +119,7 @@ class RetourClientController extends Controller
         ->join('users','users.id','=','colis.client_id')
         ->where('colis.client_id','=',$bon->magasin_retour)
         ->where('colis.retourner','=',false)
-        ->where('colis.etat','=','Retourné')
+        ->where('colis.etat','=','Reçu Par Agence')
         ->select('villes.ville','colis.*','users.nomMagasin')
         ->orderBy('colis.created_at', 'DESC')->get(); 
 

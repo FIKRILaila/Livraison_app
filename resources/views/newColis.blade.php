@@ -26,7 +26,7 @@ active
                         <input type="hidden" name="ville_id" id="ville_id" value="">
                         <div class="row">
                             <div class="form-group col-md-6 row">
-                                <label for="ville" class="col-md-4 col-form-label">{{ __('Ville:') }}</label>
+                                <label for="ville" class="col-md-4 col-form-label obligatoire">{{ __('Ville:') }}</label>
                                 <div class="col-md-8">
                                     <select onchange="Tarif(value)" name="ville" id="ville" class="form-control @error('ville') is-invalid @enderror" value="{{ old('ville') }}" required  autofocus autocomplete="on">
                                         <option value="">Ville</option>
@@ -51,13 +51,13 @@ active
                         </div>
                         <div class="row">
                             <div class="form-group row col-md-6">
-                                <label for="destinataire" class="col-md-4 col-form-label">{{ __('Destinataire :') }}</label>
+                                <label for="destinataire" class="col-md-4 col-form-label obligatoire">{{ __('Destinataire :') }}</label>
                                 <div class="col-md-8">
                                     <input id="destinataire" type="text" class="form-control @error('destinataire') is-invalid @enderror" name="destinataire" value="{{ old('destinataire') }}" required autocomplete="on">
                                 </div>
                             </div>
                             <div class="form-group row col-md-6">
-                                <label for="telephone" class="col-md-4 col-form-label">{{ __('Téléphone :') }}</label>
+                                <label for="telephone" class="col-md-4 col-form-label obligatoire">{{ __('Téléphone :') }}</label>
                                 <div class="col-md-8">
                                     <input id="telephone" type="tel" class="form-control @error('telephone') is-invalid @enderror" name="telephone" value="{{ old('telephone') }}" required autocomplete="on">
                                 </div>
@@ -65,13 +65,13 @@ active
                         </div>
                         <div class="row">
                             <div class="form-group col-md-6 row">
-                                <label for="prix" class="col-md-4 col-form-label">{{ __('Prix :') }}</label>
+                                <label for="prix" class="col-md-4 col-form-label obligatoire">{{ __('Prix :') }}</label>
                                 <div class="col-md-8">
                                     <input id="prix" type="number" min="1" class="form-control @error('prix') is-invalid @enderror" name="prix" value="{{ old('prix') }}" required autocomplete="on">
                                 </div>
                             </div>
                             <div class="form-group row col-md-6">
-                                <label for="quartier" class="col-md-4 col-form-label">{{ __('Quartier :') }}</label>
+                                <label for="quartier" class="col-md-4 col-form-label obligatoire">{{ __('Quartier :') }}</label>
                                 <div class="col-md-8">
                                     <input id="quartier" type="text" class="form-control @error('quartier') is-invalid @enderror" name="quartier" value="{{ old('quartier') }}" required autocomplete="on">
                                 </div>
@@ -121,7 +121,7 @@ active
                                 </div>
                             </div> --}}
                             <div class="form-group col-md-12 row">
-                                <label for="adresse" class="col-md-2 col-form-label">{{ __('Adresse :') }}</label>
+                                <label for="adresse" class="col-md-2 col-form-label obligatoire">{{ __('Adresse :') }}</label>
                                 <div class="col-md-10">
                                     <textarea id="adresse" name="adresse" class="form-control @error('adresse') is-invalid @enderror" autocomplete="on" autofocus>{{ old('adresse') }}</textarea>
                                 </div>
