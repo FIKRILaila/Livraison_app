@@ -350,15 +350,15 @@
                 </ul>
               </li> 
               @endif
-              @if (Auth::user()->role == 'admin')
               <li class="nav-item has-treeview menu-open">
                 <a href="{{ route('factures') }}" class="nav-link @yield('factures')">
                   <i class=" nav-icon fas fa-file-invoice"></i>
                   <p>
-                   Factures
+                    Factures
                   </p>
                 </a>
               </li>
+              @if (Auth::user()->role == 'admin')
               <li class="nav-item has-treeview menu-open">
                 <a href="{{ route('villes') }}" class="nav-link @yield('villes')">
                   <i class="nav-icon fas fa-city"></i>
@@ -415,14 +415,6 @@
                     </p>
                   </a>
                 </li> 
-                <li class="nav-item has-treeview menu-open">
-                  <a href="#" class="nav-link">
-                    <i class="nav-icon fas fa-cubes"></i>
-                    <p>
-                      Mes Factures
-                    </p>
-                  </a>
-                </li>
               @endif
               <li class="nav-item has-treeview menu-open">
                 <a href="#" class="nav-link @yield('parametres')">

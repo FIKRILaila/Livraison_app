@@ -49,13 +49,7 @@ class ColisController extends Controller
             ['bons.livreur_id','=',Auth::id()],
             ['bons.type','=','Distribution'],
             ['bons.etat','=','Enregistré'],
-            ['colis.etat','=','Pas de Réponse 1']
-        ])
-        ->orWhere([
-            ['bons.livreur_id','=',Auth::id()],
-            ['bons.type','=','Distribution'],
-            ['bons.etat','=','Enregistré'],
-            ['colis.etat','=','Pas de Réponse 2']
+            ['colis.etat','=','Pas de Réponse']
         ])
         ->select('villes.ville','colis.*','users.nomMagasin')
         ->orderBy('colis.created_at', 'DESC')->get();
@@ -299,10 +293,8 @@ class ColisController extends Controller
                     'colis_id' =>$request->input('colis_id'),
                     'par' =>Auth::id()
                     ]);
-            }
-        if($colis){
-            return back()->with('success','etat modifié avec succès');
         }
+        return back()->with('success','etat modifié avec succès');
     }
 
     public function update(Request $request)

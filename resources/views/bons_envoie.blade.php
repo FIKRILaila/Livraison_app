@@ -25,11 +25,11 @@ active
                         <th>Date de creation</th>
                         <th>Téléphone</th>
                         <th>Nom du Magasin</th>
-                        <th>Etat</th>
                         <th>Status</th>
                         <th>Région</th>
                         <th>Ville</th>
                         <th>Prix</th>
+                        <th>Etat</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -46,10 +46,10 @@ active
                                         Payé
                                     @endif
                                 </td>
-                                <td>{{$item->etat}}</td>
                                 <td>{{$item->region}}</td>
                                 <td>{{$item->ville}}</td>
                                 <td>{{$item->prix}} DH</td>
+                                <td>{{$item->etat}}</td>
                             </tr>
                     @endforeach
                 </tbody>

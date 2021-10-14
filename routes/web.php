@@ -15,6 +15,7 @@ use App\Http\Controllers\EnvoiController;
 use App\Http\Controllers\RetourController;
 use App\Http\Controllers\DemandesController;
 use App\Http\Controllers\RetourClientController;
+use App\Http\Controllers\FacturesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,12 +29,14 @@ use App\Http\Controllers\RetourClientController;
 */
 
 Route::get('/', function () {return view('welcome');});
-Route::get('/factures', function () {return view('factures');})->name('factures');
-Route::get('/ramassage', function () {return view('ramassage');})->name('ramassage');
-
 Auth::routes();
-
 Route::get('/home', [HomeController::class, 'index'])->name('home');
+
+
+
+Route::get('/factures', [FacturesController::class, 'index'])->name('factures');
+Route::post('/filtreColisFacture', [FacturesController::class, 'filtrer'])->name('filtreColisFacture');
+
 
 Route::get('/bons_livraison', [LivraisonController::class, 'index'])->name('bonsLivraion'); 
 Route::post('/store', [LivraisonController::class, 'store'])->name('store'); 
