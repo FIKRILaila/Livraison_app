@@ -240,10 +240,8 @@
                                 </div>
                             </div>
                         @endif
-                        <div class="form-group mb-0">
-                            <div class="col-md-6 offset-md-10">
-                                <button type="submit" class="btn btn-primary ml-4">{{ __('Modifier') }}</button>
-                            </div>
+                        <div class="form-group mb-0 d-flex justify-content-end">
+                            <button type="submit" class="btn btn-info ml-4">{{ __('Modifier') }}</button>
                         </div>
                     </form>
                 </div>

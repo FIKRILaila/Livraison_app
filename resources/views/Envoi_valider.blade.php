@@ -13,7 +13,7 @@ active
         <div class="alert alert-danger">{{ Session::get('fail') }}</div>
     @endif
     <div class="card mt-4">
-        <h3 class="text-center text-info font-weight-bold"> Bon : {{$bon->ref}} /Région : {{$bon->region}}</h3>
+        <h3 class="m-2 font-weight-bold"><span class="text-info">Bon :</span> {{$bon->ref}} / <span class=" text-info">Région :</span> {{$bon->region}} / <span class="text-info">Date de Création :</span> {{$bon->created_at}} </h3>
     </div>
     <div class="card mt-4">
         <div class="card-header">
@@ -92,7 +92,6 @@ active
                         <th>Status</th>
                         <th>Ville</th>
                         <th>Prix</th>
-                        <th><input type="checkbox"></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -114,7 +113,6 @@ active
                                 <td>{{$coli->etat}}</td>
                                 <td>{{$coli->ville}}</td>
                                 <td>{{$coli->prix}}</td>
-                                <th><input type="checkbox"></th>
                             </tr>
                         @endif
                         @endforeach

@@ -114,12 +114,12 @@
                                                         <input type="date" name="reported_at" id="reported_at" class="form-control" value="{{ old('reported_at') }}" autofocus autocomplete="on">
                                                     </div>
                                                 </div>
-                                                <div class="form-group row mb-0 offset-md-8">
+                                                <div class="form-group d-flex justify-content-end">
                                                     <div class="mr-2">
-                                                        <a href="{{route('ColisLivreur')}}" class="btn btn-danger">{{ __('Annuler') }}</a>
+                                                        <a href="{{route('ColisLivreur')}}" class="btn btn-secondary">{{ __('Annuler') }}</a>
                                                     </div>
                                                     <div>
-                                                        <button type="submit" class="btn btn-success">{{ __('Enregistrer') }}</button>
+                                                        <button type="submit" class="btn btn-info">{{ __('Enregistrer') }}</button>
                                                     </div>
                                                 </div>
                                             </form>
@@ -129,7 +129,7 @@
                             </div>
                             @endif
                         
-                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="{{'#livre_'.$item->id}}">
+                            <button type="button" class="btn btn-info" data-toggle="modal" data-target="{{'#livre_'.$item->id}}">
                                 Livré
                             </button>
                             <div class="modal fade" id="{{'livre_'.$item->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -138,10 +138,10 @@
                                     <div class="modal-body">
                                         <form method="POST" action="{{ route('editLivreur') }}">
                                             @csrf
-                                            <h3 class="text-center">Vous êtes Sûr ?</h3>
+                                            <h3 class="font-weight-bold mt-4 mb-4">Vous êtes Sûr ?</h3>
                                             <input type="hidden" name="colis_id" value="{{$item->id}}">
                                             <input type="hidden" name="etat" value="Livré">
-                                            <div class="row justify-content-end">
+                                            <div class="row justify-content-end mt-4 mr-2 mb-2">
                                                 <button type="button" class="btn btn-secondary mr-2" data-dismiss="modal" aria-label="Close">
                                                     <span aria-hidden="true">Annuler</span>
                                                 </button>

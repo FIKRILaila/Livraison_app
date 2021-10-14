@@ -21,7 +21,7 @@ active
             <table id="envoyer" class="display">
                 <thead>
                     <tr>
-                        <th>Code d'Envoie</th>
+                        <th>Code Suivi</th>
                         <th>Date de creation</th>
                         <th>Téléphone</th>
                         <th>Nom du Magasin</th>
@@ -34,7 +34,6 @@ active
                 </thead>
                 <tbody>
                     @foreach ($Attente as $item) 
-                        {{-- @if($item->etat == 'Ramasse') --}}
                             <tr>
                                 <td>{{$item->code}}</td>
                                 <td>{{$item->created_at}}</td>
@@ -52,7 +51,6 @@ active
                                 <td>{{$item->ville}}</td>
                                 <td>{{$item->prix}} DH</td>
                             </tr>
-                        {{-- @endif --}}
                     @endforeach
                 </tbody>
             </table>
@@ -74,7 +72,7 @@ active
                     </select>
                 </div>
                 <div class="row col-md-2 ml-2">
-                    <button type="submit" class="btn btn-info ml-4">Nouveau Bon</button>
+                    <button type="submit" class="btn btn-info ml-2">Nouveau Bon</button>
                 </div>
             </form>
         </div>
@@ -169,26 +167,24 @@ active
                                         <table class="table">
                                             <thead>
                                             <tr>
-                                                <th scope="col">#</th>
+                                                <th scope="col">Code Barre</th>
                                                 <th scope="col">Destinataire</th>
                                                 <th scope="col">Téléphone</th>
                                                 <th scope="col">Etat</th>
-                                                <th scope="col">Code Barre</th>
                                             </tr>
                                             </thead>
                                             <tbody>
                                                 @foreach ($colis as $ele)
                                                 @if ($ele->bon_id === $item->id)
                                                     <tr>
-                                                        <th scope="row">{{ $ele->bon }}</th>
-                                                        <td>{{$ele->destinataire }}</td>
-                                                        <td>{{$ele->telephone }}</td>
-                                                        <td>{{$ele->etat }}</td>
                                                         <td>
                                                             @php
                                                                 echo $ele->code_bar."<span class=\"font-weight-bold\">".$ele->code."</span>";
                                                             @endphp
                                                         </td>
+                                                        <td>{{$ele->destinataire }}</td>
+                                                        <td>{{$ele->telephone }}</td>
+                                                        <td>{{$ele->etat }}</td>
                                                     </tr>
                                                     @endif
                                                 @endforeach

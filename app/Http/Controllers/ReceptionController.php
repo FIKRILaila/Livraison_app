@@ -18,12 +18,12 @@ class ReceptionController extends Controller
     }
     public function newReception(){
         $date = date('d-m-Y', time());
-        $number=0;
+        $number= 1;
         $select = Bon::where('type','=','Reception')->get();
         foreach($select as $sel){
             $number = $sel->ref;
         }
-        if($number != null){
+        if($number != 1){
             $number = explode('-',$number)[4];
             $number++;
         }
@@ -54,6 +54,29 @@ class ReceptionController extends Controller
         ->get();
         return view('newReception')->with(['bon'=>$bon,'colis'=>$colis]);
     }
+
+    public function Retirer(Request $request){
+        $bon = Bon::findOrFail($request->input('bon_id'));
+        $colis =Coli::join('villes','colis.ville_id',"=","villes.id")
+        ->join('line_bons','line_bons.colis_id','=','colis.id')
+        ->join('bons','bons.id','=','line_bons.bon_id')
+        ->where('line_bons.bon_id','=',$bon->id)
+        ->select('colis.*','villes.ville')
+        ->get();
+        $table =explode('_' ,$request->input('colis'));
+        for($i=0;$i<count($table)-1;$i++){
+            Line_bon::join('bons','bons.id','=','line_bons.bon_id')
+            ->where([['bons.type','=','Reception'],['line_bons.colis_id','=',$table[$i]]])->delete();
+            Coli::where('id','=',$table[$i])->update(['etat'=>'En Attente de Ramassage']);
+            Historique::create([
+                'etat_h' => 'En Attente de Ramassage',
+                'colis_id' => $table[$i],
+                'par'=>Auth::id()
+            ]);
+        }
+        return redirect()->route('Reception')->with('success','votre colis a étè retiré avec succès');
+    }
+
     public function store(Request $request){
         $id = $request->input('bon_id');
         $bon = Bon::findOrFail($id);

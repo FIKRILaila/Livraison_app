@@ -20,20 +20,19 @@ active
             <table id="distribuer" class="display">
                 <thead>
                     <tr>
-                        <th>Code d'Envoie</th>
+                        <th>Code Suivi</th>
                         <th>Date de creation</th>
                         <th>Téléphone</th>
                         <th>Nom du Magasin</th>
-                        <th>Etat</th>
                         <th>Status</th>
                         <th>Région</th>
                         <th>Ville</th>
                         <th>Prix</th>
+                        <th>Etat</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach ($Attente as $item) 
-                        {{-- @if($item->etat == 'Ramasse') --}}
                             <tr>
                                 <td>{{$item->code}}</td>
                                 <td>{{$item->created_at}}</td>
@@ -46,12 +45,11 @@ active
                                         Payé
                                     @endif
                                 </td>
-                                <td>{{$item->etat}}</td>
                                 <td>{{$item->region}}</td>
                                 <td>{{$item->ville}}</td>
                                 <td>{{$item->prix}} DH</td>
+                                <td>{{$item->etat}}</td>
                             </tr>
-                        {{-- @endif --}}
                     @endforeach
                 </tbody>
             </table>
@@ -87,13 +85,10 @@ active
                         <tr>
                             <th>Réf</th>
                             <th>Région</th>
-                            {{-- <th>Agence</th>
-                            <th>Pour</th> --}}
                             <th>Date de création</th>
                             <th>Date d'enregistrement</th>
                             <th>Status</th>
                             <th>Colis</th>
-                            {{-- <th>Reçu</th> --}}
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -128,19 +123,6 @@ active
                                 echo $c;
                                 @endphp
                             </td>
-                            {{-- <td>
-                                @php
-                                $r = 0;
-                                foreach ($colis as $col){
-                                    if ($col->bon_id === $item->id){
-                                        if($col->valide){
-                                            $r++;
-                                        }
-                                    }
-                                }
-                                echo $r;
-                                @endphp
-                            </td> --}}
                             <td class="d-flex">
                                 @if ($item->etat == 'Nouveau')
                                 <form action="{{route('editDistribution')}}" method="get">
@@ -170,26 +152,24 @@ active
                                             <table class="table">
                                                 <thead>
                                                 <tr>
-                                                    {{-- <th scope="col">#</th> --}}
+                                                    <th scope="col">Code Barre</th>
                                                     <th scope="col">Destinataire</th>
                                                     <th scope="col">Téléphone</th>
                                                     <th scope="col">Etat</th>
-                                                    <th scope="col">Code Barre</th>
                                                 </tr>
                                                 </thead>
                                                 <tbody>
                                                     @foreach ($colis as $ele)
                                                     @if ($ele->bon_id === $item->id)
                                                         <tr>
-                                                            {{-- <th scope="row">{{ $ele->bon }}</th> --}}
-                                                            <td>{{$ele->destinataire }}</td>
-                                                            <td>{{$ele->telephone }}</td>
-                                                            <td>{{$ele->etat }}</td>
                                                             <td>
                                                                 @php
                                                                     echo $ele->code_bar."<span class=\"font-weight-bold\">".$ele->code."</span>";
                                                                 @endphp
                                                             </td>
+                                                            <td>{{$ele->destinataire }}</td>
+                                                            <td>{{$ele->telephone }}</td>
+                                                            <td>{{$ele->etat }}</td>
                                                         </tr>
                                                         @endif
                                                     @endforeach

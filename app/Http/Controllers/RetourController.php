@@ -72,11 +72,11 @@ class RetourController extends Controller
         ->where('line_bons.bon_id','=',$bon->id)
         ->select('villes.ville','colis.*','users.nomMagasin')
         ->orderBy('colis.created_at', 'DESC')->get();
-
+        $bon = Bon::join('regions','regions.id','=','bons.region_id')->select('regions.region','bons.*')->findOrFail($bon->id);
         return view('newRetour')->with(['bon'=>$bon,'colis'=>$colis,'Attente'=>$Attente]);
     }
     public function editRetour(Request $request){
-        $bon = Bon::findOrFail($request->input('bon_id'));
+        $bon = Bon::join('regions','regions.id','=','bons.region_id')->select('regions.region','bons.*')->findOrFail($request->input('bon_id'));
         $colis = Coli::join('villes','villes.id','=','colis.ville_id')
         ->join('users','users.id','=','colis.client_id')
         ->join('line_bons','colis.id',"=","line_bons.colis_id")
@@ -95,8 +95,7 @@ class RetourController extends Controller
         return view('newRetour')->with(['bon'=>$bon,'colis'=>$colis,'Attente'=>$Attente]);
     }
     public function store(Request $request){
-        $id = $request->input('bon_id');
-        $bon = Bon::findOrFail($id);
+        $bon = Bon::join('regions','regions.id','=','bons.region_id')->select('regions.region','bons.*')->findOrFail($request->input('bon_id'));
         $colis =  Coli::where('code','=', $request->input('code_suivi'))
         ->join('villes','villes.id','=','colis.ville_id')->select('villes.ville','colis.*')->get();
         $exist = false;
@@ -148,9 +147,9 @@ class RetourController extends Controller
         ->join('line_bons','colis.id',"=","line_bons.colis_id")
         ->join('bons','bons.id','=','line_bons.bon_id')
         ->where('line_bons.bon_id','=',$request->input('bon_id'))
-        ->select('villes.ville','colis.*','users.nomMagasin')
+        ->select('line_bons.valide','colis.*','users.nomMagasin','villes.ville')
         ->orderBy('colis.created_at', 'DESC')->get();
-        $bon = Bon::findOrFail($request->input('bon_id'));
+        $bon = Bon::join('regions','regions.id','=','bons.region_id')->select('regions.region','bons.*')->findOrFail($request->input('bon_id'));
         return view('Retour_valider')->with(['colis'=>$colis,'bon'=>$bon]);
     }
     public function ValiderCode(Request $request){
@@ -184,16 +183,34 @@ class RetourController extends Controller
                         'etat'=>'Enregistré',
                         'updated_at'=> date('Y-m-d H:i:s', time())
                     ]);
-            return redirect()->route('Retour');
+            return redirect()->route('Retour')->with('success', 'Votre bon est valide avec Succès');
         }
         $colis = Coli::join('villes','villes.id','=','colis.ville_id')
         ->join('users','users.id','=','colis.client_id')
         ->join('line_bons','colis.id',"=","line_bons.colis_id")
         ->join('bons','bons.id','=','line_bons.bon_id')
         ->where('line_bons.bon_id','=',$request->input('bon_id'))
-        ->select('villes.ville','colis.*','users.nomMagasin')
+        ->select('line_bons.valide','colis.*','users.nomMagasin','villes.ville')
         ->orderBy('colis.created_at', 'DESC')->get();
-        $bon = Bon::findOrFail($request->input('bon_id'));
+        $bon = Bon::join('regions','regions.id','=','bons.region_id')->select('regions.region','bons.*')->findOrFail($request->input('bon_id'));
         return view('Retour_valider')->with(['colis'=>$colis,'bon'=>$bon]);
+    }
+    public function Retirer(Request $request){
+        $table =explode('_' ,$request->input('colis'));
+        for($i=0;$i<count($table)-1;$i++){
+            Line_bon::join('bons','bons.id','=','line_bons.bon_id')
+            ->where([['bons.type','=','Retour'],['line_bons.colis_id','=',$table[$i]]])->delete();
+            $historique = Historique::where('colis_id','=',$table[$i])->get();
+            for($j=0;$j<count($historique)-1;$j++){
+                $etat = $historique[$j]->etat_h;
+            }
+            Coli::where('id','=',$table[$i])->update(['etat'=>$etat]);
+            Historique::create([
+                'etat_h' => $etat,
+                'colis_id' => $table[$i],
+                'par'=>Auth::id()
+            ]);
+        }
+        return redirect()->route('Retour')->with('success','votre colis a étè retiré avec succès');
     }
 }

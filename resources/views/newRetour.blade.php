@@ -13,6 +13,9 @@ active
         <div class="alert alert-danger">{{ Session::get('fail') }}</div>
     @endif
     <div class="card mt-4">
+        <h3 class="m-2 font-weight-bold"><span class="text-info">Bon :</span> {{$bon->ref}} / <span class=" text-info">Région :</span> {{$bon->region}} / <span class="text-info">Date de Création :</span> {{$bon->created_at}} </h3>
+    </div>
+    <div class="card mt-4">
         <div class="card-header">
             <h4 class="font-weight-bold m-2">Liste des Colis Annuler ou Refuser</h4>
         </div>
@@ -20,19 +23,18 @@ active
             <table id="attente" class="display">
                 <thead>
                     <tr>
-                        <th>Code d'Envoie</th>
+                        <th>Code Suivi</th>
                         <th>Date de creation</th>
                         <th>Téléphone</th>
                         <th>Nom du Magasin</th>
-                        <th>Etat</th>
                         <th>Status</th>
                         <th>Ville</th>
                         <th>Prix</th>
+                        <th>Etat</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach ($Attente as $item) 
-                        {{-- @if($item->etat == 'En Ramassage') --}}
                             <tr>
                                 <td>{{$item->code}}</td>
                                 <td>{{$item->created_at}}</td>
@@ -45,18 +47,14 @@ active
                                         Payé
                                     @endif
                                 </td>
-                                <td>{{$item->etat}}</td>
                                 <td>{{$item->ville}}</td>
                                 <td>{{$item->prix}} DH</td>
+                                <td>{{$item->etat}}</td>
                             </tr>
-                        {{-- @endif --}}
                     @endforeach
                 </tbody>
             </table>
         </div>
-    </div>
-    <div class="card mt-4">
-        <p class="m-2"><span class="font-weight-bold">Date de Création :</span> {{$bon->created_at}} </p>
     </div>
     <div class="card">
         <div class="m-4">
@@ -77,32 +75,42 @@ active
         <div class="card-header">
             <h4 class="font-weight-bold m-2">Liste des Colis Ajouter</h4>
         </div>
+        <div class="mt-4 ml-4" >
+            <form id="retirer_colis" action="{{ route('RetirerRetour')}}" method="POST" class="d-none">
+                @csrf
+                <input type="text" name="colis" id="colis" value="">
+                <input type="text" name="bon_id" id="colis" value="{{$bon->id}}">
+            </form>
+            <i class="fas fa-level-down-alt"></i>
+            <input type="checkbox" name="selectAll" id="selectAll">
+            <span class="mr-4">Tout Cocher</span>
+            <span>Avec la Selection :</span> 
+            <button class="btn btn-info" onclick="Retirer()">Retirer</button>
+        </div>
         <div class="m-4">
             <table id="retour" class="display">
                 <thead>
                     <tr>
+                        <th></th>
                         <th>Code Suivi</th>
                         <th>Destinataire</th>
                         <th>Date de Création</th>
                         <th>Prix</th>
                         <th>Ville</th>
                         <th>Status</th>
-                        <th><input type="checkbox"></th>
                     </tr>
                 </thead>
                 <tbody>
                         @foreach ($colis as $coli)
-                        {{-- @if ($coli->bon_id == $bon->id )  --}}
                             <tr>
+                                <th><input type="checkbox" name="retirer" value ="{{$coli->id}}"></th>
                                 <td>{{$coli->code}}</td>
                                 <td>{{$coli->destinataire}}</td>
                                 <td>{{$coli->created_at}}</td>
                                 <td>{{$coli->prix}}</td>
                                 <td>{{$coli->ville}}</td>
                                 <td>{{$coli->etat}}</td>
-                                <th><input type="checkbox"></th>
                             </tr>
-                        {{-- @endif --}}
                         @endforeach
                 </tbody>
             </table>
@@ -118,6 +126,32 @@ active
         });
         $(document).ready( function () {
             $('#retour').DataTable();
+        });
+        function Retirer(){
+        var form = document.querySelector("#retirer_colis");
+        var input = document.querySelector("#colis");
+        input.value ="";
+        var ele=document.getElementsByName('retirer');  
+                for(var i=0; i<ele.length; i++){  
+                    if(ele[i].checked === true){
+                        input.value += ele[i].value + "_" ;
+                    }
+                }  
+                form.submit();
+        }
+        document.querySelector("#selectAll").addEventListener('click',function(){
+            let select = document.querySelector("#selectAll").checked
+            if(select === true){
+                var ele=document.getElementsByName('retirer');  
+                    for(var i=0; i<ele.length; i++){  
+                            ele[i].checked=true;  
+                    }  
+            }else{
+                var ele=document.getElementsByName('retirer');  
+                    for(var i=0; i<ele.length; i++){  
+                            ele[i].checked=false;  
+                    } 
+            }
         });
     </script>
 @endsection

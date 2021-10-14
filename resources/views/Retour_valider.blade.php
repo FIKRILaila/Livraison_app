@@ -84,7 +84,6 @@ active
                         <th>Prix</th>
                         <th>Ville</th>
                         <th>Status</th>
-                        <th><input type="checkbox"></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -97,7 +96,6 @@ active
                                 <td>{{$coli->prix}}</td>
                                 <td>{{$coli->ville}}</td>
                                 <td>{{$coli->etat}}</td>
-                                <th><input type="checkbox"></th>
                             </tr>
                         @endif
                         @endforeach

@@ -25,7 +25,13 @@ class EnvoiController extends Controller
         $Attente = Coli::join('villes','villes.id','=','colis.ville_id')
         ->join('users','users.id','=','colis.client_id')
         ->join('regions','regions.id','=','villes.region_id')
-        ->where('colis.etat','=','Ramasse')
+        ->join('line_bons','colis.id','=','line_bons.colis_id')
+        ->join('bons','bons.id','=','line_bons.bon_id')
+        ->where([
+            ['colis.etat','=','Ramasse'],
+            ['bons.type','=','Reception'],
+            ['bons.etat','=','Enregistré']
+        ])
         ->select('villes.*','colis.*','users.nomMagasin','regions.region')
         ->orderBy('colis.created_at', 'DESC')->get();
         $regions = Region::get();
@@ -51,14 +57,19 @@ class EnvoiController extends Controller
             'etat'=>"Nouveau",
             'region_id'=>$request->input('region_id')
         ]);      
-
         $Attente = Coli::join('villes','villes.id','=','colis.ville_id')
         ->join('users','users.id','=','colis.client_id')
         ->join('regions','regions.id','=','villes.region_id')
-        ->select('villes.ville','colis.*','users.nomMagasin')
-        ->where('regions.id','=',$bon->region_id)
-        ->where('colis.etat','=','Ramasse')
-        ->orderBy('colis.created_at', 'DESC')->get(); 
+        ->join('line_bons','colis.id','=','line_bons.colis_id')
+        ->join('bons','bons.id','=','line_bons.bon_id')
+        ->where([
+            ['colis.etat','=','Ramasse'],
+            ['bons.type','=','Reception'],
+            ['bons.etat','=','Enregistré'],
+            ['regions.id','=',$bon->region_id]
+        ])
+        ->select('villes.*','colis.*','users.nomMagasin','regions.region')
+        ->orderBy('colis.created_at', 'DESC')->get();
 
         $colis = Coli::join('villes','villes.id','=','colis.ville_id')
         ->join('users','users.id','=','colis.client_id')
@@ -67,6 +78,7 @@ class EnvoiController extends Controller
         ->where('line_bons.bon_id','=',$bon->id)
         ->select('villes.ville','colis.*','users.nomMagasin')
         ->orderBy('colis.created_at', 'DESC')->get();
+        $bon = Bon::join('regions','regions.id','=','bons.region_id')->select('regions.region','bons.*')->findOrFail($bon->id);
         return view('newEnvoi')->with(['bon'=>$bon,'colis'=>$colis,'Attente'=>$Attente]);
     }
     public function editEnvoi(Request $request){
@@ -80,15 +92,21 @@ class EnvoiController extends Controller
         $Attente = Coli::join('villes','villes.id','=','colis.ville_id')
         ->join('users','users.id','=','colis.client_id')
         ->join('regions','regions.id','=','villes.region_id')
-        ->select('villes.ville','colis.*','users.nomMagasin')
-        ->where('regions.id','=',$bon->region_id)
-        ->where('colis.etat','=','Ramasse')
-        ->orderBy('colis.created_at', 'DESC')->get(); 
+        ->join('line_bons','colis.id','=','line_bons.colis_id')
+        ->join('bons','bons.id','=','line_bons.bon_id')
+        ->where([
+            ['colis.etat','=','Ramasse'],
+            ['bons.type','=','Reception'],
+            ['bons.etat','=','Enregistré'],
+            ['regions.id','=',$bon->region_id]
+        ])
+        ->select('villes.*','colis.*','users.nomMagasin','regions.region')
+        ->orderBy('colis.created_at', 'DESC')->get();
+        $bon = Bon::join('regions','regions.id','=','bons.region_id')->select('regions.region','bons.*')->findOrFail($bon->id);
         return view('newEnvoi')->with(['bon'=>$bon,'colis'=>$colis,'Attente'=>$Attente]);
     }
     public function store(Request $request){
-        $id = $request->input('bon_id');
-        $bon = Bon::findOrFail($id);
+        $bon = Bon::findOrFail($request->input('bon_id'));
         $colis =  Coli::where('code','=', $request->input('code_suivi'))->get();
         $exist = false;
         $existed = Line_bon::join('bons','bons.id','=','line_bons.bon_id')
@@ -126,10 +144,17 @@ class EnvoiController extends Controller
         $Attente = Coli::join('villes','villes.id','=','colis.ville_id')
         ->join('users','users.id','=','colis.client_id')
         ->join('regions','regions.id','=','villes.region_id')
-        ->where('regions.id','=',$bon->region_id)
-        ->where('colis.etat','=','Ramasse')
-        ->select('villes.ville','colis.*','users.nomMagasin')
+        ->join('line_bons','colis.id','=','line_bons.colis_id')
+        ->join('bons','bons.id','=','line_bons.bon_id')
+        ->where([
+            ['colis.etat','=','Ramasse'],
+            ['bons.type','=','Reception'],
+            ['bons.etat','=','Enregistré'],
+            ['regions.id','=',$bon->region_id]
+        ])
+        ->select('villes.*','colis.*','users.nomMagasin','regions.region')
         ->orderBy('colis.created_at', 'DESC')->get(); 
+        $bon = Bon::join('regions','regions.id','=','bons.region_id')->select('regions.region','bons.*')->findOrFail($bon->id);
         return view('newEnvoi')->with(['bon'=>$bon,'colis'=>$colis,'Attente'=>$Attente]);
     }
     public function valider(Request $request){
@@ -140,8 +165,7 @@ class EnvoiController extends Controller
         ->where('bons.id','=',$request->input('bon_id'))
         ->select('line_bons.valide','colis.*','users.nomMagasin','villes.ville')
         ->get();
-        
-        $bon = Bon::join('regions','regions.id','=','bons.region_id')->findOrFail($request->input('bon_id'));
+        $bon = Bon::join('regions','regions.id','=','bons.region_id')->select('regions.region','bons.*')->findOrFail($request->input('bon_id'));
         return view('Envoi_valider')->with(['colis'=>$colis,'bon'=>$bon]);
     }
     public function ValiderCode(Request $request){
@@ -184,7 +208,21 @@ class EnvoiController extends Controller
         ->where('bons.id','=',$request->input('bon_id'))
         ->select('line_bons.valide','colis.*','users.nomMagasin','villes.ville')
         ->get();
-        $bon = Bon::findOrFail($request->input('bon_id'));
+        $bon = Bon::join('regions','regions.id','=','bons.region_id')->select('regions.region','bons.*')->findOrFail($request->input('bon_id'));
         return view('Envoi_valider')->with(['colis'=>$colis,'bon'=>$bon]);
+    }
+    public function Retirer(Request $request){
+        $table =explode('_' ,$request->input('colis'));
+        for($i=0;$i<count($table)-1;$i++){
+            Line_bon::join('bons','bons.id','=','line_bons.bon_id')
+            ->where([['bons.type','=','Envoi'],['line_bons.colis_id','=',$table[$i]]])->delete();
+            Coli::where('id','=',$table[$i])->update(['etat'=>'Ramasse']);
+            Historique::create([
+                'etat_h' => 'Ramasse',
+                'colis_id' => $table[$i],
+                'par'=>Auth::id()
+            ]);
+        }
+        return redirect()->route('Envoi')->with('success','votre colis a étè retiré avec succès');
     }
 }

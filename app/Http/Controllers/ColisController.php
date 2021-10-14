@@ -42,16 +42,19 @@ class ColisController extends Controller
         ->where([
             ['bons.livreur_id','=',Auth::id()],
             ['bons.type','=','Distribution'],
+            ['bons.etat','=','Enregistré'],
             ['colis.etat','=','En Distribution']
         ])
         ->orWhere([
             ['bons.livreur_id','=',Auth::id()],
             ['bons.type','=','Distribution'],
+            ['bons.etat','=','Enregistré'],
             ['colis.etat','=','Pas de Réponse 1']
         ])
         ->orWhere([
             ['bons.livreur_id','=',Auth::id()],
             ['bons.type','=','Distribution'],
+            ['bons.etat','=','Enregistré'],
             ['colis.etat','=','Pas de Réponse 2']
         ])
         ->select('villes.ville','colis.*','users.nomMagasin')

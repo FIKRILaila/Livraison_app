@@ -34,9 +34,13 @@ class DistributionController extends Controller
     public function DistributionLivreur(){
         $bons =Bon::where('type', '=','Distribution')
         ->where('livreur_id', '=',Auth::id())
+        ->where('etat', '=','Enregistré')
         ->get();
         $colis =Coli::join('line_bons','colis.id',"=","line_bons.colis_id")
-        ->select('line_bons.id as bon','line_bons.valide as valide','line_bons.bon_id as bon_id','colis.*')
+        ->join('bons','bons.id',"=","line_bons.bon_id")
+        ->where('bons.type', '=','Distribution')
+        ->select('line_bons.valide as valide','line_bons.bon_id as bon_id','colis.*')
+        // ->select('line_bons.id as bon','line_bons.valide as valide','line_bons.bon_id as bon_id','colis.*')
         ->get();
         return view('DistributionLivreur')->with(['bons'=>$bons,'colis'=>$colis]);
     }
@@ -66,7 +70,6 @@ class DistributionController extends Controller
         ->select('users.id','users.nomComplet')
         ->where('regions.id','=',$bon->region_id)
         ->get();
-        // dd($livreurs);
         $Attente = Coli::join('villes','villes.id','=','colis.ville_id')
         ->join('users','users.id','=','colis.client_id')
         ->join('regions','regions.id','=','villes.region_id')
@@ -85,10 +88,11 @@ class DistributionController extends Controller
         ->where('line_bons.bon_id','=',$bon->id)
         ->select('colis.*')
         ->get();
+        $bon = Bon::join('regions','regions.id','=','bons.region_id')->select('regions.region','bons.*')->findOrFail($bon->id);
         return view('newDistribution')->with(['bon'=>$bon,'colis'=>$colis,'livreurs'=>$livreurs,'Attente'=>$Attente]);
     }
     public function editDistribution(Request $request){
-        $bon = Bon::findOrFail($request->input('bon_id'));
+        $bon = Bon::join('regions','regions.id','=','bons.region_id')->select('regions.region','bons.*')->findOrFail($request->input('bon_id'));
         $colis =Coli::join('villes','colis.ville_id',"=","villes.id")
         ->join('line_bons','line_bons.colis_id','=','colis.id')
         ->join('bons','bons.id','=','line_bons.bon_id')
@@ -98,10 +102,9 @@ class DistributionController extends Controller
         $livreurs = User::join('villes','villes.id','=','users.ville_id')
         ->where('users.role','=','livreur')
         ->join('regions','regions.id','=','villes.region_id')
-        ->select('users.*','villes.*','regions.*')
+        ->select('users.id','users.nomComplet')
         ->where('regions.id','=',$bon->region_id)
         ->get();
-
         $Attente = Coli::join('villes','villes.id','=','colis.ville_id')
         ->join('users','users.id','=','colis.client_id')
         ->join('regions','regions.id','=','villes.region_id')
@@ -117,7 +120,7 @@ class DistributionController extends Controller
         return view('newDistribution')->with(['bon'=>$bon,'colis'=>$colis,'livreurs'=>$livreurs,'Attente'=>$Attente]);
     }
     public function Distributeur(Request $request){
-        $bon = Bon::findOrFail($request->input('bon_id'));
+        $bon = Bon::join('regions','regions.id','=','bons.region_id')->select('regions.region','bons.*')->findOrFail($request->input('bon_id'));
         $livreur =User::findOrFail($request->input('livreur_id'));
         Bon::where('id','=',$bon->id)->update([
             'livreur_id'=>$livreur->id
@@ -145,13 +148,12 @@ class DistributionController extends Controller
             ])
         ->select('villes.ville','colis.*','users.nomMagasin')
         ->orderBy('colis.created_at', 'DESC')->get();
-        // return redirect()->route('editDistribution');
-        return view('newDistribution')->with(['bon'=>$bon,'colis'=>$colis,'livreurs'=>$livreurs,'Attente'=>$Attente]);
+        return redirect()->route('Distribution')->with('success', 'Distributeur a étè bien choisi');
+        // return view('newDistribution')->with(['bon'=>$bon,'colis'=>$colis,'livreurs'=>$livreurs,'Attente'=>$Attente]);
         // return back()->with(['bon'=>$bon,'colis'=>$colis,'livreurs'=>$livreurs,'Attente'=>$Attente]);
     }
     public function store(Request $request){
-        $id = $request->input('bon_id');
-        $bon = Bon::findOrFail($id);
+        $bon = Bon::join('regions','regions.id','=','bons.region_id')->select('regions.region','bons.*')->findOrFail($request->input('bon_id'));
         $colis = Coli::where('code','=', $request->input('code_suivi'))->get();
         $exist = false;
         $existed = Line_bon::join('bons','bons.id','=','line_bons.bon_id')
@@ -233,5 +235,19 @@ class DistributionController extends Controller
         ]);
             // return redirect()->route('Distribution');
         return back()->with('success', 'Votre bon est valide avec Succès');
+    }
+    public function Retirer(Request $request){
+        $table =explode('_' ,$request->input('colis'));
+        for($i=0;$i<count($table)-1;$i++){
+            Line_bon::join('bons','bons.id','=','line_bons.bon_id')
+            ->where([['bons.type','=','Distribution'],['line_bons.colis_id','=',$table[$i]]])->delete();
+            Coli::where('id','=',$table[$i])->update(['etat'=>'Reçu']);
+            Historique::create([
+                'etat_h' => 'Reçu',
+                'colis_id' => $table[$i],
+                'par'=>Auth::id()
+            ]);
+        }
+        return redirect()->route('Distribution')->with('success','votre colis a étè retiré avec succès');
     }
 }

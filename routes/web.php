@@ -46,11 +46,13 @@ Route::get('/valider_envoi', [EnvoiController::class, 'valider'])->name('EnvoiVa
 Route::post('/ValiderCodeEnvoi',[EnvoiController::class, 'ValiderCode'])->name('ValiderCodeEnvoi');
 Route::get('/BonsDenvoie', [EnvoiController::class, 'index'])->name('Envoi');
 Route::get('/editEnvoi',[EnvoiController::class, 'editEnvoi'])->name('editEnvoi');
+Route::post('/RetirerEnvoi',[EnvoiController::class, 'Retirer'])->name('RetirerEnvoi');
 
 Route::post('/newRetourClient',[RetourClientController::class, 'newRetourClient'])->name('newRetourClient');
 Route::post('/RetourClientCode',[RetourClientController::class, 'store'])->name('RetourClientCode');
 Route::post('/valider_retour_client', [RetourClientController::class, 'valider'])->name('RetourClientValider');
 Route::get('/BonsRetourClient', [RetourClientController::class, 'index'])->name('RetourClient');
+Route::post('/RetirerRetourClient',[RetourClientController::class, 'Retirer'])->name('RetirerRetourClient');
 Route::post('/editRetourClient',[RetourClientController::class, 'editRetourClient'])->name('editRetourClient');
 
 
@@ -59,6 +61,7 @@ Route::get('/valider_retour', [RetourController::class, 'valider'])->name('Retou
 Route::post('/RetourCode',[RetourController::class, 'store'])->name('RetourCode');
 Route::post('/ValiderCodeRetour',[RetourController::class, 'ValiderCode'])->name('ValiderCodeRetour');
 Route::post('/newRetour',[RetourController::class, 'newRetour'])->name('newRetour');
+Route::post('/RetirerRetour',[RetourController::class, 'Retirer'])->name('RetirerRetour');
 Route::get('/BonsRetour', [RetourController::class, 'index'])->name('Retour');
 
 
@@ -92,16 +95,17 @@ Route::post('/valider', [ReceptionController::class, 'valider'])->name('receptio
 Route::get('/Reception',[ReceptionController::class, 'index'])->name('Reception');
 Route::get('/newReception',[ReceptionController::class, 'newReception'])->name('newReception');
 Route::post('/ReceptionCode',[ReceptionController::class, 'store'])->name('ReceptionCode');
+Route::post('/RetirerReception',[ReceptionController::class, 'Retirer'])->name('RetirerReception');
 Route::get('/editReception',[ReceptionController::class, 'editReception'])->name('editReception');
 
 
-// Route::post('/valider_distribution', [DistributionController::class, 'valider'])->name('distributionValider');
 Route::get('/Distribution',[DistributionController::class, 'index'])->name('Distribution');
 Route::get('/DistributionLivreur',[DistributionController::class, 'DistributionLivreur'])->name('DistributionLivreur');
 Route::post('/Distributeur',[DistributionController::class, 'Distributeur'])->name('Distributeur');
 Route::post('/newDistribution',[DistributionController::class, 'newDistribution'])->name('newDistribution');
 Route::post('/DistributionCode',[DistributionController::class, 'store'])->name('DistributionCode');
 Route::get('/editDistribution',[DistributionController::class, 'editDistribution'])->name('editDistribution');
+Route::post('/RetirerDistribution',[DistributionController::class, 'Retirer'])->name('RetirerDistribution');
 Route::get('/valider_distribution', [DistributionController::class, 'valider'])->name('DistributionValider');
 Route::post('/ValiderCodeDistribution',[DistributionController::class, 'ValiderCode'])->name('ValiderCodeDistribution');
 

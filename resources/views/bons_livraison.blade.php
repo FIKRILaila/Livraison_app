@@ -11,7 +11,6 @@ active
                 <table id="livraison" class="display">
                     <thead>
                         <tr>
-                            {{-- <th>#</th> --}}
                             <th>Reference</th>
                             <th>Date</th>
                             <th>Colis</th>
@@ -22,7 +21,6 @@ active
                         @foreach ($bons as $item) 
                         @if ($item->client_id === Auth::user()->id)
                         <tr>
-                            {{-- <td>{{ $item->id }}</td> --}}
                             <td>{{$item->ref}}</td>
                             <td>{{$item->created_at}}</td>
                             <td>
@@ -45,7 +43,7 @@ active
                                     <input type="hidden" name="bon" value="{{ $item->id }}">
                                     <button type ="submit" class="btn btn-light"><i class="fas fa-print"></i></button>
                                 </form>
-                                 <!-- Details de bon -->
+                                <!-- Details de bon -->
                                 <div class="modal fade" id="{{'model_'.$item->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                                     <div class="modal-dialog modal-dialog-centered" role="document">
                                     <div class="modal-content">
@@ -59,11 +57,10 @@ active
                                             <table class="table">
                                                 <thead>
                                                 <tr>
-                                                    {{-- <th scope="col">#</th> --}}
+                                                    <th scope="col">Code Barre</th>
                                                     <th scope="col">Destinataire</th>
                                                     <th scope="col">Téléphone</th>
                                                     <th scope="col">Etat</th>
-                                                    <th scope="col">Code Barre</th>
                                                 </tr>
                                                 </thead>
                                                 <tbody>
@@ -71,21 +68,14 @@ active
                                                     @if ($ele->client_id === Auth::user()->id)
                                                     @if ($ele->bon_id === $item->id)
                                                         <tr>
-                                                            {{-- <th scope="row">{{ $ele->bon }}</th> --}}
-                                                            <td>{{$ele->destinataire }}</td>
-                                                            <td>{{$ele->telephone }}</td>
-                                                            <td>{{$ele->etat}}</td>
                                                             <td>
                                                                 @php
                                                                     echo $ele->code_bar."<span class=\"font-weight-bold\">".$ele->code."</span>";
                                                                 @endphp
                                                             </td>
-                                                                {{-- @if ($ele->val == false)
-                                                                    <button class="btn-success btn">Valider</button>
-                                                                @else
-                                                                    echo "Déjà valider"
-                                                                @endif --}}
-                                                            {{-- </td> --}}
+                                                            <td>{{$ele->destinataire }}</td>
+                                                            <td>{{$ele->telephone }}</td>
+                                                            <td>{{$ele->etat}}</td>
                                                         </tr>
                                                     @endif
                                                     @endif
@@ -119,7 +109,6 @@ active
                 <table id="livraison" class="display">
                     <thead>
                         <tr>
-                            <th>#</th>
                             <th>Reference</th>
                             <th>Date</th>
                             <th>Colis</th>
@@ -129,7 +118,6 @@ active
                     <tbody>
                         @foreach ($bons as $item) 
                         <tr>
-                            <td>{{ $item->id }}</td>
                             <td>{{$item->ref}}</td>
                             <td>{{$item->created_at}}</td>
                             <td>
@@ -166,24 +154,24 @@ active
                                             <table class="table">
                                                 <thead>
                                                 <tr>
-                                                    <th scope="col">#</th>
+                                                    <th scope="col">Code Barre</th>
                                                     <th scope="col">Destinataire</th>
                                                     <th scope="col">Téléphone</th>
-                                                    <th scope="col">Code Barre</th>
+                                                    <th scope="col">Etat</th>
                                                 </tr>
                                                 </thead>
                                                 <tbody>
                                                     @foreach ($colis as $ele)
                                                     @if ($ele->bon_id === $item->id)
                                                         <tr>
-                                                            <th scope="row">{{ $ele->bon }}</th>
-                                                            <td>{{$ele->destinataire }}</td>
-                                                            <td>{{$ele->telephone }}</td>
                                                             <td>
                                                                 @php
                                                                     echo $ele->code_bar."<span class=\"font-weight-bold\">".$ele->code."</span>";
                                                                 @endphp
                                                             </td>
+                                                            <td>{{$ele->destinataire }}</td>
+                                                            <td>{{$ele->telephone }}</td>
+                                                            <td>{{$ele->etat}}</td>
                                                         </tr>
                                                         @endif
                                                     @endforeach

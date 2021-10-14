@@ -44,7 +44,7 @@ class LivraisonController extends Controller
             $coli = Coli::findOrFail($table[$i]);
                 $total += $coli->prix;
             Historique::create([
-                'etat_h' => 'En Attente de Rammassage',
+                'etat_h' => 'En Attente de Ramassage',
                 'colis_id' => $coli->id,
                 'par' =>Auth::id()
             ]);
@@ -53,7 +53,7 @@ class LivraisonController extends Controller
                 'bon_id' => $bon->id
             ]);
             Coli::where('id','=',$coli->id)->update([
-                'etat' => 'En Attente de Rammassage'
+                'etat' => 'En Attente de Ramassage'
             ]);
         }
         $bon_info =Line_bon::join('colis', 'colis.id', '=', 'line_bons.colis_id')
@@ -260,12 +260,12 @@ class LivraisonController extends Controller
         ->where('bons.id',"=",$bon->id)
         ->select('colis.*', 'line_bons.*', 'bons.*')
         ->get();
-        $html = '<!DOCTYPE html>
-        <html lang="fr">
+        $html = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+        <html dir="rtl" xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" lang="ar">
         <head>
-            <meta charset="utf-8"/>
-            <meta http-equiv="X-UA-Compatible" content="IE=edge">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta charset="utf-8" />
+        <meta http-equiv="Content-Language" content="ar-tn"/>
             <title>Stickers</title>
             <style>
                 body{
@@ -310,19 +310,25 @@ class LivraisonController extends Controller
 
                             <div style="margin:1% 0;">';
                             if($info->ouvrir){
-                                $html .='<h3 style="width:65%; display:inline-block; font-weight:bold;">يسمح بفتح هذه الطلبية</h3>
+                                $html .='<h3 style="width:100%; display:inline-block; font-weight:bold;">يسمح بفتح هذه الطلبية</h3>
                                 </div>';
                             }else{
-                                $html .='<h3 style="width:65%; display:inline-block; font-weight:bold;">لا يسمح بفتح هذه الطلبية إلا بإذن البائع</h3>
+                                $html .='<h3 style="width:100%; display:inline-block; font-weight:bold;">لا يسمح بفتح هذه الطلبية إلا بإذن البائع</h3>
                                 </div>';
                             }
                             $html.='<div style="margin:1% 0;">';
                             if($info->fragile){
                                 $html.= '<div style="padding:1%; margin-top:1%; margin-right:3%; color:rgb(160, 10, 10); width:20%; display:inline-block; border: 2px solid rgb(160, 10, 10);">
                                 <h3 style="margin:0 0 1% 2%";>FRAGILE</h3></div>';
+                            }else{
+                                $html.= '<div style="padding:1%; margin-top:1%; margin-right:3%; color:white; width:20%; display:inline-block; border: 2px solid white;">
+                                <h3 style="margin:0 0 1% 2%;">FRAGILE</h3></div>';
                             }
                             if($info->remplacer){
                                 $html.= '<div style="padding:1%; margin-top:0%; color:rgb(160, 10, 10); width:30%; display:inline-block; border: 2px solid rgb(160, 10, 10);">
+                                <h3 style="margin:0 0 1% 2%";>A Remplacer</h3></div>';
+                            }else{
+                                $html.= '<div style="padding:1%; margin-top:0%; color:white; width:30%; display:inline-block; border: 2px solid white;">
                                 <h3 style="margin:0 0 1% 2%";>A Remplacer</h3></div>';
                             }
                             $html.='</div>';

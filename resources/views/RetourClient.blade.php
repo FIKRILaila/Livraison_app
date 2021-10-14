@@ -26,7 +26,6 @@ active
                         <th>Nom du Magasin</th>
                         <th>Etat</th>
                         <th>Status</th>
-                        {{-- <th>Région</th> --}}
                         <th>Ville</th>
                         <th>Prix</th>
                     </tr>
@@ -46,7 +45,6 @@ active
                                     @endif
                                 </td>
                                 <td>{{$item->etat}}</td>
-                                {{-- <td>{{$item->region}}</td> --}}
                                 <td>{{$item->ville}}</td>
                                 <td>{{$item->prix}} DH</td>
                             </tr>
@@ -68,8 +66,8 @@ active
                         @endforeach
                     </select>
                 </div>
-                <div class="row justify-content-end col-md-2 ml-2">
-                    <button type="submit" class="btn btn-info ml-4">Nouveau Bon</button>
+                <div class="d-flex justify-content-end ml-2">
+                    <button type="submit" class="btn btn-info ">Nouveau Bon</button>
                 </div>
             </form>
         </div>
@@ -85,13 +83,10 @@ active
                         <tr>
                             <th>Réf</th>
                             <th>Nom de Magasin</th>
-                            {{-- <th>Agence</th>
-                            <th>Pour</th> --}}
                             <th>Date de création</th>
                             <th>Date d'enregistrement</th>
                             <th>Status</th>
                             <th>Colis</th>
-                            {{-- <th>Reçu</th> --}}
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -100,8 +95,6 @@ active
                         <tr>
                             <td>{{ $item->ref }}</td>
                             <td>{{ $item->nomMagasin }}</td>
-                            {{-- <td></td>
-                            <td></td> --}}
                             <td>{{$item->created_at}}</td>
                             <td>
                                 @if ($item->etat == 'Enregistré')
@@ -155,24 +148,24 @@ active
                                             <table class="table">
                                                 <thead>
                                                 <tr>
+                                                    <th scope="col">Code Barre</th>
                                                     <th scope="col">Destinataire</th>
                                                     <th scope="col">Téléphone</th>
                                                     <th scope="col">Etat</th>
-                                                    <th scope="col">Code Barre</th>
                                                 </tr>
                                                 </thead>
                                                 <tbody>
                                                     @foreach ($colis as $ele)
                                                     @if ($ele->bon_id === $item->id)
                                                         <tr>
-                                                            <td>{{$ele->destinataire }}</td>
-                                                            <td>{{$ele->telephone }}</td>
-                                                            <td>{{$ele->etat }}</td>
                                                             <td>
                                                                 @php
                                                                     echo $ele->code_bar."<span class=\"font-weight-bold\">".$ele->code."</span>";
                                                                 @endphp
                                                             </td>
+                                                            <td>{{$ele->destinataire }}</td>
+                                                            <td>{{$ele->telephone }}</td>
+                                                            <td>{{$ele->etat }}</td>
                                                         </tr>
                                                         @endif
                                                     @endforeach

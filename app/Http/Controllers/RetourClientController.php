@@ -23,8 +23,7 @@ class RetourClientController extends Controller
         ->select('bons.*','users.nomMagasin')->get();
         $Attente = Coli::join('villes','villes.id','=','colis.ville_id')
         ->join('users','users.id','=','colis.client_id')
-        // ->join('regions','regions.id','=','villes.region_id')
-        ->where('colis.retourner','=',false)
+        // ->where('colis.retourner','=',false)
         ->where('colis.etat','=','Reçu Par Agence')
         ->select('villes.ville','colis.*','users.nomMagasin')
         ->orderBy('colis.created_at', 'DESC')->get();
@@ -54,7 +53,7 @@ class RetourClientController extends Controller
         $Attente = Coli::join('villes','villes.id','=','colis.ville_id')
         ->join('users','users.id','=','colis.client_id')
         ->where('colis.client_id','=',$bon->magasin_retour)
-        ->where('colis.retourner','=',false)
+        // ->where('colis.retourner','=',false)
         ->where('colis.etat','=','Reçu Par Agence')
         ->select('villes.ville','colis.*','users.nomMagasin')
         ->orderBy('colis.created_at', 'DESC')->get(); 
@@ -66,14 +65,15 @@ class RetourClientController extends Controller
         ->where('line_bons.bon_id','=',$bon->id)
         ->select('villes.ville','colis.*','users.nomMagasin')
         ->orderBy('colis.created_at', 'DESC')->get();
+        $bon =Bon::join('users','users.id','=','bons.magasin_retour')->select('bons.*','users.nomMagasin')->findOrFail($bon->id);
         return view('newRetourClient')->with(['bon'=>$bon,'colis'=>$colis,'Attente'=>$Attente]);
     }
     public function editRetourClient(Request $request){
-        $bon = Bon::findOrFail($request->input('bon_id'));
+        $bon =Bon::join('users','users.id','=','bons.magasin_retour')->select('bons.*','users.nomMagasin')->findOrFail($request->input('bon_id'));
         $Attente = Coli::join('villes','villes.id','=','colis.ville_id')
         ->join('users','users.id','=','colis.client_id')
         ->where('colis.client_id','=',$bon->magasin_retour)
-        ->where('colis.retourner','=',false)
+        // ->where('colis.retourner','=',false)
         ->where('colis.etat','=','Reçu Par Agence')
         ->select('villes.ville','colis.*','users.nomMagasin')
         ->orderBy('colis.created_at', 'DESC')->get(); 
@@ -89,8 +89,7 @@ class RetourClientController extends Controller
         return view('newRetourClient')->with(['bon'=>$bon,'colis'=>$colis,'Attente'=>$Attente]);
     }
     public function store(Request $request){
-        $id = $request->input('bon_id');
-        $bon = Bon::findOrFail($id);
+        $bon =Bon::join('users','users.id','=','bons.magasin_retour')->select('bons.*','users.nomMagasin')->findOrFail($request->input('bon_id'));
         $colis =  Coli::where('code','=', $request->input('code_suivi'))
         ->join('villes','villes.id','=','colis.ville_id')->select('villes.ville','colis.*')->get();
         $exist = false;
@@ -109,8 +108,16 @@ class RetourClientController extends Controller
                                 'colis_id' => $col->id,
                                 'bon_id' => $bon->id
                             ]);
+                            // Coli::where('id','=',$col->id)->update([
+                            //     'retourner' => true
+                            // ]);
                             Coli::where('id','=',$col->id)->update([
-                                'retourner' => true
+                                'etat' => 'Retourné au Client'
+                            ]);
+                            Historique::create([
+                                'etat_h' => 'Retourné au Client',
+                                'colis_id' => $col->id,
+                                'par'=>Auth::id()
                             ]);
                     }
             }
@@ -154,5 +161,19 @@ class RetourClientController extends Controller
         }
         return back()->with('success', 'Votre bon est valide avec Succès');
 
+    }
+    public function Retirer(Request $request){
+        $table =explode('_' ,$request->input('colis'));
+        for($i=0;$i<count($table)-1;$i++){
+            Line_bon::join('bons','bons.id','=','line_bons.bon_id')
+            ->where([['bons.type','=','RetourClient'],['line_bons.colis_id','=',$table[$i]]])->delete();
+            Coli::where('id','=',$table[$i])->update(['etat'=>'Reçu Par Agence']);
+            Historique::create([
+                'etat_h' =>'Reçu Par Agence',
+                'colis_id' => $table[$i],
+                'par'=>Auth::id()
+            ]);
+        }
+        return redirect()->route('RetourClient')->with('success','votre colis a étè retiré avec succès');
     }
 }
