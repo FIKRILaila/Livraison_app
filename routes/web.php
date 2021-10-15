@@ -36,6 +36,8 @@ Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 Route::get('/factures', [FacturesController::class, 'index'])->name('factures');
 Route::post('/filtreColisFacture', [FacturesController::class, 'filtrer'])->name('filtreColisFacture');
+Route::post('/StoreFacture', [FacturesController::class, 'store'])->name('StoreFacture');
+Route::post('/imprimerFacture', [FacturesController::class, 'imprimer'])->name('imprimerFacture');
 
 
 Route::get('/bons_livraison', [LivraisonController::class, 'index'])->name('bonsLivraion'); 

@@ -211,20 +211,20 @@ class LivraisonController extends Controller
                 </div>
             </div>
             <hr>
-                <div class="border info" style="margin-top:0;">
-                    <p>
-                        <span>Client :</span>'.Auth::user()->nomComplet.'<br>
-                        <span>Téléphone :</span>'.Auth::user()->phone.'
-                    </p>
-                </div>
-                <div class="border info" style="margin-top:2%;">
-                    <p>
-                        <span>Bon de Livraison:</span>'.$bon->ref.'<br>
-                        <span>Date :</span>'.$bon->created_at.'<br>
-                        <span>Colis :</span>'.$colis.'<br>
-                        <span>Total : </span>'.$total.'
-                    </p>
-                </div>
+            <div class="border info" style="margin-top:0;">
+                <p>
+                    <span>Client :</span>'.Auth::user()->nomComplet.'<br>
+                    <span>Téléphone :</span>'.Auth::user()->phone.'
+                </p>
+            </div>
+            <div class="border info" style="margin-top:2%;">
+                <p>
+                    <span>Bon de Livraison:</span>'.$bon->ref.'<br>
+                    <span>Date :</span>'.$bon->created_at.'<br>
+                    <span>Colis :</span>'.$colis.'<br>
+                    <span>Total : </span>'.$total.'
+                </p>
+            </div>
             
             <table class="border">
                 <tr>
