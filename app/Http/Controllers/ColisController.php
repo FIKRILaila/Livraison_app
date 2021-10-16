@@ -197,8 +197,6 @@ class ColisController extends Controller
         $input['ouvrir'] =$request->input('ouvrir') == "oui"?1:0;
         $input['client_id'] = Auth::id();
         $input['etat'] = 'Nouveau Colis';
-        // $input['paye'] = false;
-        // $input['valide'] = false;
 
         $colis = Coli::create($input);
 
@@ -293,10 +291,14 @@ class ColisController extends Controller
                     'colis_id' =>$request->input('colis_id'),
                     'par' =>Auth::id()
                     ]);
+                if($request->input('etat') == 'Refusé'){
+                    $colis = Coli::where('id','=', $request->input('colis_id'))->update([
+                        'refuser' => true
+                    ]);
+                }
         }
         return back()->with('success','etat modifié avec succès');
     }
-
     public function update(Request $request)
     {
         $input = $request->all();

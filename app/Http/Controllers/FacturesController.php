@@ -13,36 +13,55 @@ use App\Models\User;
 class FacturesController extends Controller
 {
     public function index(){
+        if(Auth::user()->role == 'admin'){
+            $Attente = Coli::join('villes','villes.id','=','colis.ville_id')
+            ->join('users','users.id','=','colis.client_id')
+            ->where([['colis.refuser','=',true],['colis.paye','=',false]])
+            ->orWhere([['colis.etat','=','Livré'],['colis.paye','=',false]])
+            ->select('villes.ville','colis.*','users.nomMagasin')
+            ->orderBy('colis.created_at', 'DESC')->get();
+            $clients = User::where('role', '=','client')->get();
+            $factures = Facture::join('users','users.id','=','factures.client_id')->select('factures.*','users.nomComplet','users.nomMagasin')->get();
+            $colis = Coli::join('villes','villes.id','=','colis.ville_id')
+            ->join('users','users.id','=','colis.client_id')
+            ->join('colis_factures','colis.id',"=","colis_factures.colis_id")
+            ->select('villes.ville','colis.*','users.nomMagasin','colis_factures.*')
+            ->orderBy('colis.created_at', 'DESC')->get();
+            return view('factures',['Attente'=>$Attente,'clients'=>$clients,'colis'=>$colis,'factures'=>$factures]);
+        }
+        if(Auth::user()->role == 'client'){
+            $factures = Facture::join('users','users.id','=','factures.client_id')->where('factures.client_id','=',Auth::id())->select('factures.*','users.nomComplet','users.nomMagasin')->get();
+            $colis = Coli::join('villes','villes.id','=','colis.ville_id')
+            ->join('users','users.id','=','colis.client_id')
+            ->join('colis_factures','colis.id',"=","colis_factures.colis_id")
+            ->select('villes.ville','colis.*','users.nomMagasin','colis_factures.*')
+            ->orderBy('colis.created_at', 'DESC')->get();
+            return view('factures',['colis'=>$colis,'factures'=>$factures]);
+        }
+    }
+    public function filtrer(Request $request){
         $Attente = Coli::join('villes','villes.id','=','colis.ville_id')
         ->join('users','users.id','=','colis.client_id')
-        ->where('colis.etat','=','Refusé')
-        ->orWhere('colis.etat','=','Livré')
+        ->where([
+            ['colis.refuser','=',true],
+            ['colis.paye','=',false],
+            ['colis.client_id','=',$request->input('client_id')]
+            ])
+        ->orWhere([
+            ['colis.etat','=','Livré'],
+            ['colis.paye','=',false],
+            ['colis.client_id','=',$request->input('client_id')]
+            ])
         ->select('villes.ville','colis.*','users.nomMagasin')
         ->orderBy('colis.created_at', 'DESC')->get();
-        $clients = User::where('role', '=','client')->get();
         $factures = Facture::join('users','users.id','=','factures.client_id')->select('factures.*','users.nomComplet','users.nomMagasin')->get();
         $colis = Coli::join('villes','villes.id','=','colis.ville_id')
         ->join('users','users.id','=','colis.client_id')
         ->join('colis_factures','colis.id',"=","colis_factures.colis_id")
         ->select('villes.ville','colis.*','users.nomMagasin','colis_factures.*')
         ->orderBy('colis.created_at', 'DESC')->get();
-        return view('factures',['Attente'=>$Attente,'clients'=>$clients,'colis'=>$colis,'factures'=>$factures]);
-    }
-    public function filtrer(Request $request){
-        $Attente = Coli::join('villes','villes.id','=','colis.ville_id')
-        ->join('users','users.id','=','colis.client_id')
-        ->where([
-            ['colis.etat','=','Refusé'],
-            ['colis.client_id','=',$request->input('client_id')]
-        ])
-        ->orWhere([
-            ['colis.etat','=','Livré'],
-            ['colis.client_id','=',$request->input('client_id')]
-        ])
-        ->select('villes.ville','colis.*','users.nomMagasin')
-        ->orderBy('colis.created_at', 'DESC')->get();
         $clients = User::where('role', '=','client')->get();
-        return view('factures',['Attente'=>$Attente,'clients'=>$clients]);
+        return view('factures',['Attente'=>$Attente,'clients'=>$clients,'colis'=>$colis,'factures'=>$factures]);
     }
     public function store(Request $request){
         $colis =explode('_' ,$request->input('colis'));
@@ -99,6 +118,7 @@ class FacturesController extends Controller
         ->get();
         $client = User::findOrFail($facture->client_id);
         $total = 0;
+        $price = 0;
         $nbr_colis = 0;
         $html = '
         <!DOCTYPE html>
@@ -109,6 +129,9 @@ class FacturesController extends Controller
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <title>'.$facture->reference.'</title>
             <style>
+            body{
+                font-family: arial, sans-serif;
+            }
             table {
             font-family: arial, sans-serif;
             border-collapse: collapse;
@@ -157,10 +180,9 @@ class FacturesController extends Controller
             </div>
             <div class="border info" style="margin-top:0%; height:10%;">
                 <p>
-                    <span>Bon de Livraison:</span>'.$facture->reference.'<br>
+                    <span>Facture : </span> '.$facture->reference.'<br>
                     <span>Date :</span>'.$facture->created_at.'<br>
                     <span>Colis :</span>'.$nbr_colis.'<br>
-                    <span>Total : </span>'.$total.'
                 </p>
             </div>
             <table class="border">
@@ -169,28 +191,49 @@ class FacturesController extends Controller
             <th>Status</th>
             <th>Ville</th>
             <th>Prix</th>
-            <th>Frais de Livraison</th>
-            <th>Frais de Retour</th>
+            <th>Frais</th>
             </tr>';
             foreach ($colis as $coli){
+
                 $html .= ' <tr>
                 <td>'.$coli->code.'</td>
                 <td>'.$coli->etat.'</td>
                 <td>'.$coli->ville.'</td>
-                <td>'.$coli->prix.'</td>';
-                if($client->ville == $coli->ville){
-                    $html .= '<td>17 DH</td>';
+                <td>';
+                if($coli->etat == 'Refusé'){
+                    $html .= 'O DH';
                 }else{
-                    $html .= '<td>'.$coli->frais_livraison.'</td>';
+                    $html .= $coli->prix;
+                    $price += $coli->prix;
                 }
-                if($coli->retour){
+                $html .='</td>';
+                if($coli->etat == 'Refusé'){
                     $html .= '<td>5 DH</td>';
+                    $total += 5 ;
+                }elseif($client->ville == $coli->ville){
+                    if($coli->fragile){
+                        $html .= '<td> 22 DH </td>';
+                        $total += 22 ;
+                    }else{
+                        $html .= '<td> 17 DH</td>';
+                        $total += 17 ;
+                    }
                 }else{
-                    $html .= '<td>0 DH</td>';
+                    if($coli->fragile){
+                        $html .= '<td>'.$coli->frais_livraison + 5 .' DH </td>';
+                        $total += $coli->frais_livraison + 5 ;
+                    }else{
+                        $html .= '<td>'.$coli->frais_livraison.' DH </td>';
+                        $total += $coli->frais_livraison;
+                    }
                 }
+
             $html .= '</tr>';
             }
         $html .= '</table>
+        <div style="width:100%; margin-top:2%;" class="border">
+            <h3 style="margin:1% 0 1% 65%;">NET A PAYER  : '.$price - $total.' DH</h3>
+        </div>
         </body>
         </html>
         ';

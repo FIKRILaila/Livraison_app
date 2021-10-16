@@ -13,6 +13,7 @@ active
     @if (Session::get('fail'))
         <div class="alert alert-danger">{{ Session::get('fail') }}</div>
     @endif
+    @if (Auth::user()->role == 'admin')  
     <div class="card mt-4">
         <div class="m-4">
             <form action="{{route('filtreColisFacture')}}" method="post" class="row">
@@ -39,8 +40,8 @@ active
         <div class="mt-4 ml-4" >
             <form id="facture" action="{{ route('StoreFacture')}}" method="POST" class="d-none">
                 @csrf
-                <input type="text" name="colis" id="colis" value="">
-                <input type="text" name="client" id="client" value="">
+                <input type="text" name="colis" id="colis" value="" required>
+                <input type="text" name="client" id="client" value="" required>
             </form>
             <i class="fas fa-level-down-alt"></i>
             <input type="checkbox" name="selectAll" id="selectAll">
@@ -79,6 +80,7 @@ active
             </table>
         </div>
     </div>
+    @endif
     <div class="card mt-4">
         <div class="card-header">
             <h4 class="font-weight-bold m-2 text-info">Liste des Factures</h4>
@@ -89,8 +91,10 @@ active
                     <tr>
                         <th>Réf</th>
                         <th>Date de création</th>
+                        @if (Auth::user()->role == 'admin')  
                         <th>Client</th>
                         <th>Nom de Magasin </th>
+                        @endif
                         <th>Colis</th>
                         <th>Actions</th>
                     </tr>
@@ -100,8 +104,10 @@ active
                     <tr>
                         <td>{{ $item->reference }}</td>
                         <td>{{$item->created_at}}</td>
+                        @if (Auth::user()->role == 'admin')  
                         <td>{{$item->nomComplet}}</td>
                         <td>{{$item->nomMagasin}}</td>
+                        @endif
                         <td>
                             @php
                             $c = 0;
@@ -194,7 +200,9 @@ active
                         // client.value += ele[i].value + "_" ;
                     }
                 }  
-                form.submit();
+                if(client.value != "" &&  colis.value != ""){ 
+                    form.submit();
+                }
         }
 
         document.querySelector("#selectAll").addEventListener('click',function(){
