@@ -29,6 +29,7 @@ class CreateColisTable extends Migration
             $table->boolean('remplacer')->default(false);
             $table->boolean('change')->default(false);
             $table->boolean('paye')->default(false);
+            $table->boolean('enregistre')->default(false);
             $table->string('etat');
             $table->date('reported_at')->nullable();
             $table->unsignedBigInteger('ville_id');

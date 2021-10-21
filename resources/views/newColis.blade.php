@@ -79,7 +79,7 @@ active
                         </div>
                         <div class="row">
                             <div class="form-group col-md-6 row">
-                                <label for="fragile" class="col-md-4 mr-2 col-form-label">{{ __('Fragile :') }}</label>
+                                <label for="fragile" class="col-md-4 mr-2 col-form-label">{{ __('Fragile (5 DH) :') }}</label>
                                 <div class="col-md-8 row">
                                     <div class="mr-4">
                                         <input type="radio" id="oui" name="fragile" value="oui">
@@ -114,12 +114,6 @@ active
                             </div>
                         </div>
                         <div class="row">
-                            {{-- <div class="form-group row col-md-6">
-                                <label for="code" class="col-md-4 col-form-label">{{ __('Code') }}</label>
-                                <div class="col-md-8">
-                                    <input id="code" type="text" class="form-control @error('code') is-invalid @enderror" name="code" value="{{ old('code') }}" autocomplete="on">
-                                </div>
-                            </div> --}}
                             <div class="form-group col-md-12 row">
                                 <label for="adresse" class="col-md-2 col-form-label obligatoire">{{ __('Adresse :') }}</label>
                                 <div class="col-md-10">
@@ -137,7 +131,7 @@ active
                         </div>
                         <div class="form-group row justify-content-end col-md-12">
                             <label class="col-form-label">{{ __('Tarif de Livraison :') }}
-                                <span class="" id="tarif"></span> DH
+                                <span class="" id="tarif"> DH</span>
                             </label>
                         </div>
                         <div class="form-group row justify-content-end m-2">

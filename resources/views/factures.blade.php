@@ -13,24 +13,40 @@ active
     @if (Session::get('fail'))
         <div class="alert alert-danger">{{ Session::get('fail') }}</div>
     @endif
-    @if (Auth::user()->role == 'admin')  
-    <div class="card mt-4">
-        <div class="m-4">
-            <form action="{{route('filtreColisFacture')}}" method="post" class="row">
-                @csrf
-                <div class="row col-md-10">
-                    <label for="client_id" class="text-right col-md-2 col-form-label">{{ __('Nom de Magasin :') }}</label>
-                    <select name="client_id" id="client_id" class="col-md-10 form-control " value="{{ old('client_id') }}" required  autofocus autocomplete="on">
-                        <option value="magasin">Nom de Magasin</option>
-                        @foreach ($clients as $c)
-                            <option value="{{$c->id}}">{{$c->nomMagasin}}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="d-flex justify-content-end ml-2">
-                    <button type="submit" class="btn btn-info ">Filtrer</button>
-                </div>
-            </form>
+    @if (Auth::user()->role == 'admin') 
+    <div class="row">
+        <div class="mt-4 col-md-6">
+            <div class="m-4 p-4 card">
+                <form action="{{route('filtreColisFacture')}}" method="post" class="row">
+                    @csrf
+                    <div class="row col-md-10">
+                        <label for="client_id" class="text-right col-md-4 col-form-label">{{ __('Nom de Magasin :') }}</label>
+                        <select name="client_id" id="client_id" class="col-md-8 form-control " value="{{ old('client_id') }}" required  autofocus autocomplete="on">
+                            <option value="magasin">Nom de Magasin</option>
+                            @foreach ($clients as $c)
+                                <option value="{{$c->id}}">{{$c->nomMagasin}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="d-flex justify-content-end ml-2">
+                        <button type="submit" class="btn btn-info ">Filtrer</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="mt-4 col-md-6">
+            <div class="m-4 p-4 card">
+                <form action="{{route('NouveauRaport')}}" method="post" class="row">
+                    @csrf
+                    <div class="row col-md-10">
+                        <label for="date" class="text-right col-md-4 col-form-label">{{ __('Rapport Bancaire :') }}</label>
+                        <input type="date" name="date" id="date" value = @php echo $date = date("Y-m-d" ,time()); @endphp class="col-md-8 form-control " required autocomplete="on">
+                    </div>
+                    <div class="d-flex justify-content-end ml-2">
+                        <button type="submit" class="btn btn-info ">Nouveau</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
     <div class="card mt-4">
@@ -96,6 +112,7 @@ active
                         <th>Nom de Magasin </th>
                         @endif
                         <th>Colis</th>
+                        <th>Etat</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -119,7 +136,41 @@ active
                             echo $c;
                             @endphp
                         </td>
+                        <td>{{$item->etat_f}}</td>
                         <td class="d-flex">
+                            <button type="button" class="btn btn-light" data-toggle="modal" data-target="{{'#edit_'.$item->id}}"><i class="fas fa-edit"></i></button>
+                            <div class="modal fade" id="{{'edit_'.$item->id}}" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                        <div class="m-4">
+                                            <form method="POST" action="{{ route('editFacture') }}">
+                                                @csrf
+                                                <input type="hidden" name="facture_id" value="{{$item->id}}">
+                                                <div class="form-group col-md-12 row">
+                                                    <label for="etat" class="col-md-2 col-form-label">{{ __('Etat de Facture') }}</label>
+                                                    <div class="col-md-10">
+                                                        <select name="etat" id="etat" class="form-control" value="{{ old('etat') }}" required  autofocus autocomplete="on">
+                                                            <option value="{{$item->etat_f}}">{{$item->etat_f}}</option>
+                                                            <option value="Non Facturé">Non Facturé</option>
+                                                            <option value="Enregistré">Enregistré</option>
+                                                            <option value="Payé">Payé</option>
+                                                            <option value="Facturé">Facturé</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group d-flex justify-content-end">
+                                                    <div class="mr-2">
+                                                        <a href="{{route('factures')}}" class="btn btn-secondary">{{ __('Annuler') }}</a>
+                                                    </div>
+                                                    <div>
+                                                        <button type="submit" class="btn btn-info">{{ __('Enregistrer') }}</button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             <button type="button" class="btn btn-light" data-toggle="modal" data-target="{{'#model_'.$item->id}}">
                                 <i class="fas fa-info-circle"></i>
                             </button>

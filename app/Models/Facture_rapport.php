@@ -5,14 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Facture extends Model
+class Facture_rapport extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'reference',
-        'etat_f',
-        'Montant',
-        'date',
-        'client_id'
+        'facture_id',
+        'rapport_id',
     ];
 }

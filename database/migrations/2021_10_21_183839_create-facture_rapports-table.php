@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateFacturesTable extends Migration
+class CreateFactureRapportsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,12 @@ class CreateFacturesTable extends Migration
      */
     public function up()
     {
-        Schema::table('factures', function (Blueprint $table) {
+        Schema::table('facture_rapports', function (Blueprint $table) {
             $table->id();
-            $table->string('reference');
-            $table->string('etat_f');
-            $table->date('date');
-            $table->integer('Montant')->nullable();
-            $table->unsignedBigInteger('client_id');
-            $table->foreign('client_id')->references('id')->on('users')->ondelete('cascade');
+            $table->unsignedBigInteger('facture_id');
+            $table->foreign('facture_id')->references('id')->on('factures')->onDelete('cascade');
+            $table->unsignedBigInteger('rapport_id');
+            $table->foreign('rapport_id')->references('id')->on('rapport_bancaires')->onDelete('cascade');
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent();
         });
@@ -33,7 +31,8 @@ class CreateFacturesTable extends Migration
      */
     public function down()
     {
-        Schema::table('factures', function (Blueprint $table) {
+        Schema::table('facture_rapports', function (Blueprint $table) {
+            //
         });
     }
 }

@@ -16,6 +16,7 @@ use App\Http\Controllers\RetourController;
 use App\Http\Controllers\DemandesController;
 use App\Http\Controllers\RetourClientController;
 use App\Http\Controllers\FacturesController;
+use App\Http\Controllers\RapportsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,12 +33,15 @@ Route::get('/', function () {return view('welcome');});
 Auth::routes();
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 
-
+Route::get('/Rapports_Bancaires', [RapportsController::class, 'index'])->name('rapports');
+Route::post('/NouveauRaport', [RapportsController::class, 'Nouveau'])->name('NouveauRaport');
+Route::post('/ImprimerRaport', [RapportsController::class, 'imprimer'])->name('imprimerRaport');
 
 Route::get('/factures', [FacturesController::class, 'index'])->name('factures');
 Route::post('/filtreColisFacture', [FacturesController::class, 'filtrer'])->name('filtreColisFacture');
 Route::post('/StoreFacture', [FacturesController::class, 'store'])->name('StoreFacture');
 Route::post('/imprimerFacture', [FacturesController::class, 'imprimer'])->name('imprimerFacture');
+Route::post('/ModifierFacture', [FacturesController::class, 'update'])->name('editFacture');
 
 
 Route::get('/bons_livraison', [LivraisonController::class, 'index'])->name('bonsLivraion'); 

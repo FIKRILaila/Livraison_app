@@ -9,7 +9,7 @@
             <table id="tousColis" class="display">
                 <thead>
                     <tr>
-                        <th>Code d'Envoie</th>
+                        <th>Code Suivi</th>
                         <th>Date de creation</th>
                         <th>Téléphone</th>
                         <th>Adresse</th>
@@ -53,7 +53,7 @@
                                             <table id="historiques" class="display">
                                                 <thead>
                                                     <tr>
-                                                        <th>Code d'envoie</th>
+                                                        <th>Code Suivi</th>
                                                         <th>Etat</th>
                                                         <th>Status</th>
                                                         <th>Date</th>

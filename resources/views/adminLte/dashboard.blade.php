@@ -360,6 +360,14 @@
               </li>
               @if (Auth::user()->role == 'admin')
               <li class="nav-item has-treeview menu-open">
+                <a href="{{ route('rapports') }}" class="nav-link @yield('rapports')">
+                  <i class="nav-icon fas fa-city"></i>
+                  <p>
+                    Les Rapports Bancaire
+                  </p>
+                </a>
+              </li>
+              <li class="nav-item has-treeview menu-open">
                 <a href="{{ route('villes') }}" class="nav-link @yield('villes')">
                   <i class="nav-icon fas fa-city"></i>
                   <p>

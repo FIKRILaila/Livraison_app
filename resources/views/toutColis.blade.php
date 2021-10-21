@@ -18,7 +18,7 @@ active
             <table id="tousColis" class="display">
                 <thead>
                     <tr>
-                        <th>Code d'Envoie</th>
+                        <th>Code Suivi</th>
                         <th>Date de creation</th>
                         <th>Téléphone</th>
                         <th>Nom du Magasin</th>
@@ -56,7 +56,7 @@ active
                                         <table id="historiques" class="display">
                                             <thead>
                                                 <tr>
-                                                    <th>Code d'envoie</th>
+                                                    <th>Code Suivi</th>
                                                     <th>Etat</th>
                                                     <th>Status</th>
                                                     <th>Date</th>
@@ -101,7 +101,7 @@ active
                                                         <select name="etat" id="etat" class="form-control" value="{{ old('etat') }}" required  autofocus autocomplete="on">
                                                             <option value="{{$item->etat}}">{{$item->etat}}</option>
                                                             <option value="Nouveau Colis">Nouveau Colis</option>
-                                                            <option value="En Attente de Rammassage">En Attente de Rammassage </option>
+                                                            <option value="En Attente de Rammassage">En Attente de Rammassage</option>
                                                             <option value="Ramasse">Ramasse</option>
                                                             <option value="Expedié">Expedié</option>
                                                             <option value="Reçu">Reçu</option>
@@ -112,14 +112,12 @@ active
                                                             <option value="Reporté">Reporté</option>
                                                             <option value="Retourné">Retourné</option>
                                                             <option value="Reçu Par Client">Reçu Par Client</option>
-                                                            <option value="Pas de Réponse 1">Pas de Réponse 1</option>
-                                                            <option value="Pas de Réponse 2">Pas de Réponse 2</option>
-                                                            <option value="Pas de Réponse 3">Pas de Réponse 3</option>
+                                                            <option value="Pas de Réponse">Pas de Réponse</option>
                                                         </select>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="form-group col-md-12 " id="date" style="display:none;">
+                                            <div class="form-group col-md-12 " id="reporte" style="display:none;">
                                                 <label for="reported_at" class="col-md-2 col-form-label">{{ __('Reporté à : ') }}</label>
                                                 <div class="col-md-10">
                                                     <input type="date" name="reported_at" id="reported_at" class="form-control" value="{{ old('reported_at') }}" autofocus autocomplete="on">
@@ -188,7 +186,7 @@ active
                                             </div>
                                             <div class="row">
                                                 <div class="form-group col-md-6 row">
-                                                    <label for="fragile" class="col-md-4 col-form-label">{{ __('Fragile') }}</label>
+                                                    <label for="fragile" class="col-md-4 col-form-label">{{ __('Fragile (5DH)') }}</label>
                                                     <div class="col-md-8 row">
                                                         <div class="mr-4">
                                                             <input type="radio" id="oui" name="fragile" value="oui" @if($item->fragile == true) checked @endif>
@@ -255,9 +253,9 @@ active
         var etat = document.querySelector("#etat")
         etat.addEventListener('change', function () {
             if(etat.value == "Reporté") {
-                document.querySelector("#date").style.display = "block";
+                document.querySelector("#reporte").style.display = "block";
             }else{
-                document.querySelector("#date").style.display = "none";
+                document.querySelector("#reporte").style.display = "none";
             }
         })
     </script>

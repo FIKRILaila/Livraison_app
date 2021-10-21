@@ -16,8 +16,8 @@ class FacturesController extends Controller
         if(Auth::user()->role == 'admin'){
             $Attente = Coli::join('villes','villes.id','=','colis.ville_id')
             ->join('users','users.id','=','colis.client_id')
-            ->where([['colis.refuser','=',true],['colis.paye','=',false]])
-            ->orWhere([['colis.etat','=','Livré'],['colis.paye','=',false]])
+            ->where([['colis.refuser','=',true],['colis.enregistre','=',false]])
+            ->orWhere([['colis.etat','=','Livré'],['colis.enregistre','=',false]])
             ->select('villes.ville','colis.*','users.nomMagasin')
             ->orderBy('colis.created_at', 'DESC')->get();
             $clients = User::where('role', '=','client')->get();
@@ -44,12 +44,12 @@ class FacturesController extends Controller
         ->join('users','users.id','=','colis.client_id')
         ->where([
             ['colis.refuser','=',true],
-            ['colis.paye','=',false],
+            ['colis.enregistre','=',false],
             ['colis.client_id','=',$request->input('client_id')]
             ])
         ->orWhere([
             ['colis.etat','=','Livré'],
-            ['colis.paye','=',false],
+            ['colis.enregistre','=',false],
             ['colis.client_id','=',$request->input('client_id')]
             ])
         ->select('villes.ville','colis.*','users.nomMagasin')
@@ -82,6 +82,8 @@ class FacturesController extends Controller
             }
         }
         foreach($ids as $client_id){
+            $price = 0;
+            $frais = 0;
             $date = date('d-m-Y', time());
             $number=1;
             $select = Facture::get();
@@ -96,16 +98,48 @@ class FacturesController extends Controller
             $ref ='Facture-'.$date."-".$num_padded; 
             $facture = Facture::create([
                 'reference' => $ref,
-                'client_id'=>$client_id]);
+                'etat_f' => 'Non Facturé',
+                'date' =>  date('Y-m-d', time()),
+                'client_id'=>$client_id
+            ]);
             foreach ($colis as $coli){
                 $info_colis = Coli::findOrFail($coli);
                 if($info_colis->client_id == $client_id){
                     $colis_facture = Colis_facture::create([
                         'facture_id' => $facture->id,
-                        'colis_id' =>$coli
+                        'colis_id' =>$info_colis->id
                     ]);
+                    Historique::create([
+                        'etat_h' => 'enregistre',
+                        'colis_id' =>$info_colis->id,
+                        'par' => Auth::id()
+                        ]);
+                    Coli::where('id','=',$info_colis->id)->update([
+                        'enregistre' => true
+                    ]);
+                    $client = User::findOrFail($client_id);
+                    if($coli->etat == 'Livré'){
+                        $price += $info_colis->prix;
+                    }
+                    if($info_colis->etat == 'Refusé'){
+                        $frais += 5 ;
+                    }elseif($client->ville == $coli->ville){
+                        if($coli->fragile){
+                            $frais += 22 ;
+                        }else{
+                            $frais += 17 ;
+                        }
+                    }else{
+                        if($coli->fragile){
+                            $frais += $coli->frais_livraison + 5 ;
+                        }else{
+                            $frais += $coli->frais_livraison;
+                        }
+                    }
                 }
             }
+            $Montant = $price - $frais;
+            Facture::where('id', '=', $facture->id)->update(['Montant'=>$Montant]);
         }
         return back()->with('success','Factures generated successfully');
     }
@@ -237,8 +271,19 @@ class FacturesController extends Controller
         </body>
         </html>
         ';
+        Facture::where('id', '=', $facture->id)->update(['Montant'=>$price - $total]);
         $pdf = \App::make('dompdf.wrapper');
         $pdf->loadHTML($html);
         return $pdf->stream();
+    }
+    public function update(Request $request){
+        $facture = Facture::where('id', '=', $request->input('facture_id'))->update([
+            'etat_f' => $request->input('etat')
+        ]);
+        if($facture){
+            return back()->with('success','Etat modifié avec succès');
+        }else{
+            return back()->with('fail','Vous pouvez pas modifié l\'etat');
+        }
     }
 }
