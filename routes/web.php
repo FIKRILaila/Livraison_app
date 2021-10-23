@@ -56,6 +56,7 @@ Route::post('/ValiderCodeEnvoi',[EnvoiController::class, 'ValiderCode'])->name('
 Route::get('/BonsDenvoie', [EnvoiController::class, 'index'])->name('Envoi');
 Route::get('/editEnvoi',[EnvoiController::class, 'editEnvoi'])->name('editEnvoi');
 Route::post('/RetirerEnvoi',[EnvoiController::class, 'Retirer'])->name('RetirerEnvoi');
+Route::post('/imprimerEnvoie', [EnvoiController::class, 'imprimer'])->name('imprimerEnvoie');
 
 Route::post('/newRetourClient',[RetourClientController::class, 'newRetourClient'])->name('newRetourClient');
 Route::post('/RetourClientCode',[RetourClientController::class, 'store'])->name('RetourClientCode');
@@ -117,6 +118,8 @@ Route::get('/editDistribution',[DistributionController::class, 'editDistribution
 Route::post('/RetirerDistribution',[DistributionController::class, 'Retirer'])->name('RetirerDistribution');
 Route::get('/valider_distribution', [DistributionController::class, 'valider'])->name('DistributionValider');
 Route::post('/ValiderCodeDistribution',[DistributionController::class, 'ValiderCode'])->name('ValiderCodeDistribution');
+Route::post('/imprimerDistribution', [DistributionController::class, 'imprimer'])->name('imprimerDistribution');
+
 
 Route::get('/Reclamations',[DemandesController::class, 'Reclamations'])->name('Reclamations');
 Route::get('/ChangementRIB',[DemandesController::class, 'ChangementRIB'])->name('ChangementRIB');

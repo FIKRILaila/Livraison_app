@@ -179,6 +179,11 @@ active
                                     </div>
                                     </div>
                                 </div>
+                                <form action="{{route('imprimerDistribution')}}" method="post">
+                                    @csrf
+                                    <input type="hidden" name="bon" value="{{ $item->id }}">
+                                    <button type ="submit" class="btn btn-light"><i class="fas fa-print"></i></button>
+                                </form>
                             </td>
                         </tr>
                         @endforeach

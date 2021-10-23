@@ -148,10 +148,27 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="form-group col-md-6">
-                                    <label for="nomMagasin" class="col-form-label">{{ __('Nom de Magasin : ') }}</label>
-                                    <div>
-                                        <input id="nomMagasin" type="text" class="form-control" name="nomMagasin" value="{{Auth::user()->nomMagasin}}" required autocomplete="on" autofocus>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="nomMagasin" class="col-form-label">{{ __('Nom de Magasin : ') }}</label>
+                                        <div>
+                                            <input id="nomMagasin" type="text" class="form-control" name="nomMagasin" value="{{Auth::user()->nomMagasin}}" required autocomplete="on" autofocus>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="ville_id" class="col-form-label">{{ __('Ville') }}</label>
+                                        <div>
+                                            <select name="ville_id" id="ville_id" class="form-control" required  autofocus autocomplete="on">
+                                                @foreach ($villes as $v)     
+                                                    @if (Auth::user()->ville_id == $v->id)
+                                                    <option value="{{$v->id}}">{{$v->ville}}</option>
+                                                    @endif
+                                                @endforeach
+                                                @foreach ($villes as $v)     
+                                                    <option value="{{$v->id}}">{{$v->ville}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="form-group col-md-6">
@@ -255,12 +272,12 @@
     function addImage(input){
         var file=$("input[type=file]").get(0).files[0];
         if(file){
-          var reader = new FileReader();
-          reader.onload = function(){
+        var reader = new FileReader();
+        reader.onload = function(){
             $('#image').attr("src",reader.result);
             $('#logo').attr("value",reader.result);
-          }
-          reader.readAsDataURL(file);
+        }
+        reader.readAsDataURL(file);
         }
     }
 </script>

@@ -70,17 +70,17 @@ class LivraisonController extends Controller
         <head>
         <style>
         table {
-          font-family: arial, sans-serif;
-          border-collapse: collapse;
-          width: 100%;
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
         }
         td, th {
-          border: 1px solid #dddddd;
-          text-align: left;
-          padding: 8px;
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
         }
         tr:nth-child(even) {
-          background-color: #dddddd;
+            background-color: #dddddd;
         }
         span{
             font-weight: bold;
@@ -89,7 +89,7 @@ class LivraisonController extends Controller
             border: 2px solid black;
         }
         .info{
-            width:45%;
+            width:47%;
             padding-left:2%;
             display: inline-block;
         }
@@ -97,8 +97,8 @@ class LivraisonController extends Controller
         </head>
         <body style="width:90%;margin-left:5%;">
             <div>
-                <h1 class="info">LOGO</h1>
-                <div class="info">
+            <img  style="margin-top:2%; width:25%; padding-left:2%; display: inline-block;"  src="./images/Logo_MN.jpeg" alt="Logo">
+            <div class="info">
                     <p>
                         <span>MN Express Livraison</span> <br>
                         Adresse : ... <br>
@@ -127,10 +127,10 @@ class LivraisonController extends Controller
             </div>
             <table class="border">
                 <tr>
-                  <th>Destinataire</th>
-                  <th>Téléphone</th>
-                  <th>Ville</th>
-                  <th>Prix</th>
+                <th>Destinataire</th>
+                <th>Téléphone</th>
+                <th>Ville</th>
+                <th>Prix</th>
                 </tr>';
                 foreach ($bon_info as $p){
                     $ville = Ville::findOrFail($p->ville_id);
@@ -139,9 +139,9 @@ class LivraisonController extends Controller
                     <td>'.$p->telephone.'</td>
                     <td>'.$ville->ville.'</td>
                     <td>'.$p->prix.'</td>
-                  </tr>';
+                </tr>';
                 }
-              $html .= '</table>
+            $html .= '</table>
             <div>
                 <h3 class="info" style="margin-top:1%;">Signature Client :</h3>
                 <h3 class="info" style="margin-top:0%;">Signature Ramasseur :</h3>
@@ -157,7 +157,7 @@ class LivraisonController extends Controller
         $bon_info =Line_bon::join('colis', 'colis.id', '=', 'line_bons.colis_id')
         ->join('bons', 'bons.id', '=', 'line_bons.bon_id')
         ->where('bons.id',"=",$bon->id)
-        ->select('colis.*', 'line_bons.*', 'bons.*')
+        ->select('colis.*')
         ->get();
         $colis = 0;
         $total = 0;
@@ -191,7 +191,7 @@ class LivraisonController extends Controller
             border: 2px solid black;
         }
         .info{
-            width:45%;
+            width:47%;
             padding-left:2%;
             display: inline-block;
         }
@@ -199,8 +199,8 @@ class LivraisonController extends Controller
         </head>
         <body style="width:90%;margin-left:5%;">
             <div>
-                <h1 class="info">LOGO</h1>
-                <div class="info">
+            <img  style="margin-top:2%; width:25%; padding-left:2%; display: inline-block;"  src="./images/Logo_MN.jpeg" alt="Logo">
+            <div class="info">
                     <p>
                         <span>MN Express Livraison</span> <br>
                         Adresse : ... <br>
@@ -211,17 +211,17 @@ class LivraisonController extends Controller
                 </div>
             </div>
             <hr>
-            <div class="border info" style="margin-top:0;">
+            <div class="border info" style="margin-top:4%; height:10%;">
                 <p>
                     <span>Client :</span>'.Auth::user()->nomComplet.'<br>
                     <span>Téléphone :</span>'.Auth::user()->phone.'
                 </p>
             </div>
-            <div class="border info" style="margin-top:2%;">
+            <div class="border info" style="margin-top:0%; height:10%;">
                 <p>
-                    <span>Bon de Livraison:</span>'.$bon->ref.'<br>
-                    <span>Date :</span>'.$bon->created_at.'<br>
-                    <span>Colis :</span>'.$colis.'<br>
+                    <span>Bon de Livraison : </span>'.$bon->ref.'<br>
+                    <span>Date : </span>'.$bon->created_at.'<br>
+                    <span>Colis : </span>'.$colis.'<br>
                     <span>Total : </span>'.$total.'
                 </p>
             </div>
@@ -291,14 +291,14 @@ class LivraisonController extends Controller
             $html.='<div class="border ">
                         <div style="width:92%; margin-left:4%">
                             <div style="display:inline-block; width:60%;">
-                                <h1>LOGO</h1>
+                            <img  style="margin-top:2%; width:50%; padding-left:2%; display: inline-block;"  src="./images/Logo_MN.jpeg" alt="Logo">
                             </div>
                             <div style="display:inline-block; width:40%;">'.
                                 $info->code_bar.''.$info->code .'
                             </div>
                             <hr>
-                            <p style="width:70%; margin-top:1%; display:inline-block;"><span>Vendeur:</span>'.$vendeur->nomMagasin.' <br> ('.$vendeur->phone.') <br> <span>Date:</span>'.$info->created_at.'</p>
-                            <h2 style="width:30%; margin-top:0%; display:inline-block;">Logo</h2>
+                            <p style="width:75%; height:4%; margin-top:0%; display:inline-block;"><span>Vendeur:</span>'.$vendeur->nomMagasin.' <br> ('.$vendeur->phone.') <br> <span>Date:</span>'.$info->created_at.'</p>
+                            <img  style="margin-top:1%; margin-bottom:2%; width:25%; display: inline-block;" src="./images/'.$vendeur->logo.'" alt="Logo">
                             <hr>
                             <div style="width:50%;">
                                 <p>

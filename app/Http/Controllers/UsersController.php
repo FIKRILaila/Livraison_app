@@ -50,7 +50,7 @@ class UsersController extends Controller
                         $input['logo'] = "$profileImage";
                     }else{
                         $user = User::where("id","=",Auth::id())->get();
-                         foreach($user as $u){
+                        foreach($user as $u){
                             $input['logo'] = $u->logo;
                         }
                     }
@@ -61,6 +61,7 @@ class UsersController extends Controller
                     'adresse' =>$request->input('adresse'),
                     'phone' =>$request->input('phone'),
                     'email' =>$request->input('email'),
+                    'ville_id' =>$request->input('ville_id'),
                     'nomMagasin' =>$request->input('nomMagasin'),
                     'password' => Hash::make($request->input('password'))
                 ]);
