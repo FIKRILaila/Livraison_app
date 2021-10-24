@@ -43,7 +43,6 @@ Route::post('/StoreFacture', [FacturesController::class, 'store'])->name('StoreF
 Route::post('/imprimerFacture', [FacturesController::class, 'imprimer'])->name('imprimerFacture');
 Route::post('/ModifierFacture', [FacturesController::class, 'update'])->name('editFacture');
 
-
 Route::get('/bons_livraison', [LivraisonController::class, 'index'])->name('bonsLivraion'); 
 Route::post('/store', [LivraisonController::class, 'store'])->name('store'); 
 Route::post('/imprimer', [LivraisonController::class, 'imprimer'])->name('imprimer'); 

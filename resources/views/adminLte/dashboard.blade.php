@@ -344,7 +344,7 @@
                   <li class="nav-item">
                     <a href="{{ route('ChangementColis') }}" class="nav-link @yield('ChangementColis')">
                       <i class="far fa-circle nav-icon"></i>
-                      <p>Changement de Colis</p>
+                      <p>Changement d'Adresse</p>
                     </a>
                   </li>
                 </ul>

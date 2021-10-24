@@ -297,8 +297,8 @@ class LivraisonController extends Controller
                                 $info->code_bar.''.$info->code .'
                             </div>
                             <hr>
-                            <p style="width:75%; height:4%; margin-top:0%; display:inline-block;"><span>Vendeur:</span>'.$vendeur->nomMagasin.' <br> ('.$vendeur->phone.') <br> <span>Date:</span>'.$info->created_at.'</p>
-                            <img  style="margin-top:1%; margin-bottom:2%; width:25%; display: inline-block;" src="./images/'.$vendeur->logo.'" alt="Logo">
+                            <p style="width:70%; height:4%; margin-top:0%; display:inline-block;"><span>Vendeur:</span>'.$vendeur->nomMagasin.' <br> ('.$vendeur->phone.') <br> <span>Date:</span>'.$info->created_at.'</p>
+                            <img  style="margin-top:1%; margin-bottom:2%; width:30%; display: inline-block;" src="./images/'.$vendeur->logo.'" alt="Logo">
                             <hr>
                             <div style="width:50%;">
                                 <p>
