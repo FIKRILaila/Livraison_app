@@ -124,8 +124,8 @@ class DemandesController extends Controller
             ->get();
             $colis = Coli::join('villes','villes.id','=','colis.ville_id')
             ->join('users','users.id','=','colis.client_id')
-            ->where('colis.etat','=','Retourné')
-            ->where('colis.client_id','=',Auth::id())
+            ->where([['colis.etat','=','Refusé'],['colis.client_id','=',Auth::id()]])
+            ->orWhere([['colis.etat','=','Annulé'],['colis.client_id','=',Auth::id()]])
             ->select('villes.ville','villes.frais_livraison','colis.*')
             ->orderBy('colis.created_at', 'DESC')->get();
             $villes = Ville::get();

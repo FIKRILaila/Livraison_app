@@ -24,10 +24,11 @@ class CreateUsersTable extends Migration
             $table->string('adresse')->nullable();
             $table->string('cin')->nullable();
             $table->string('RIB')->nullable();
-            // $table->string('ville')->nullable();
+            $table->string('typeBanque')->nullable();
+            $table->integer('commission')->nullable();
             $table->enum('role',['client','livreur','admin']);
             $table->unsignedBigInteger('ville_id')->nullable();
-            $table->foreign('ville_id')->references('id')->on('villes')->ondelete('cascade');
+            $table->foreign('ville_id')->references('id')->on('villes')->onDelete('cascade');
             $table->timestamp('email_verified_at')->nullable();
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent();

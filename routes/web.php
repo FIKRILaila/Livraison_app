@@ -17,6 +17,7 @@ use App\Http\Controllers\DemandesController;
 use App\Http\Controllers\RetourClientController;
 use App\Http\Controllers\FacturesController;
 use App\Http\Controllers\RapportsController;
+use App\Http\Controllers\BonPaimentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,6 +33,11 @@ use App\Http\Controllers\RapportsController;
 Route::get('/', function () {return view('welcome');});
 Auth::routes();
 Route::get('/home', [HomeController::class, 'index'])->name('home');
+
+Route::get('/BonsPaiment', [BonPaimentController::class, 'index'])->name('bonPaiment');
+Route::post('/imprimerPaiment', [BonPaimentController::class, 'imprimer'])->name('imprimerPaiment');
+Route::post('/storePaiment', [BonPaimentController::class, 'store'])->name('storePaiment');
+Route::post('/filtrerPaiment', [BonPaimentController::class, 'filtrer'])->name('filtrerPaiment');
 
 Route::get('/Rapports_Bancaires', [RapportsController::class, 'index'])->name('rapports');
 Route::post('/NouveauRaport', [RapportsController::class, 'Nouveau'])->name('NouveauRaport');

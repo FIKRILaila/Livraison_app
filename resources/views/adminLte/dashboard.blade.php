@@ -350,6 +350,7 @@
                 </ul>
               </li> 
               @endif
+              @if (Auth::user()->role == 'admin'or  Auth::user()->role == 'client') 
               <li class="nav-item has-treeview menu-open">
                 <a href="{{ route('factures') }}" class="nav-link @yield('factures')">
                   <i class=" nav-icon fas fa-file-invoice"></i>
@@ -358,6 +359,7 @@
                   </p>
                 </a>
               </li>
+              @endif
               @if (Auth::user()->role == 'admin')
               <li class="nav-item has-treeview menu-open">
                 <a href="{{ route('rapports') }}" class="nav-link @yield('rapports')">
@@ -367,6 +369,14 @@
                   </p>
                 </a>
               </li>
+              <li class="nav-item has-treeview menu-open">
+                <a href="{{ route('bonPaiment') }}" class="nav-link @yield('BonPaiment')">
+                  <i class="nav-icon fas fa-cubes"></i>
+                  <p>
+                    Bons de Paiment
+                  </p>
+                </a>
+              </li> 
               <li class="nav-item has-treeview menu-open">
                 <a href="{{ route('villes') }}" class="nav-link @yield('villes')">
                   <i class="nav-icon fas fa-city"></i>
@@ -420,6 +430,14 @@
                     <i class="nav-icon fas fa-cubes"></i>
                     <p>
                       Bons Distribution
+                    </p>
+                  </a>
+                </li> 
+                <li class="nav-item has-treeview menu-open">
+                  <a href="{{ route('bonPaiment') }}" class="nav-link @yield('BonPaiment')">
+                    <i class="nav-icon fas fa-cubes"></i>
+                    <p>
+                      Bons de Paiment
                     </p>
                   </a>
                 </li> 

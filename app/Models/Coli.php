@@ -21,12 +21,17 @@ class Coli extends Model
         'prix',
         'etat',
         'ouvrir',
-        'retourner',
+        'refuser',
+        'annuler',
         'envoyer',
         'fragile',
         'remplacer',
         'enregistre',
+        'bonPaiment',
+        'natureProduit',
         'client_id',
+        'change_id',
+        'frais_change',
         'article_id',
         'reported_at'
     ];

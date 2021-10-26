@@ -28,6 +28,8 @@ class User extends Authenticatable
         'RIB',
         'nomMagasin',
         'logo',
+        'typeBanque',
+        'commission',
         'ville_id'
     ];
 

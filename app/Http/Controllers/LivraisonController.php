@@ -97,7 +97,9 @@ class LivraisonController extends Controller
         </head>
         <body style="width:90%;margin-left:5%;">
             <div>
-            <img  style="margin-top:2%; width:25%; padding-left:2%; display: inline-block;"  src="./images/Logo_MN.jpeg" alt="Logo">
+                <div style="width:50%; display: inline-block;">
+                    <img style="margin-top:2%; width:50%; padding-left:2%; " src="./images/Logo_MN.jpeg" alt="Logo">
+                </div>
             <div class="info">
                     <p>
                         <span>MN Express Livraison</span> <br>
@@ -110,13 +112,13 @@ class LivraisonController extends Controller
             </div>
             <hr>
             <div>
-                <div class="border info" style="margin-top:0;">
+                <div class="border info" style="margin-top:4%; height:12%;">
                     <p>
                         <span>Client :</span>'.Auth::user()->nomComplet.'<br>
                         <span>Téléphone :</span>'.Auth::user()->phone.'
                     </p>
                 </div>
-                <div class="border info" style="margin-top:2%;">
+                <div class="border info" style="margin-top:0%; height:12%;">
                     <p>
                         <span>Bon de Livraison:</span>'.$bon->ref.'<br>
                         <span>Date :</span>'.$bon->created_at.'<br>
@@ -199,8 +201,10 @@ class LivraisonController extends Controller
         </head>
         <body style="width:90%;margin-left:5%;">
             <div>
-            <img  style="margin-top:2%; width:25%; padding-left:2%; display: inline-block;"  src="./images/Logo_MN.jpeg" alt="Logo">
-            <div class="info">
+                <div style="width:50%; display: inline-block;">
+                    <img style="margin-top:2%; width:50%; padding-left:2%; " src="./images/Logo_MN.jpeg" alt="Logo">
+                </div>
+                <div class="info">
                     <p>
                         <span>MN Express Livraison</span> <br>
                         Adresse : ... <br>
@@ -278,9 +282,10 @@ class LivraisonController extends Controller
                 }
                 .border{
                     border: 2px dashed black;
-                    display : inline-block;
-                    width:45%;
-                    margin : 2%;
+                    display : block;
+                    width:100%;
+                    height:45%;
+                    margin-top : 2%;
                 }
                 </style>
         </head>
@@ -290,31 +295,34 @@ class LivraisonController extends Controller
             $ville = Ville::findOrFail($info->ville_id);
             $html.='<div class="border ">
                         <div style="width:92%; margin-left:4%">
-                            <div style="display:inline-block; width:60%;">
+                            <div style="display:inline-block; width:30%;">
                             <img  style="margin-top:2%; width:50%; padding-left:2%; display: inline-block;"  src="./images/Logo_MN.jpeg" alt="Logo">
                             </div>
-                            <div style="display:inline-block; width:40%;">'.
-                                $info->code_bar.''.$info->code .'
-                            </div>
-                            <hr>
-                            <p style="width:70%; height:4%; margin-top:0%; display:inline-block;"><span>Vendeur:</span>'.$vendeur->nomMagasin.' <br> ('.$vendeur->phone.') <br> <span>Date:</span>'.$info->created_at.'</p>
-                            <img  style="margin-top:1%; margin-bottom:2%; width:30%; display: inline-block;" src="./images/'.$vendeur->logo.'" alt="Logo">
-                            <hr>
-                            <div style="width:50%;">
-                                <p>
-                                    <span>Destinataire:</span>'.$info->destinataire.'<br>
-                                    <span>Téléphone:</span>'.$info->telephone.'<br>
-                                    <span>Ville: '.$ville->ville.'</span><br>
-                                    <span>Adresse:</span>'.$info->adresse.'
+                            <div style="display:inline-block; width:60%;">
+                                <p style"width:50%;">'.
+                                    $info->code_bar.''.$info->code .'
                                 </p>
                             </div>
-
+                            <hr>
+                            <p style="width:70%; margin-top:0%; display:inline-block;"><span>Vendeur:</span>'.$vendeur->nomMagasin.' <br> ('.$vendeur->phone.') <br> <span>Date:</span>'.$info->created_at.'</p>
+                            <img  style="margin-top:1%; margin-bottom:2%; width:25%; display: inline-block;" src="./images/'.$vendeur->logo.'" alt="Logo">
+                            <hr>
+                            <div>
+                                <p>
+                                    <span>Destinataire : </span>'.$info->destinataire.'<br>
+                                    <span>Téléphone : </span>'.$info->telephone.'<br>
+                                    <span>Ville : '.$ville->ville.'</span><br>
+                                    <span>Adresse: </span>'.$info->adresse.'<br>
+                                    <span>Nature Du Produit : </span>'.$info->natureProduit.'<br>
+                                    <span>Commentaire : </span>'.$info->commentaire.'
+                                </p>
+                            </div>
                             <div style="margin:1% 0;">';
-                            if($info->ouvrir){
-                                $html .='<h3 style="width:100%; display:inline-block; font-weight:bold;">يسمح بفتح هذه الطلبية</h3>
+                            if(!$info->ouvrir){
+                                $html .='<h3 style="width:100%; display:inline-block; font-weight:bold;">Vous pouvez ouvrir le colis.</h3>
                                 </div>';
                             }else{
-                                $html .='<h3 style="width:100%; display:inline-block; font-weight:bold;">لا يسمح بفتح هذه الطلبية إلا بإذن البائع</h3>
+                                $html .='<h3 style="width:100%; display:inline-block; font-weight:bold;">Avant d\'ouvrir le colis veuillez contacter le vendeur.</h3>
                                 </div>';
                             }
                             $html.='<div style="margin:1% 0;">';

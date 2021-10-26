@@ -89,13 +89,13 @@
                                                 @csrf
                                                 <input type="hidden" name="colis_id" value="{{$col->id}}">
                                                 <div class="row">
-                                                    <div class="form-group row col-md-6">
-                                                        <label for="code" class="col-md-4 col-form-label">{{ __('Nouveau Code') }}</label>
-                                                        <div class="col-md-8">
+                                                    <div class="form-group row col-md-12">
+                                                        <label for="code" class="col-md-2 col-form-label">{{ __('Nouveau Code') }}</label>
+                                                        <div class="col-md-10">
                                                             <input id="code" type="text" class="form-control" name="code" value="" autocomplete="on">
                                                         </div>
                                                     </div>
-                                                    <div class="form-group col-md-6 row">
+                                                    {{-- <div class="form-group col-md-6 row">
                                                         <input type="hidden" name="ville_id" id="ville_id" value="{{$col->ville_id}}">
                                                         <label for="ville" class="col-md-4 col-form-label">{{ __('Ville') }}</label>
                                                         <div class="col-md-8">
@@ -106,7 +106,7 @@
                                                                 @endforeach
                                                             </select>
                                                         </div>
-                                                    </div>
+                                                    </div> --}}
                                                 </div>
                                                 <div class="row">
                                                     <div class="form-group row col-md-6">
@@ -136,7 +136,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="row">
+                                                {{-- <div class="row">
                                                     <div class="col-md-8 row">
                                                         <div class="form-group row col-md-6">
                                                             <label for="fragile" class="col-md-4 mr-2 col-form-label">{{ __('Fragile :') }}</label>
@@ -173,7 +173,7 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
+                                                </div> --}}
 
                                                 <div class="row">
                                                     <div class="form-group col-md-12 row">

@@ -152,14 +152,14 @@ class RapportsController extends Controller
         <table class="border">
         <tr>
         <th>Client</th>
-        <th>Nom de Magasin</th>
+        <th>Type de Banque</th>
         <th>RIB</th>
         <th>Montant</th>
         </tr>';
         foreach($lines as $line){
             $html .='<tr>
             <td>'.$line->nomComplet.'</td>
-            <td>'.$line->nomMagasin.'</td>
+            <td></td>
             <td>'.$line->RIB.'</td>
             <td>'.$line->Montant.'</td>';
             $total += $line->Montant;

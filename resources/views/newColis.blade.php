@@ -42,12 +42,6 @@ active
                                     <input id="code" type="text" class="form-control @error('code') is-invalid @enderror" name="code" value="{{ old('code') }}" autocomplete="on">
                                 </div>
                             </div>
-                            {{-- <div class="form-group col-md-6 row">
-                                <label class="col-md-4 col-form-label">{{ __('Tarif de Livraison') }}</label>
-                                <div class="col-md-8">
-                                    <span class="form-control" id="tarif">Tarif</span> 
-                                </div>
-                            </div> --}}
                         </div>
                         <div class="row">
                             <div class="form-group row col-md-6">
@@ -78,6 +72,20 @@ active
                             </div>
                         </div>
                         <div class="row">
+                            <div class="form-group row col-md-6">
+                                <label for="natureProduit" class="col-md-4 col-form-label obligatoire">{{ __('Nature de Produit :') }}</label>
+                                <div class="col-md-8">
+                                    <input id="natureProduit" type="text" class="form-control" name="natureProduit" value="{{ old('natureProduit') }}" required autocomplete="on">
+                                </div>
+                            </div>
+                            <div class="form-group col-md-6 row">
+                                <div class="col-md-12">
+                                    <input type="checkbox" id="ouvrir" name="ouvrir" value="oui">
+                                    <label for="ouvrir">Ne pas Ouvrir le colis?</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
                             <div class="form-group col-md-6 row">
                                 <label for="fragile" class="col-md-4 mr-2 col-form-label">{{ __('Fragile (5 DH) :') }}</label>
                                 <div class="col-md-8 row">
@@ -91,27 +99,27 @@ active
                                     </div>
                                 </div>
                             </div>
-                            <div class="row col-md-6">
-                                <div class="form-group col-md-8 row">
-                                    <label for="remplacer" class="col-md-6 mr-2 col-form-label">{{ __('A Remplacer :') }}</label>
-                                    <div class="col-md-6 row">
-                                        <div class="mr-4">
-                                            <input type="radio" id="Aremplacer" name="remplacer" value="oui">
-                                            <label for="Aremplacer">oui</label>
-                                        </div>
-                                        <div>
-                                            <input type="radio" id="remplacePas" name="remplacer" value="non" checked>
-                                            <label for="remplacePas">non</label>
-                                        </div>
+                            {{-- <div class="row col-md-6"> --}}
+                            <div class="form-group col-md-6 row">
+                                <label for="remplacer" class="col-md-4 mr-2 col-form-label">{{ __('A Remplacer :') }}</label>
+                                <div class="col-md-8 row">
+                                    <div class="mr-4">
+                                        <input type="radio" id="Aremplacer" name="remplacer" value="oui">
+                                        <label for="Aremplacer">oui</label>
+                                    </div>
+                                    <div>
+                                        <input type="radio" id="remplacePas" name="remplacer" value="non" checked>
+                                        <label for="remplacePas">non</label>
                                     </div>
                                 </div>
-                                <div class="form-group col-md-4 row">
+                            </div>
+                                {{-- <div class="form-group col-md-4 row">
                                     <div class="col-md-12">
                                         <input type="checkbox" id="ouvrir" name="ouvrir" value="oui">
                                         <label for="ouvrir">Ne pas Ouvrir le colis?</label>
                                     </div>
-                                </div>
-                            </div>
+                                </div> --}}
+                            {{-- </div> --}}
                         </div>
                         <div class="row">
                             <div class="form-group col-md-12 row">

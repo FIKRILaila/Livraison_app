@@ -17,6 +17,7 @@ class FacturesController extends Controller
             $Attente = Coli::join('villes','villes.id','=','colis.ville_id')
             ->join('users','users.id','=','colis.client_id')
             ->where([['colis.refuser','=',true],['colis.enregistre','=',false]])
+            ->orWhere([['colis.annuler','=',true],['colis.fragile','=',true],['colis.enregistre','=',false]])
             ->orWhere([['colis.etat','=','Livré'],['colis.enregistre','=',false]])
             ->select('villes.ville','colis.*','users.nomMagasin')
             ->orderBy('colis.created_at', 'DESC')->get();
@@ -46,12 +47,18 @@ class FacturesController extends Controller
             ['colis.refuser','=',true],
             ['colis.enregistre','=',false],
             ['colis.client_id','=',$request->input('client_id')]
-            ])
+        ])
+        ->orWhere([
+            ['colis.annuler','=',true],
+            ['colis.fragile','=',true],
+            ['colis.enregistre','=',false],
+            ['colis.client_id','=',$request->input('client_id')]
+        ])
         ->orWhere([
             ['colis.etat','=','Livré'],
             ['colis.enregistre','=',false],
             ['colis.client_id','=',$request->input('client_id')]
-            ])
+        ])
         ->select('villes.ville','colis.*','users.nomMagasin')
         ->orderBy('colis.created_at', 'DESC')->get();
         $factures = Facture::join('users','users.id','=','factures.client_id')->select('factures.*','users.nomComplet','users.nomMagasin')->get();
@@ -120,17 +127,26 @@ class FacturesController extends Controller
                     ]);
                     if($info_colis->etat == 'Livré'){
                         $price += $info_colis->prix;
+                        
                         if($client->ville_id == $info_colis->ville_id){
-                            if($info_colis->fragile){
-                                $frais += 22 ;
+                            if($info_colis->frais_change){
+                                $frais += 17+ 5;
                             }else{
-                                $frais += 17 ;
+                                if($info_colis->fragile){
+                                    $frais += 17 + 5;
+                                }else{
+                                    $frais += 17;
+                                }
                             }
                         }else{
-                            if($info_colis->fragile){
+                            if($info_colis->frais_change){
                                 $frais += $info_colis->frais_livraison + 5 ;
                             }else{
-                                $frais += $info_colis->frais_livraison;
+                                if($info_colis->fragile){
+                                    $frais += $info_colis->frais_livraison + 5 ;
+                                }else{
+                                    $frais += $info_colis->frais_livraison;
+                                }
                             }
                         }
                     }else{
@@ -152,6 +168,7 @@ class FacturesController extends Controller
         ->get();
         $client = User::findOrFail($facture->client_id);
         $frais = 0;
+        $frais_sup = 0;
         $price = 0;
         $html = '
         <!DOCTYPE html>
@@ -229,7 +246,7 @@ class FacturesController extends Controller
                 <td>'.$coli->etat.'</td>
                 <td>'.$coli->ville.'</td>';
 
-                if($coli->etat == 'Refusé'){
+                if($coli->annuler or $coli->refuser){
                     $html .= '<td> 0 DH</td>';
                 }else{
                     $html .= '<td>'.$coli->prix.' DH</td>';
@@ -237,30 +254,47 @@ class FacturesController extends Controller
                 }
                 if($coli->etat == 'Livré'){
                     if($client->ville_id == $coli->ville_id){
-                        if($coli->fragile){
+                        if($coli->frais_change){
                             $html .= '<td> 22 DH </td>';
-                            $html .= '<td>'. $coli->prix - 22 .' DH </td>';
-                            $frais += 22 ;
+                            $html .= '<td>'. $coli->prix - (17 + 5) .' DH </td>';
+                            $frais += 17 + 5;
+                            $frais_sup += 5;
                         }else{
-                            $html .= '<td> 17 DH</td>';
-                            $html .= '<td>'. $coli->prix - 17 .' DH </td>';
-                            $frais += 17 ;
+                            if($coli->fragile){
+                                $html .= '<td> 22 DH </td>';
+                                $html .= '<td>'. $coli->prix - 22 .' DH </td>';
+                                $frais += 22 ;
+                                $frais_sup += 5;
+                            }else{
+                                $html .= '<td> 17 DH</td>';
+                                $html .= '<td>'. $coli->prix - 17 .' DH </td>';
+                                $frais += 17 ;
+                            }
                         }
                     }else{
-                        if($coli->fragile){
+                        if($coli->frais_change){
                             $html .= '<td>'.$coli->frais_livraison + 5 .' DH </td>';
                             $html .= '<td>'. $coli->prix - ($coli->frais_livraison + 5) .' DH </td>';
                             $frais += $coli->frais_livraison + 5 ;
+                            $frais_sup += 5;
                         }else{
-                            $html .= '<td>'.$coli->frais_livraison.' DH </td>';
-                            $html .= '<td>'. $coli->prix - $coli->frais_livraison .' DH </td>';
-                            $frais += $coli->frais_livraison;
+                            if($coli->fragile){
+                                $html .= '<td>'.$coli->frais_livraison + 5 .' DH </td>';
+                                $html .= '<td>'. $coli->prix - ($coli->frais_livraison + 5) .' DH </td>';
+                                $frais += $coli->frais_livraison + 5 ;
+                                $frais_sup += 5;
+                            }else{
+                                $html .= '<td>'.$coli->frais_livraison.' DH </td>';
+                                $html .= '<td>'. $coli->prix - $coli->frais_livraison .' DH </td>';
+                                $frais += $coli->frais_livraison;
+                            }
                         }
                     }
                 }else{
                     $html .= '<td>5 DH</td>';
                     $html .= '<td>'. - 5 .' DH </td>';
                     $frais += 5 ;
+                    $frais_sup += 5;
                 }
             $html .= '</tr>';
             }
@@ -281,8 +315,15 @@ class FacturesController extends Controller
                 <td>'.$frais.'</td>
             </tr>
             <tr>
+                <td>Total Frais Supplementaire</td>
+                <td>'.$frais_sup.'</td>
+            </tr>
+            <tr>
                 <td>Total Net</td>
                 <td>'.$price - $frais.'</td>
+            </tr>
+            <tr>
+                <td colspan="2" style="font-weight:bold;">Sauf Erreur Ou Ommission</td>
             </tr>
         </table>
         </body>

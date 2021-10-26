@@ -30,7 +30,7 @@ class CreateArticlesTable extends Migration
             $table->string('valeur4')->nullable();
 
             $table->unsignedBigInteger('client_id');
-            $table->foreign('client_id')->references('id')->on('users')->ondelete('cascade');
+            $table->foreign('client_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent();
         });

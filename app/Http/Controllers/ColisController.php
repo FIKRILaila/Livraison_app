@@ -64,56 +64,49 @@ class ColisController extends Controller
                 return back()->with('fail','Code deja utiliser');
             }
         }
-        Coli::where('id','=', $request->input('colis_id'))->update(['etat' => 'Changement de Client']);
-        Historique::create([
-            'etat_h' => 'Changement de Client',
-            'colis_id' => $request->input('colis_id'),
-            'par' =>Auth::id()
-            ]);
+        $ancien = Coli::findOrFail($request->input('colis_id'));
         $input = $request->all();
         if($request->input('code')){
             $input['code'] = $request->input('code');
         }else{
             $input['code'] = uniqid();
         }
-        $input['fragile'] = $request->input('fragile') == "oui"?1:0;
-        $input['remplacer'] = $request->input('remplacer') == "oui"?1:0;
-        $input['ouvrir'] =$request->input('ouvrir') == "oui"?1:0;
+        $input['fragile'] = $ancien->fragile;
+        $input['remplacer'] = $ancien->remplacer;
+        $input['ouvrir'] =$ancien->ouvrir;
         $input['client_id'] = Auth::id();
-        $ville = Ville::where('id','=',$request->input('ville_id'))->get();
-        foreach ($ville as $v){
-            if($v->ville == "Casablanca"){
-                $input['etat'] = 'Reçu';
-            }else{
-                $input['etat'] = 'Ramasse';
-            }
-        }
+        $input['frais_change'] =  true ;
+        $input['change_id'] = $ancien->id;
+        $input['ville_id'] = $ancien->ville_id;
+        $input['natureProduit'] = $ancien->natureProduit;
+        $input['etat'] = 'Reçu';
+    
         $colis = Coli::create($input);
-
+        
         $generator = new Picqer\Barcode\BarcodeGeneratorHTML();
-        $barcode = $generator->getBarcode($colis->id, $generator::TYPE_CODE_128);
-        foreach($ville as $v){
-            if($v->ville == "Casablanca"){
-                $input['etat'] = 'Reçu';
-                Historique::create([
-                    'etat_h' => 'Reçu',
-                    'colis_id' => $colis->id,
-                    'par' =>Auth::id()
-                    ]);
-            }else{
-                $input['etat'] = 'Ramasse';
-                Historique::create([
-                    'etat_h' => 'Ramasse',
-                    'colis_id' => $colis->id,
-                    'par' =>Auth::id()
-                    ]);
-            }
-        }
+        $barcode = $generator->getBarcode($colis->code, $generator::TYPE_CODE_128);
+
+        Historique::create([
+            'etat_h' => 'Reçu',
+            'colis_id' => $colis->id,
+            'par' =>Auth::id()
+        ]);
+    
+        Coli::where('id','=', $request->input('colis_id'))
+        ->update([
+            'etat' => 'Changement de Client',
+            'change_id' => $colis->id
+        ]);
+        Historique::create([
+            'etat_h' => 'Changement de Client',
+            'colis_id' => $request->input('colis_id'),
+            'par' =>Auth::id()
+        ]);
         $colis = Coli::where('id','=',$colis->id)->update(['code_bar'=>$barcode]);
-            return back()->with('success','Votre colis a été changé avec succès');
+        return back()->with('success','Votre colis a été changé avec succès');
     }
     public function storeColisStock(request $request){
-
+        
         $colis = Coli::where('code','=', $request->input('code'))->get();
         foreach ($colis as $col){
             if($col->id){
@@ -141,7 +134,7 @@ class ColisController extends Controller
         $colis = Coli::create($input);
 
         $generator = new Picqer\Barcode\BarcodeGeneratorHTML();
-        $barcode = $generator->getBarcode($colis->id, $generator::TYPE_CODE_128);
+        $barcode = $generator->getBarcode($colis->code, $generator::TYPE_CODE_128);
         foreach($ville as $v){
             if($v->ville == "Casablanca"){
                 $input['etat'] = 'Reçu';
@@ -194,14 +187,14 @@ class ColisController extends Controller
         }
         $input['fragile'] = $request->input('fragile') == "oui"?1:0;
         $input['remplacer'] = $request->input('remplacer') == "oui"?1:0;
-        $input['ouvrir'] =$request->input('ouvrir') == "oui"?1:0;
+        $input['ouvrir'] =$request->input('ouvrir') == "non"?1:0;
         $input['client_id'] = Auth::id();
         $input['etat'] = 'Nouveau Colis';
 
         $colis = Coli::create($input);
 
         $generator = new Picqer\Barcode\BarcodeGeneratorHTML();
-        $barcode = $generator->getBarcode($colis->id, $generator::TYPE_CODE_128);
+        $barcode = $generator->getBarcode($colis->code, $generator::TYPE_CODE_128);
 
         $historique =Historique::create([
             'etat_h' => 'Nouveau Colis',
@@ -265,7 +258,8 @@ class ColisController extends Controller
                     'par' =>Auth::id()
                     ]);
                 $colis = Coli::where('id','=', $request->input('colis_id'))->update([
-                    'etat' => 'Annulé'
+                    'etat' => 'Annulé',
+                    'annuler' => true
                 ]);
                 $historique =Historique::create([
                     'etat_h' => 'Annulé',
@@ -291,6 +285,11 @@ class ColisController extends Controller
                     'colis_id' =>$request->input('colis_id'),
                     'par' =>Auth::id()
                     ]);
+                if($request->input('etat') == 'Annulé'){
+                    $colis = Coli::where('id','=', $request->input('colis_id'))->update([
+                        'annuler' => true
+                    ]);
+                }
                 if($request->input('etat') == 'Refusé'){
                     $colis = Coli::where('id','=', $request->input('colis_id'))->update([
                         'refuser' => true
@@ -299,9 +298,14 @@ class ColisController extends Controller
         }
         return back()->with('success','etat modifié avec succès');
     }
-    public function update(Request $request)
-    {
+    public function update(Request $request){
         $input = $request->all();
+        if($request->input('etat') == 'Refusé'){
+            $input['refuser'] =true;
+        }
+        if($request->input('etat') == 'Annulé'){
+            $input['annuler'] = true;
+        }
         $input['fragile'] = $request->input('fragile') == "oui"?1:0;
         $input['remplacer'] = $request->input('remplacer') == "oui"?1:0;
         $input['ouvrir'] =$request->input('ouvrir')== "oui"?1:0;

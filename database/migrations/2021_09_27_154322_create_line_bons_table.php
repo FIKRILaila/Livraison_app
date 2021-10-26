@@ -17,9 +17,9 @@ class CreateLineBonsTable extends Migration
             $table->id();
             $table->boolean('valide')->default(false);
             $table->unsignedBigInteger('bon_id');
-            $table->foreign('bon_id')->references('id')->on('bons')->ondelete('cascade');
+            $table->foreign('bon_id')->references('id')->on('bons')->onDelete('cascade');
             $table->unsignedBigInteger('colis_id');
-            $table->foreign('colis_id')->references('id')->on('colis')->ondelete('cascade');
+            $table->foreign('colis_id')->references('id')->on('colis')->onDelete('cascade');
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent();
         });

@@ -29,6 +29,7 @@ class UsersController extends Controller
             'email' =>$request->input('email'),
             'password' => Hash::make($request->input('password')),
             'phone'=>$request->input('phone'),
+            'commission'=>$request->input('commission'),
             'ville_id'=>$request->input('ville_id'),
             'role' => 'livreur'
         ]);
@@ -39,54 +40,60 @@ class UsersController extends Controller
         return view('editCompte')->with('villes',$villes);
     }
     public function updateCompte(Request $request){
-        if(!Hash::check($request->input('ancien'),(Auth::user()->password))){ 
-            return back()->with('fail','Mot de passe incorrect');
-        }else{
-            if(Auth::user()->role =='client'){
-                    if ($image = $request->file('logo')) {
-                        $destinationPath = 'images/';
-                        $profileImage = date('YmdHis') . "." . $image->getClientOriginalExtension();
-                        $image->move($destinationPath, $profileImage);
-                        $input['logo'] = "$profileImage";
-                    }else{
-                        $user = User::where("id","=",Auth::id())->get();
-                        foreach($user as $u){
-                            $input['logo'] = $u->logo;
-                        }
+        if($request->input('admin') == "non"){
+            if(!Hash::check($request->input('ancien'),(Auth::user()->password))){
+                return back()->with('fail','Mot de passe incorrect');
+            }
+        }
+        if($request->input('role') =='client'){
+                $request->validate([
+                    'RIB' => ['required', 'string', 'min:14', 'max:255'],
+                ]);
+                if ($image = $request->file('logo')) {
+                    $destinationPath = 'images/';
+                    $profileImage = date('YmdHis') . "." . $image->getClientOriginalExtension();
+                    $image->move($destinationPath, $profileImage);
+                    $input['logo'] = "$profileImage";
+                }else{
+                    $user = User::where("id","=",$request->input('user_id'))->get();
+                    foreach($user as $u){
+                        $input['logo'] = $u->logo;
                     }
-                $user = User::where("id","=",Auth::id())->update([
-                    'logo' => $input['logo'],
-                    'nomComplet' =>$request->input('nomComplet'),
-                    'cin' =>$request->input('cin'),
-                    'adresse' =>$request->input('adresse'),
-                    'phone' =>$request->input('phone'),
-                    'email' =>$request->input('email'),
-                    'ville_id' =>$request->input('ville_id'),
-                    'nomMagasin' =>$request->input('nomMagasin'),
-                    'password' => Hash::make($request->input('password'))
-                ]);
-            }
-            if(Auth::user()->role =='livreur'){
-                $user = User::where("id","=",Auth::id())->update([
-                    'nomComplet' =>$request->input('nomComplet'),
-                    'cin' =>$request->input('cin'),
-                    'adresse' =>$request->input('adresse'),
-                    'phone' =>$request->input('phone'),
-                    'email' =>$request->input('email'),
-                    'RIB' =>$request->input('RIB'),
-                    'ville_id' =>$request->input('ville_id'),
-                    'password' => Hash::make($request->input('password'))
-                ]);
-            }
-            if(Auth::user()->role =='admin'){
-                $user = User::where("id","=",Auth::id())->update([
-                    'nomComplet' =>$request->input('nomComplet'),
-                    'cin' =>$request->input('cin'),
-                    'phone' =>$request->input('phone'),
-                    'email' =>$request->input('email'),
-                    'password' => Hash::make($request->input('password'))
-                ]);
-            }
+                }
+            $user = User::where("id","=",$request->input('user_id'))->update([
+                'logo' => $input['logo'],
+                'nomComplet' =>$request->input('nomComplet'),
+                'cin' =>$request->input('cin'),
+                'adresse' =>$request->input('adresse'),
+                'phone' =>$request->input('phone'),
+                'email' =>$request->input('email'),
+                'ville_id' =>$request->input('ville_id'),
+                'RIB' =>$request->input('RIB'),
+                'typeBanque' =>$request->input('typeBanque'),
+                'nomMagasin' =>$request->input('nomMagasin'),
+                'password' => Hash::make($request->input('password'))
+            ]);
+        }
+        if($request->input('role') =='livreur'){
+            $user = User::where("id","=",$request->input('user_id'))->update([
+                'nomComplet' =>$request->input('nomComplet'),
+                'cin' =>$request->input('cin'),
+                'adresse' =>$request->input('adresse'),
+                'phone' =>$request->input('phone'),
+                'email' =>$request->input('email'),
+                'RIB' =>$request->input('RIB'),
+                'ville_id' =>$request->input('ville_id'),
+                'password' => Hash::make($request->input('password'))
+            ]);
+        }
+        if($request->input('role') =='admin'){
+            $user = User::where("id","=",$request->input('user_id'))->update([
+                'nomComplet' =>$request->input('nomComplet'),
+                'cin' =>$request->input('cin'),
+                'phone' =>$request->input('phone'),
+                'email' =>$request->input('email'),
+                'password' => Hash::make($request->input('password'))
+            ]);
         }
         if($user){
             return back()->with('success','votre compte a ete modifie avec succès');

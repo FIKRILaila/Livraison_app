@@ -19,13 +19,13 @@ class CreateBonsTable extends Migration
             $table->string('type');
             $table->string('etat')->nullable();
             $table->unsignedBigInteger('region_id')->nullable();
-            $table->foreign('region_id')->references('id')->on('regions')->ondelete('cascade');
-            $table->unsignedBigInteger('client_id');
-            $table->foreign('client_id')->references('id')->on('users')->ondelete('cascade');
+            $table->foreign('region_id')->references('id')->on('regions')->onDelete('cascade');
+            $table->unsignedBigInteger('client_id')->nullable();
+            $table->foreign('client_id')->references('id')->on('users')->onDelete('cascade');
             $table->unsignedBigInteger('magasin_retour')->nullable();
-            $table->foreign('magasin_retour')->references('id')->on('users')->ondelete('cascade');
+            $table->foreign('magasin_retour')->references('id')->on('users')->onDelete('cascade');
             $table->unsignedBigInteger('livreur_id')->nullable();
-            $table->foreign('livreur_id')->references('id')->on('users')->ondelete('cascade');
+            $table->foreign('livreur_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->nullable();
         });

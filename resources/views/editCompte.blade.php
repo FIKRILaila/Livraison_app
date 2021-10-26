@@ -49,7 +49,8 @@
                 <div class="card-body">
                     <form method="POST" action="{{route('updateCompte')}}" enctype="multipart/form-data">
                         @csrf
-
+                        <input type="hidden" name="admin" value="nom">
+                        <input type="hidden" name="user_id" value="{{Auth::user()->id}}"/>
                         @if (Auth::user()->role == 'admin')
                             <input type="hidden" name="role" value="admin"/>
                             <div class="row">
@@ -161,13 +162,36 @@
                                             <select name="ville_id" id="ville_id" class="form-control" required  autofocus autocomplete="on">
                                                 @foreach ($villes as $v)     
                                                     @if (Auth::user()->ville_id == $v->id)
-                                                    <option value="{{$v->id}}">{{$v->ville}}</option>
+                                                    <option value="{{$v->id}}" selected >{{$v->ville}}</option>
                                                     @endif
                                                 @endforeach
+                                                <option value="">Ville</option>
                                                 @foreach ($villes as $v)     
                                                     <option value="{{$v->id}}">{{$v->ville}}</option>
                                                 @endforeach
                                             </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="typeBanque" class="col-form-label">{{ __('Type de Banque:') }}</label>
+                                        <div>
+                                            <select type="text" class="form-control" name="typeBanque" id="typeBanque" required autofocus>
+                                                <option value="{{Auth::user()->typeBanque}}" selected>{{Auth::user()->typeBanque}}</option>
+                                                <option value="Attijari Wafa Bank">Attijari Wafa Bank</option>
+                                                <option value="Banque BMCE">Banque BMCE</option>
+                                                <option value="Banque Populaire">Banque Populaire</option>
+                                                <option value="Bank al-Maghrib">Bank al-Maghrib</option>
+                                                <option value="BMCE BANK">BMCE BANK</option>
+                                                <option value="BMCI Banque">BMCI Banque</option>
+                                                <option value="CIH BANK">CIH BANK</option>
+                                                <option value="Credit de Maroc">Credit de Maroc</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="RIB" class="col-form-label">{{ __('RIB:') }}</label>
+                                        <div>
+                                            <input id="RIB" type="text" class="form-control" name="RIB" value="{{Auth::user()->RIB}}" required autocomplete="on" autofocus>
                                         </div>
                                     </div>
                                 </div>

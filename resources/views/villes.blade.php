@@ -5,10 +5,10 @@ active
 @section('content')
 <div class="m-4">
     <div class="col-md-12 d-flex justify-content-end mt-4 mb-4">
-        <button type="button" class="btn btn-primary mr-2" data-toggle="modal" data-target="#region">
+        <button type="button" class="btn btn-info mr-2" data-toggle="modal" data-target="#region">
             Nouvelle région
         </button>
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ville">
+        <button type="button" class="btn btn-info" data-toggle="modal" data-target="#ville">
             Nouvelle ville
         </button>
     </div>
@@ -67,7 +67,7 @@ active
                     <a href="{{route('villes')}}" class="btn btn-secondary">{{ __('Annuler') }}</a>
                 </div>
                 <div>
-                    <button type="submit" class="btn btn-primary">{{ __('Enregistrer') }}</button>
+                    <button type="submit" class="btn btn-info">{{ __('Enregistrer') }}</button>
                 </div>
             </div>
           </form>
@@ -117,7 +117,7 @@ active
                         <a href="{{route('villes')}}" class="btn btn-secondary">{{ __('Annuler') }}</a>
                     </div>
                     <div>
-                        <button type="submit" class="btn btn-primary">{{ __('Enregistrer') }}</button>
+                        <button type="submit" class="btn btn-info">{{ __('Enregistrer') }}</button>
                     </div>
                 </div>
               </form>
