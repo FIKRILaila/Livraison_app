@@ -296,8 +296,10 @@ class DistributionController extends Controller
         </head>
         <body style="width:90%;margin-left:5%;">
             <div>
-                <img  style="margin-top:2%; width:25%; padding-left:2%; display: inline-block;"  src="./images/Logo_MN.jpeg" alt="Logo">
-                <div class="info">
+                    <div style="width:50%; display: inline-block;">
+                        <img style="margin-top:2%; width:50%; padding-left:2%; " src="./images/Logo_MN.jpeg" alt="Logo">
+                    </div>                
+                    <div class="info">
                     <p>
                         <span>MN Express Livraison</span> <br>
                         Adresse : ... <br>

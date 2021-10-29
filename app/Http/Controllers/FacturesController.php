@@ -170,6 +170,7 @@ class FacturesController extends Controller
         $frais = 0;
         $frais_sup = 0;
         $price = 0;
+        $num = 1;
         $html = '
         <!DOCTYPE html>
         <html lang="fr">
@@ -188,7 +189,9 @@ class FacturesController extends Controller
             table, th, td {
                 border: 2px solid black;
                 border-collapse: collapse;
-            }
+                padding : 1%;
+                vertical-align: text-top;
+            } 
             span{
                 font-weight: bold;
             }
@@ -204,8 +207,10 @@ class FacturesController extends Controller
         </head>
         <body>
             <div>
-            <img  style="margin-top:2%; width:25%; padding-left:2%; display: inline-block;"  src="./images/Logo_MN.jpeg" alt="Logo">
-            <div class="info"  style="margin-top:0%;">
+                <div style="width:50%; display: inline-block;">
+                    <img style="margin-top:2%; width:50%; padding-left:2%; " src="./images/Logo_MN.jpeg" alt="Logo">
+                </div>            
+                <div class="info"  style="margin-top:0%;">
                 <p>
                     <span>MN Express Livraison</span> <br>
                     Adresse : ... <br>
@@ -216,14 +221,16 @@ class FacturesController extends Controller
             </div>
             </div>
             <hr>
-            <div class="border info" style="margin-top:4%; height:10%;">
+            <div class="border info" style="margin-top:4%; height:12%;">
                 <p>
-                    <span>Magasin :</span>'.$client->nomMagasin.'<br>
-                    <span>Client :</span>'.$client->nomComplet.'<br>
-                    <span>Téléphone :</span>'.$client->phone.'
+                    <span>Client :</span>'.$client->nomMagasin.'<br>
+                    <span>Nom de client :</span>'.$client->nomComplet.'<br>
+                    <span>Téléphone :</span>'.$client->phone.'<br>
+                    <span>Nom du banque :</span>'.$client->typeBanque.'<br>
+                    <span>Numéro du compte :</span>'.$client->RIB.'
                 </p>
             </div>
-            <div class="border info" style="margin-top:0%; height:10%;">
+            <div class="border info" style="margin-top:0%; height:12%;">
                 <p>
                     <span>Facture : </span> '.$facture->reference.'<br>
                     <span>Date :</span>'.$facture->created_at.'<br>
@@ -232,6 +239,7 @@ class FacturesController extends Controller
             </div>
             <table>
             <tr>
+                <th>N°</th>
                 <th>Code Suivi</th>
                 <th>Status</th>
                 <th>Ville</th>
@@ -242,10 +250,10 @@ class FacturesController extends Controller
             foreach ($colis as $coli){
 
                 $html .= ' <tr>
+                <td style=" text-align: center;">'.$num.'</td>
                 <td>'.$coli->code.'</td>
                 <td>'.$coli->etat.'</td>
                 <td>'.$coli->ville.'</td>';
-
                 if($coli->annuler or $coli->refuser){
                     $html .= '<td> 0 DH</td>';
                 }else{
@@ -297,10 +305,11 @@ class FacturesController extends Controller
                     $frais_sup += 5;
                 }
             $html .= '</tr>';
+            $num++;
             }
         $html .= '<tr>
 
-        <td colspan="4" style="font-weight:bold;"> Total</td>
+        <td colspan="5" style="font-weight:bold;text-align:right;"> Total</td>
         <td>'.$frais.' DH</td>
         <td>'.$price - $frais.' DH</td>
         </tr>
@@ -323,9 +332,12 @@ class FacturesController extends Controller
                 <td>'.$price - $frais.'</td>
             </tr>
             <tr>
-                <td colspan="2" style="font-weight:bold;">Sauf Erreur Ou Ommission</td>
+                <td colspan="2" style="font-weight:bold; text-align: center; vertical-align: text-top;">Sauf Erreur Ou Ommission</td>
             </tr>
         </table>
+        <div style="margin-top:2%;">
+            <p style="font-weight: bold; text-align: center;">MN Express Vous remercie pour votre confiance</p>
+        </div>
         </body>
         </html>
         ';

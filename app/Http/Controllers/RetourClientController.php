@@ -13,17 +13,16 @@ use App\Models\Line_bon;
 class RetourClientController extends Controller
 {
     public function index(){
-        $colis = Coli::join('villes','villes.id','=','colis.ville_id')
-        ->join('users','users.id','=','colis.client_id')
+        $colis = Coli::join('users','users.id','=','colis.client_id')
+        ->join('villes','villes.id','=','users.ville_id')
         ->join('line_bons','colis.id',"=","line_bons.colis_id")
         ->select('villes.ville','colis.*','users.nomMagasin','line_bons.valide as valide','line_bons.bon_id as bon_id')
         ->orderBy('colis.created_at', 'DESC')->get();
         $bons =Bon::join('users','users.id','=','bons.magasin_retour')
         ->where('bons.type', '=','RetourClient')
         ->select('bons.*','users.nomMagasin')->get();
-        $Attente = Coli::join('villes','villes.id','=','colis.ville_id')
-        ->join('users','users.id','=','colis.client_id')
-        // ->where('colis.retourner','=',false)
+        $Attente = Coli::join('users','users.id','=','colis.client_id')
+        ->join('villes','villes.id','=','users.ville_id')
         ->where('colis.etat','=','Reçu Par Agence')
         ->select('villes.ville','colis.*','users.nomMagasin')
         ->orderBy('colis.created_at', 'DESC')->get();
@@ -50,16 +49,15 @@ class RetourClientController extends Controller
             'etat'=>"Nouveau",
             'magasin_retour'=>$request->input('magasin_retour')
         ]);      
-        $Attente = Coli::join('villes','villes.id','=','colis.ville_id')
-        ->join('users','users.id','=','colis.client_id')
+        $Attente = Coli::join('users','users.id','=','colis.client_id')
+        ->join('villes','villes.id','=','users.ville_id')
         ->where('colis.client_id','=',$bon->magasin_retour)
-        // ->where('colis.retourner','=',false)
         ->where('colis.etat','=','Reçu Par Agence')
         ->select('villes.ville','colis.*','users.nomMagasin')
         ->orderBy('colis.created_at', 'DESC')->get(); 
 
-        $colis = Coli::join('villes','villes.id','=','colis.ville_id')
-        ->join('users','users.id','=','colis.client_id')
+        $colis = Coli::join('users','users.id','=','colis.client_id')
+        ->join('villes','villes.id','=','users.ville_id')
         ->join('line_bons','colis.id',"=","line_bons.colis_id")
         ->join('bons','bons.id','=','line_bons.bon_id')
         ->where('line_bons.bon_id','=',$bon->id)
@@ -70,16 +68,15 @@ class RetourClientController extends Controller
     }
     public function editRetourClient(Request $request){
         $bon =Bon::join('users','users.id','=','bons.magasin_retour')->select('bons.*','users.nomMagasin')->findOrFail($request->input('bon_id'));
-        $Attente = Coli::join('villes','villes.id','=','colis.ville_id')
-        ->join('users','users.id','=','colis.client_id')
+        $Attente = Coli::join('users','users.id','=','colis.client_id')
+        ->join('villes','villes.id','=','users.ville_id')
         ->where('colis.client_id','=',$bon->magasin_retour)
-        // ->where('colis.retourner','=',false)
         ->where('colis.etat','=','Reçu Par Agence')
         ->select('villes.ville','colis.*','users.nomMagasin')
         ->orderBy('colis.created_at', 'DESC')->get(); 
 
-        $colis = Coli::join('villes','villes.id','=','colis.ville_id')
-        ->join('users','users.id','=','colis.client_id')
+        $colis = Coli::join('users','users.id','=','colis.client_id')
+        ->join('villes','villes.id','=','users.ville_id')
         ->join('line_bons','colis.id',"=","line_bons.colis_id")
         ->join('bons','bons.id','=','line_bons.bon_id')
         ->where('line_bons.bon_id','=',$bon->id)
@@ -122,16 +119,15 @@ class RetourClientController extends Controller
                     }
             }
         }
-        $Attente = Coli::join('villes','villes.id','=','colis.ville_id')
-        ->join('users','users.id','=','colis.client_id')
+        $Attente = Coli::join('users','users.id','=','colis.client_id')
+        ->join('villes','villes.id','=','users.ville_id')
         ->where('colis.client_id','=',$bon->magasin_retour)
-        ->where('colis.retourner','=',false)
         ->where('colis.etat','=','Reçu Par Agence')
         ->select('villes.ville','colis.*','users.nomMagasin')
         ->orderBy('colis.created_at', 'DESC')->get(); 
 
-        $colis = Coli::join('villes','villes.id','=','colis.ville_id')
-        ->join('users','users.id','=','colis.client_id')
+        $colis = Coli::join('users','users.id','=','colis.client_id')
+        ->join('villes','villes.id','=','users.ville_id')
         ->join('line_bons','colis.id',"=","line_bons.colis_id")
         ->join('bons','bons.id','=','line_bons.bon_id')
         ->where('line_bons.bon_id','=',$bon->id)

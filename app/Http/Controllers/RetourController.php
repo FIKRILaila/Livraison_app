@@ -24,8 +24,8 @@ class RetourController extends Controller
         ->select('bons.*','regions.region')
         ->get();
         
-        $Attente = Coli::join('villes','villes.id','=','colis.ville_id')
-        ->join('users','users.id','=','colis.client_id')
+        $Attente = Coli::join('users','users.id','=','colis.client_id')
+        ->join('villes','villes.id','=','users.ville_id')
         ->join('regions','regions.id','=','villes.region_id')
         ->where('colis.etat','=','Refusé')
         ->orWhere('colis.etat','=','Annulé')
@@ -56,17 +56,17 @@ class RetourController extends Controller
             'etat'=>"Nouveau",
             'region_id'=>$request->input('region_id')
         ]);      
-
-        $Attente = Coli::join('villes','villes.id','=','colis.ville_id')
-        ->join('users','users.id','=','colis.client_id')
+       
+        $Attente = Coli::join('users','users.id','=','colis.client_id')
+        ->join('villes','villes.id','=','users.ville_id')
         ->join('regions','regions.id','=','villes.region_id')
         ->select('villes.ville','colis.*','users.nomMagasin')
         ->where([['colis.etat','=','Refusé'],['regions.id','=',$bon->region_id]])
         ->orWhere([['colis.etat','=','Annulé'],['regions.id','=',$bon->region_id]])
         ->orderBy('colis.created_at', 'DESC')->get(); 
 
-        $colis = Coli::join('villes','villes.id','=','colis.ville_id')
-        ->join('users','users.id','=','colis.client_id')
+        $colis = Coli::join('users','users.id','=','colis.client_id')
+        ->join('villes','villes.id','=','users.ville_id')
         ->join('line_bons','colis.id',"=","line_bons.colis_id")
         ->join('bons','bons.id','=','line_bons.bon_id')
         ->where('line_bons.bon_id','=',$bon->id)
@@ -77,15 +77,17 @@ class RetourController extends Controller
     }
     public function editRetour(Request $request){
         $bon = Bon::join('regions','regions.id','=','bons.region_id')->select('regions.region','bons.*')->findOrFail($request->input('bon_id'));
-        $colis = Coli::join('villes','villes.id','=','colis.ville_id')
-        ->join('users','users.id','=','colis.client_id')
+        $colis = Coli::join('users','users.id','=','colis.client_id')
+        ->join('villes','villes.id','=','users.ville_id')
         ->join('line_bons','colis.id',"=","line_bons.colis_id")
         ->join('bons','bons.id','=','line_bons.bon_id')
         ->where('line_bons.bon_id','=',$bon->id)
         ->select('villes.ville','colis.*','users.nomMagasin')
         ->orderBy('colis.created_at', 'DESC')->get();
-        $Attente = Coli::join('villes','villes.id','=','colis.ville_id')
-        ->join('users','users.id','=','colis.client_id')
+
+        
+        $Attente = Coli::join('users','users.id','=','colis.client_id')
+        ->join('villes','villes.id','=','users.ville_id')
         ->join('regions','regions.id','=','villes.region_id')
         ->select('villes.ville','colis.*','users.nomMagasin')
         ->where([['colis.etat','=','Refusé'],['regions.id','=',$bon->region_id]])
@@ -125,15 +127,15 @@ class RetourController extends Controller
                     }
             }
         }
-        $colis = Coli::join('villes','villes.id','=','colis.ville_id')
-        ->join('users','users.id','=','colis.client_id')
+        $colis = Coli::join('users','users.id','=','colis.client_id')
+        ->join('villes','villes.id','=','users.ville_id')
         ->join('line_bons','colis.id',"=","line_bons.colis_id")
         ->join('bons','bons.id','=','line_bons.bon_id')
         ->where('line_bons.bon_id','=',$bon->id)
         ->select('villes.ville','colis.*','users.nomMagasin')
         ->orderBy('colis.created_at', 'DESC')->get();
-        $Attente = Coli::join('villes','villes.id','=','colis.ville_id')
-        ->join('users','users.id','=','colis.client_id')
+        $Attente = Coli::join('users','users.id','=','colis.client_id')
+        ->join('villes','villes.id','=','users.ville_id')
         ->join('regions','regions.id','=','villes.region_id')
         ->select('villes.ville','colis.*','users.nomMagasin')
         ->where([['colis.etat','=','Refusé'],['regions.id','=',$bon->region_id]])
@@ -142,8 +144,8 @@ class RetourController extends Controller
         return view('newRetour')->with(['bon'=>$bon,'colis'=>$colis,'Attente'=>$Attente]);
     }
     public function valider(Request $request){
-        $colis = Coli::join('villes','villes.id','=','colis.ville_id')
-        ->join('users','users.id','=','colis.client_id')
+        $colis = Coli::join('users','users.id','=','colis.client_id')
+        ->join('villes','villes.id','=','users.ville_id')
         ->join('line_bons','colis.id',"=","line_bons.colis_id")
         ->join('bons','bons.id','=','line_bons.bon_id')
         ->where('line_bons.bon_id','=',$request->input('bon_id'))
@@ -161,8 +163,8 @@ class RetourController extends Controller
         $colis = Coli::where('code','=', $request->input('code_suivi'))
         ->join('villes','villes.id','=','colis.ville_id')->select('villes.ville','colis.*')->get();
         foreach($colis as $col){
-               Coli::where('code','=', $request->input('code_suivi'))->update(['etat'=>"Reçu Par Agence"]);
-               Historique::create([
+            Coli::where('code','=', $request->input('code_suivi'))->update(['etat'=>"Reçu Par Agence"]);
+            Historique::create([
                 'etat_h' => 'Reçu Par Agence',
                 'colis_id' => $col->id,
                 'par'=>Auth::id()
@@ -185,8 +187,8 @@ class RetourController extends Controller
                     ]);
             return redirect()->route('Retour')->with('success', 'Votre bon est valide avec Succès');
         }
-        $colis = Coli::join('villes','villes.id','=','colis.ville_id')
-        ->join('users','users.id','=','colis.client_id')
+        $colis = Coli::join('users','users.id','=','colis.client_id')
+        ->join('villes','villes.id','=','users.ville_id')
         ->join('line_bons','colis.id',"=","line_bons.colis_id")
         ->join('bons','bons.id','=','line_bons.bon_id')
         ->where('line_bons.bon_id','=',$request->input('bon_id'))

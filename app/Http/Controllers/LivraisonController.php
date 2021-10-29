@@ -283,9 +283,10 @@ class LivraisonController extends Controller
                 .border{
                     border: 2px dashed black;
                     display : block;
-                    width:100%;
+                    width:80%;
                     height:45%;
                     margin-top : 2%;
+                    margin-left : 10%;
                 }
                 </style>
         </head>
@@ -295,17 +296,17 @@ class LivraisonController extends Controller
             $ville = Ville::findOrFail($info->ville_id);
             $html.='<div class="border ">
                         <div style="width:92%; margin-left:4%">
-                            <div style="display:inline-block; width:30%;">
-                            <img  style="margin-top:2%; width:50%; padding-left:2%; display: inline-block;"  src="./images/Logo_MN.jpeg" alt="Logo">
+                            <div style="display:inline-block; margin-top:5%; width:30%;">
+                            <img  style="width:50%;"  src="./images/Logo_MN.jpeg" alt="Logo">
                             </div>
-                            <div style="display:inline-block; width:60%;">
+                            <div style="display:inline-block; margin-top:0%; width:60%;">
                                 <p style"width:50%;">'.
                                     $info->code_bar.''.$info->code .'
                                 </p>
                             </div>
                             <hr>
-                            <p style="width:70%; margin-top:0%; display:inline-block;"><span>Vendeur:</span>'.$vendeur->nomMagasin.' <br> ('.$vendeur->phone.') <br> <span>Date:</span>'.$info->created_at.'</p>
-                            <img  style="margin-top:1%; margin-bottom:2%; width:25%; display: inline-block;" src="./images/'.$vendeur->logo.'" alt="Logo">
+                            <p style="width:70%; margin-top:0%; display:inline-block;"><span>Vendeur:</span>'.$vendeur->nomMagasin.' <br> ('.$vendeur->phone.') <br> <span> Date: </span>'.$info->created_at.'</p>
+                            <img  style="margin-top:2%; margin-bottom:2%; width:20%; display: inline-block;" src="./images/'.$vendeur->logo.'" alt="Logo">
                             <hr>
                             <div>
                                 <p>
@@ -327,14 +328,14 @@ class LivraisonController extends Controller
                             }
                             $html.='<div style="margin:1% 0;">';
                             if($info->fragile){
-                                $html.= '<div style="padding:1%; margin-top:1%; margin-right:3%; color:rgb(160, 10, 10); width:20%; display:inline-block; border: 2px solid rgb(160, 10, 10);">
+                                $html.= '<div style="padding:1%; margin-top:1%; margin-right:3%; color:rgb(160, 10, 10); width:10%; display:inline-block; border: 2px solid rgb(160, 10, 10);">
                                 <h3 style="margin:0 0 1% 2%";>FRAGILE</h3></div>';
                             }else{
                                 $html.= '<div style="padding:1%; margin-top:1%; margin-right:3%; color:white; width:20%; display:inline-block; border: 2px solid white;">
                                 <h3 style="margin:0 0 1% 2%;">FRAGILE</h3></div>';
                             }
                             if($info->remplacer){
-                                $html.= '<div style="padding:1%; margin-top:0%; color:rgb(160, 10, 10); width:30%; display:inline-block; border: 2px solid rgb(160, 10, 10);">
+                                $html.= '<div style="padding:1%; margin-top:0%; color:rgb(160, 10, 10); width:15%; display:inline-block; border: 2px solid rgb(160, 10, 10);">
                                 <h3 style="margin:0 0 1% 2%";>A Remplacer</h3></div>';
                             }else{
                                 $html.= '<div style="padding:1%; margin-top:0%; color:white; width:30%; display:inline-block; border: 2px solid white;">
@@ -343,7 +344,7 @@ class LivraisonController extends Controller
                             $html.='</div>';
                             $html.='
                             <div style="border: 2px solid black; width:100%;">
-                                <h3 style="margin:1% 0 1% 60%;">Crbt:'.$info->prix.' DH</h3>
+                                <h3 style="margin:1% 0 1% 70%;">Crbt:'.$info->prix.' DH</h3>
                             </div>
                         </div>
                     </div>';

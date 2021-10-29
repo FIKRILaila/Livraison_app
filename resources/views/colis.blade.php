@@ -84,14 +84,12 @@ active
         var ele=document.getElementsByName('bon');  
                 for(var i=0; i<ele.length; i++){  
                     if(ele[i].checked === true){
-                        // form.appendChild(ele[i]);
                         input.value += ele[i].value + "_" ;
                     }
-                    // if(ele[i].checked === false){
-                    //     form.removeChild(ele[i]);
-                    // }
                 }  
+            if(input.value != ""){ 
                 form.submit();
+            }
     }
 
     </script>

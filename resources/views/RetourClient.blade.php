@@ -25,9 +25,9 @@ active
                         <th>Téléphone</th>
                         <th>Nom du Magasin</th>
                         <th>Etat</th>
-                        <th>Status</th>
-                        <th>Ville</th>
+                        <th>Ville R</th>
                         <th>Prix</th>
+                        <th>Status</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -44,9 +44,9 @@ active
                                         Payé
                                     @endif
                                 </td>
-                                <td>{{$item->etat}}</td>
                                 <td>{{$item->ville}}</td>
                                 <td>{{$item->prix}} DH</td>
+                                <td>{{$item->etat}}</td>
                             </tr>
                     @endforeach
                 </tbody>
@@ -135,46 +135,38 @@ active
                                 <button type="button" class="btn btn-light" data-toggle="modal" data-target="{{'#model_'.$item->id}}">
                                     <i class="fas fa-info-circle"></i>
                                 </button>
-                                <div class="modal fade" id="{{'model_'.$item->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal fade bd-example-modal-lg" id ="{{'model_'.$item->id}}"tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-lg">
                                     <div class="modal-content">
-                                        <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLongTitle ">Détails</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <table class="table">
-                                                <thead>
-                                                <tr>
-                                                    <th scope="col">Code Barre</th>
-                                                    <th scope="col">Destinataire</th>
-                                                    <th scope="col">Téléphone</th>
-                                                    <th scope="col">Etat</th>
-                                                </tr>
-                                                </thead>
-                                                <tbody>
-                                                    @foreach ($colis as $ele)
-                                                    @if ($ele->bon_id === $item->id)
-                                                        <tr>
-                                                            <td>
-                                                                @php
-                                                                    echo $ele->code_bar."<span class=\"font-weight-bold\">".$ele->code."</span>";
-                                                                @endphp
-                                                            </td>
-                                                            <td>{{$ele->destinataire }}</td>
-                                                            <td>{{$ele->telephone }}</td>
-                                                            <td>{{$ele->etat }}</td>
-                                                        </tr>
-                                                        @endif
-                                                    @endforeach
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
+                                        <table class="table">
+                                            <thead>
+                                            <tr>
+                                                <th scope="col">Code Barre</th>
+                                                <th scope="col">Destinataire</th>
+                                                <th scope="col">Téléphone</th>
+                                                <th scope="col">Etat</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($colis as $ele)
+                                                @if ($ele->bon_id === $item->id)
+                                                    <tr>
+                                                        <td>
+                                                            @php
+                                                                echo $ele->code_bar."<span class=\"font-weight-bold\">".$ele->code."</span>";
+                                                            @endphp
+                                                        </td>
+                                                        <td>{{$ele->destinataire }}</td>
+                                                        <td>{{$ele->telephone }}</td>
+                                                        <td>{{$ele->etat }}</td>
+                                                    </tr>
+                                                    @endif
+                                                @endforeach
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </div>
+                                </div> 
                             </td>
                         </tr>
                         @endforeach

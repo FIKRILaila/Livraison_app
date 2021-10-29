@@ -28,7 +28,7 @@ active
                         <th>Téléphone</th>
                         <th>Nom du Magasin</th>
                         <th>Status</th>
-                        <th>Ville</th>
+                        <th>Ville Retour</th>
                         <th>Prix</th>
                         <th>Etat</th>
                     </tr>
@@ -96,7 +96,7 @@ active
                         <th>Destinataire</th>
                         <th>Date de Création</th>
                         <th>Prix</th>
-                        <th>Ville</th>
+                        <th>Ville Retour</th>
                         <th>Status</th>
                     </tr>
                 </thead>
@@ -137,7 +137,9 @@ active
                         input.value += ele[i].value + "_" ;
                     }
                 }  
-                form.submit();
+                if(input.value.length > 0){
+                    form.submit();
+                }
         }
         document.querySelector("#selectAll").addEventListener('click',function(){
             let select = document.querySelector("#selectAll").checked
