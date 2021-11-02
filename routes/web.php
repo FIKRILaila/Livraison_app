@@ -18,6 +18,7 @@ use App\Http\Controllers\RetourClientController;
 use App\Http\Controllers\FacturesController;
 use App\Http\Controllers\RapportsController;
 use App\Http\Controllers\BonPaimentController;
+use App\Models\Ville;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,7 +31,10 @@ use App\Http\Controllers\BonPaimentController;
 |
 */
 
-Route::get('/', function () {return view('welcome');});
+Route::get('/', function () {
+    $villes = Ville::join('regions','regions.id','=','villes.region_id')->select('villes.*','regions.region')->get();
+    return view('welcome',['villes' => $villes]);
+});
 Auth::routes();
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 
@@ -85,6 +89,7 @@ Route::get('/toutColis', [ColisController::class, 'toutColis'])->name('toutColis
 Route::get('/ColisLivreur', [ColisController::class, 'ColisLivreur'])->name('ColisLivreur');
 Route::get('addColis', [ColisController::class, 'create'])->name('newColis');
 Route::post('/store-colis', [ColisController::class, 'store'])->name('storeColis');
+Route::post('/Filtrer', [ColisController::class, 'Filtrer'])->name('Filtrer');
 Route::post('/storeColisStock', [ColisController::class, 'storeColisStock'])->name('storeColisStock');
 Route::post('/changer-colis', [ColisController::class, 'ChangerColis'])->name('ChangerColis');
 Route::post('/edit-colis', [ColisController::class, 'update'])->name('editColis');

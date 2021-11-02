@@ -13,6 +13,81 @@ active
     @if (Session::get('fail'))
         <div class="alert alert-danger">{{ Session::get('fail') }}</div>
     @endif
+    <div class="card">
+        <form action="{{route('Filtrer')}}" method="post" class="m-4">
+            @csrf
+            <div class="row">
+                <div class="col-md-2 m-2"><input type="text" name="code" id="code" placeholder="Code Suivi" class="form-control"></div>
+                <div class="col-md-2 m-2">
+                    <select name="etat" id="etat" class="form-control">
+                        <option value="">Status</option>
+                        <option value="">Nouveau Colis</option>
+                        <option value="">En Attente de Rammassage</option>
+                        <option value="">Ramasse</option>
+                        <option value="">Reçu</option>
+                        <option value="">En Distribution</option>
+                        <option value="">Livré</option>
+                        <option value="">Annulé</option>
+                        <option value="">Refusé</option>
+                        <option value="">Reporté</option>
+                        <option value="">Retourné</option>
+                        <option value="">Reçu Par Agence</option>
+                        <option value="">Retourné au Client</option>
+                        <option value="">Reçu Par Client</option>
+                        <option value="">Pas de Réponse</option>
+                        <option value="">Erreur Numéro</option>
+                        <option value="">Numéro Injoignable</option>
+                    </select>
+                </div>
+                <div class="col-md-2 m-2">
+                    <select name="paye" id="paye" class="form-control">
+                        <option value="">Etat</option>
+                        <option value="">Payé</option>
+                        <option value="">Non Payé</option>
+                    </select>
+                </div>
+                <div class="col-md-2 m-2">
+                    <select name="ville_id" id="ville_id" class="form-control">
+                        <option value="">Ville</option>
+                        @foreach ($villes as $ville)
+                            <option value="">{{$ville->ville}}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="col-md-2 m-2">
+                    <select name="region_id" id="region_id" class="form-control">
+                        <option value="">Région</option>
+                        @foreach ($regions as $region)
+                            <option value="">{{$region->region}}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="col-md-2 m-2">
+                    <select name="region_id" id="region_id" class="form-control">
+                        <option value="">Livreur</option>
+                        @foreach ($livreurs as $livreur)
+                            <option value="">{{$livreur->nomComplet}}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="col-md-2 m-2">
+                    <select name="region_id" id="region_id" class="form-control">
+                        <option value="">Magasin</option>
+                        @foreach ($clients as $client)
+                            <option value="">{{$client->nomMagasin}}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="col-md-2 m-2">
+                    <input type="date" name="created_at" id="created_at" class="form-control">
+                </div>
+            </div>
+            <div class="row justify-content-end">
+                <button type="submit" class="btn btn-info">Filtrer</button>
+            </div>
+        </form>
+    </div>
+    
     <div class="mt-4 card col-md-12">
         <div class="m-4">
             <table id="tousColis" class="display">

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\auth;
 use App\Models\Coli;
 use App\Models\Ville;
+use App\Models\Region;
+use App\Models\User;
 use App\Models\Historique;
 use Illuminate\Http\Request;
 use Picqer;
@@ -32,7 +34,10 @@ class ColisController extends Controller
         ->orderBy('colis.created_at', 'DESC')->get();
         $historique = Historique::join('users','users.id','=','historiques.par')->select('users.nomComplet','historiques.*')->get();
         $villes=Ville::get();
-        return view('toutColis')->with(['colis'=>$colis,'historique'=>$historique,'villes'=>$villes]);
+        $regions=Region::get();
+        $livreurs = User::where('role','=','livreur')->get();
+        $clients = User::where('role','=','client')->get();
+        return view('toutColis')->with(['colis'=>$colis,'historique'=>$historique,'villes'=>$villes,'regions'=>$regions,'livreurs'=>$livreurs,'clients'=>$clients]);
     }
     public function ColisLivreur(){
         $colis = Coli::join('villes','villes.id','=','colis.ville_id')
@@ -155,6 +160,9 @@ class ColisController extends Controller
         $colis = Coli::where('id','=',$colis->id)->update(['code_bar'=>$barcode]);
             return back()->with('success','Votre colis a été ajouté avec succès');
     }
+    public function Filtrer(Request $request){
+
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -205,6 +213,7 @@ class ColisController extends Controller
         $colis = Coli::where('id','=',$colis->id)->update(['code_bar'=>$barcode]);
             return back()->with('success','Votre colis a été ajouté avec succès');
     }
+
 
     /**
      * Display the specified resource.

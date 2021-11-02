@@ -33,7 +33,11 @@ class HomeController extends Controller
         if(Auth::user()->role == 'livreur'){
             return redirect()->route('ColisLivreur');
         }else{
-            return view('home');
+            $colis = Coli::where('client_id','=',Auth::id())->get();  
+            $parjour = Coli::where('client_id','=',Auth::id())->whereBetween('created_at', [date('Y-m-d 0:0:0',time()),date('Y-m-d 23:59:59',time())])->get();
+            $parmois = Coli::where('client_id','=',Auth::id())->whereBetween('created_at', [date('Y-m-1 0:0:0',time()),date('Y-m-30 23:59:59',time())])->get();
+            $parannee = Coli::where('client_id','=',Auth::id())->whereBetween('created_at', [date('Y-1-1 0:0:0',time()),date('Y-12-31 23:59:59',time())])->get();
+            return view('home',['colis' => $colis,'parmois'=> $parmois,'parjour'=>$parjour,'parannee'=>$parannee]);
         }
     }
 }
